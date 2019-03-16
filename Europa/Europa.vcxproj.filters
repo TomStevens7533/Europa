@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Europa">
+      <UniqueIdentifier>{519558B1-3D37-8387-26F2-96DB12330AD8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Europa\Events">
+      <UniqueIdentifier>{15FC889B-81BC-04D2-4AF7-4D4FB67649AE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Europa\imgui">
+      <UniqueIdentifier>{7B9B2DC9-67FE-BC6D-1084-F523FCC588F0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform\OpenGL">
+      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Eupch.h" />
+    <ClInclude Include="src\Europa.h" />
+    <ClInclude Include="src\Europa\Application.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Core.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\EntryPoint.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Events\ApplicationEvent.h">
+      <Filter>Europa\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Events\Event.h">
+      <Filter>Europa\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Events\KeyEvent.h">
+      <Filter>Europa\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Events\MouseEvent.h">
+      <Filter>Europa\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Layer.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\LayerStack.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Log.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\OnEventDo.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\OnUpdate.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Window.h">
+      <Filter>Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\imgui\ImGuiLayer.h">
+      <Filter>Europa\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
+      <Filter>Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\WindowsWindow.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Europa\Application.cpp">
+      <Filter>Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Layer.cpp">
+      <Filter>Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\LayerStack.cpp">
+      <Filter>Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Log.cpp">
+      <Filter>Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\OnEventDo.cpp">
+      <Filter>Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\OnUpdate.cpp">
+      <Filter>Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp">
+      <Filter>Europa\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
+      <Filter>Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\WindowsWindow.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>
