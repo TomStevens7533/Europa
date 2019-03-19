@@ -1,101 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Europa">
-      <UniqueIdentifier>{519558B1-3D37-8387-26F2-96DB12330AD8}</UniqueIdentifier>
+    <Filter Include="src">
+      <UniqueIdentifier>{2DAB880B-99B4-887C-2230-9F7C8E38947C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Europa\Events">
-      <UniqueIdentifier>{15FC889B-81BC-04D2-4AF7-4D4FB67649AE}</UniqueIdentifier>
+    <Filter Include="src\Europa">
+      <UniqueIdentifier>{886EB70E-7426-F95B-DD2D-D2B7C904944C}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Europa\imgui">
-      <UniqueIdentifier>{7B9B2DC9-67FE-BC6D-1084-F523FCC588F0}</UniqueIdentifier>
+    <Filter Include="src\Europa\Events">
+      <UniqueIdentifier>{6C71BE12-D887-BCA8-21FF-47CA8D548D30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform">
-      <UniqueIdentifier>{2AC788B4-1694-E3BF-3FAD-D1672BD9184E}</UniqueIdentifier>
+    <Filter Include="src\Europa\imgui">
+      <UniqueIdentifier>{F2414EDC-DE3A-6D2E-076D-52B3F3C44C3A}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Platform\OpenGL">
-      <UniqueIdentifier>{1E7D2C1D-8A08-9AE1-9319-1DD6FF23F6E1}</UniqueIdentifier>
+    <Filter Include="src\Platform">
+      <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\OpenGL">
+      <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor">
+      <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vendor\glm">
+      <UniqueIdentifier>{829FC5A8-6E57-07F6-D75E-E051C335A2E6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Eupch.h" />
-    <ClInclude Include="src\Europa.h" />
+    <ClInclude Include="src\Eupch.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa.h">
+      <Filter>src</Filter>
+    </ClInclude>
     <ClInclude Include="src\Europa\Application.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Core.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\EntryPoint.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Events\ApplicationEvent.h">
-      <Filter>Europa\Events</Filter>
+      <Filter>src\Europa\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Events\Event.h">
-      <Filter>Europa\Events</Filter>
+      <Filter>src\Europa\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Events\KeyEvent.h">
-      <Filter>Europa\Events</Filter>
+      <Filter>src\Europa\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Events\MouseEvent.h">
-      <Filter>Europa\Events</Filter>
+      <Filter>src\Europa\Events</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Layer.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\LayerStack.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Log.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\OnEventDo.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\OnUpdate.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Window.h">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h">
-      <Filter>Europa\imgui</Filter>
+      <Filter>src\Europa\imgui</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\WindowsWindow.h">
-      <Filter>Platform</Filter>
+      <Filter>src\Platform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Layer.cpp">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\LayerStack.cpp">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Log.cpp">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\OnEventDo.cpp">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\OnUpdate.cpp">
-      <Filter>Europa</Filter>
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp">
-      <Filter>Europa\imgui</Filter>
+      <Filter>src\Europa\imgui</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp">
-      <Filter>Platform\OpenGL</Filter>
+      <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\WindowsWindow.cpp">
-      <Filter>Platform</Filter>
+      <Filter>src\Platform</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vendor\glm\glm">
+      <Filter>vendor\glm</Filter>
+    </None>
   </ItemGroup>
 </Project>

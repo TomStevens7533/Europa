@@ -15,14 +15,14 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Europa/vendor/GLFW/include"
+IncludeDir["GLFW"] = "Europa/vendor/GLFW2q/include"
 IncludeDir["Glad"] = "Europa/vendor/Glad/include"
-IncludeDir["imgui"] = "Europa/vendor/imgui"
+IncludeDir["imgui"] = "Europa/vendor/imgui2"
 IncludeDir["glm"] = "Europa/vendor/glm"
 
-include "Europa/vendor/GLFW"
+include "Europa/vendor/GLFW2q"
 include "Europa/vendor/Glad"
-include "Europa/vendor/imgui"
+include "Europa/vendor/imgui2"
 
 
 project "Europa"
@@ -39,7 +39,8 @@ project "Europa"
 	files
 	{
 		"%{prj.name}/src/**.h",
-		"%{prj.name}/src/**.cpp"
+		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/glm/glm"
 	}
 	includedirs
 	{
