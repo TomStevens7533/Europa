@@ -155,6 +155,8 @@
     <ClInclude Include="src\Europa\Events\Event.h" />
     <ClInclude Include="src\Europa\Events\KeyEvent.h" />
     <ClInclude Include="src\Europa\Events\MouseEvent.h" />
+    <ClInclude Include="src\Europa\Input.h" />
+    <ClInclude Include="src\Europa\KeyMouseCodes.h" />
     <ClInclude Include="src\Europa\Layer.h" />
     <ClInclude Include="src\Europa\LayerStack.h" />
     <ClInclude Include="src\Europa\Log.h" />
@@ -164,6 +166,7 @@
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h" />
     <ClInclude Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.h" />
     <ClInclude Include="src\Platform\WindowsWindow.h" />
+    <ClInclude Include="src\Platform\WindowWindowPolling.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp" />
@@ -175,6 +178,7 @@
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\ImGuiOpenGLRenderer.cpp" />
     <ClCompile Include="src\Platform\WindowsWindow.cpp" />
+    <ClCompile Include="src\Platform\WindowsWindowPolling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vendor\glm\glm" />

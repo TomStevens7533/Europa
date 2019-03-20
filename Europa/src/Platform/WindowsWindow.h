@@ -24,6 +24,7 @@ namespace Eu {
 		inline void SetEventCallback(const EventCallbackFn& callback) override { m_Data.EventCallback = callback; }
 		void SetVSync(bool enabled) override;
 		bool IsVSync() const override;
+		inline virtual void* GetPureWindow() const { return m_Window; }
 	private:
 		GLFWwindow* m_Window;
 

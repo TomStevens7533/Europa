@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "Eupch.h"
 #include <glad/glad.h>
+#include "Input.h"
 
 
 
@@ -60,6 +61,8 @@ namespace Eu
 		{
 			glClearColor(1, 0, 1, 1);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			Input::IsMouseButtonPressed(1);
 
 			for (Layer* layer : m_LayerStack)
 			{

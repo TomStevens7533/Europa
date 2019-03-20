@@ -81,6 +81,9 @@
     <ClInclude Include="src\Platform\WindowsWindow.h">
       <Filter>src\Platform</Filter>
     </ClInclude>
+    <ClInclude Include="src\Europa\Input.h" />
+    <ClInclude Include="src\Europa\KeyMouseCodes.h" />
+    <ClInclude Include="src\Platform\WindowWindowPolling.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -110,6 +113,7 @@
     <ClCompile Include="src\Platform\WindowsWindow.cpp">
       <Filter>src\Platform</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\WindowsWindowPolling.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vendor\glm\glm">

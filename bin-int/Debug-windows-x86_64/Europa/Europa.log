@@ -1,3 +1,0 @@
-﻿     Creating library ..\bin\Debug-windows-x86_64\Europa\Europa.lib and object ..\bin\Debug-windows-x86_64\Europa\Europa.exp
-LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
-  Europa.vcxproj -> C:\Dekstop\Dev\Europa\Europa\..\bin\Debug-windows-x86_64\Europa\Europa.dll
