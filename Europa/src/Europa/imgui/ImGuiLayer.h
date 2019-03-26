@@ -1,5 +1,6 @@
 #pragma once
 
+
 #include "Europa/Layer.h"
 #include "Europa/Events/ApplicationEvent.h"
 #include "Europa/Events/MouseEvent.h"
@@ -14,13 +15,18 @@ namespace Eu
 		~ImGuiLayer();
 
 
-		void OnEvent(Event& event);
-		void OnUpdate();
-		void OnAttach();
-		void OnDetach();
+
+		void OnAttach() override;
+		void OnDetach() override;
+		void OnImGuiRender() override;
+
+
+		void Begin();
+		void End();
 
 	private:
-		bool OnMouseButtonPressed(MouseButtonPressedEvent& e);
+		
+		
 		float m_Time = 0.0f;
 	};
 

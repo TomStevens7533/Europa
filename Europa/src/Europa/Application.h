@@ -4,7 +4,7 @@
 #include "Log.h"
 #include "Europa/Events/ApplicationEvent.h"
 #include "Europa/LayerStack.h"
-
+#include "Europa/imgui/ImGuiLayer.h"
 namespace Eu
 {
 	class EUROPA_API Application
@@ -25,6 +25,7 @@ namespace Eu
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
 		std::unique_ptr<Window> m_Window;
+		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 

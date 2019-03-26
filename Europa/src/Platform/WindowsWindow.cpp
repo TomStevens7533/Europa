@@ -1,9 +1,7 @@
 #pragma once
 
 #include "WindowsWindow.h"
-
-
-#include <glad/glad.h>
+#include "glad/glad.h"
 
 namespace Eu {
 

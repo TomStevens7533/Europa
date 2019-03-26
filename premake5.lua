@@ -15,12 +15,12 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 -- Include directories
 
 IncludeDir = {}
-IncludeDir["GLFW"] = "Europa/vendor/GLFW2q/include"
+IncludeDir["GLFW"] = "Europa/vendor/GLFW/include"
 IncludeDir["Glad"] = "Europa/vendor/Glad/include"
 IncludeDir["imgui"] = "Europa/vendor/imgui2"
 IncludeDir["glm"] = "Europa/vendor/glm"
 
-include "Europa/vendor/GLFW2q"
+include "Europa/vendor/GLFW"
 include "Europa/vendor/Glad"
 include "Europa/vendor/imgui2"
 
@@ -33,14 +33,13 @@ project "Europa"
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	pchheader "Eupch.h"
-	pchsource "Europa/src/Eupch.cpp"
 
 	files
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/vendor/glm/glm"
+		"%{prj.name}/vendor/glm/glm",
+		
 	}
 	includedirs
 	{
@@ -50,6 +49,8 @@ project "Europa"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
+
+		
 			
 	}
 	links
@@ -60,13 +61,14 @@ project "Europa"
 		"imgui",
 		
 		
+		
 	}
 
 	filter "system:windows"
 		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
-		flags { "NoPCH"	}
+
 		defines
 		{
 			"EU_PLATFORM_WINDOWS",
@@ -113,6 +115,7 @@ project "Game"
 			"Europa/vendor/spdlog/include",
 			"Europa/src",
 			"%{IncludeDir.glm}",
+			"Europa/vendor"
 
 		}
 

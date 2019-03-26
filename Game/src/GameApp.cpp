@@ -7,7 +7,7 @@ class Sandbox : public Eu::Application
 public:
 	Sandbox()
 	{
-		PushOverlay(new Eu::ImGuiLayer);
+		
 		
 	}
 	~Sandbox()

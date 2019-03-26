@@ -4,7 +4,7 @@ namespace Eu
 {
 	LayerStack::LayerStack()
 	{
-		m_LayerInsert = m_Layers.begin();
+		
 	}
 
 	LayerStack::~LayerStack()
@@ -15,7 +15,8 @@ namespace Eu
 
 	void LayerStack::PushLayer(Layer* layer)
 	{
-		m_LayerInsert = m_Layers.emplace(m_LayerInsert, layer);
+		m_Layers.emplace(m_Layers.begin() + m_LayerIndex, layer);
+		m_LayerIndex++;
 	}
 
 	void LayerStack::PushOverlay(Layer* overlay)
@@ -29,7 +30,7 @@ namespace Eu
 		if (it != m_Layers.end())
 		{
 			m_Layers.erase(it);
-			m_LayerInsert--;
+			m_LayerIndex--;
 		}
 	}
 
