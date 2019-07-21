@@ -9,7 +9,7 @@
 namespace Eu
 {
 
-	class EUROPA_API KeyEvent : public Event
+	class  KeyEvent : public Event
 	{
 	public:
 		inline int GetKeyCode() const { return m_KeyCode; }
@@ -22,7 +22,7 @@ namespace Eu
 			int m_KeyCode;
 	};
 
-	class EUROPA_API KeyPressedEvent : public KeyEvent
+	class  KeyPressedEvent : public KeyEvent
 	{
 	public:
 		KeyPressedEvent(int keycode, int repeatcount)
@@ -43,7 +43,7 @@ namespace Eu
 		int m_RepeatCount;
 	};
 
-	class EUROPA_API KeyReleasedEvent : public KeyEvent
+	class  KeyReleasedEvent : public KeyEvent
 	{
 	public:
 		KeyReleasedEvent(int keycode)
@@ -62,7 +62,7 @@ namespace Eu
 	};
 
 
-	class EUROPA_API KeyTypedEvent : public KeyEvent
+	class  KeyTypedEvent : public KeyEvent
 	{
 	public:
 		KeyTypedEvent(int keycode)

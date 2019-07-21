@@ -1,7 +1,12 @@
 #pragma once
 
+#include "Eupch.h"
 #include "WindowsWindow.h"
 #include "glad/glad.h"
+#include <GLFW/glfw3.h>
+
+#include "Platform/OpenGL/OpenGLContext.h"
+
 
 namespace Eu {
 
@@ -32,6 +37,9 @@ namespace Eu {
 		m_Data.Height = props.Height;
 		m_Data.Width = props.Width;
 
+		
+
+
 		glfwSetErrorCallback(GLFWErrorCallback);
 
 		EU_CORE_WARN("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
@@ -48,9 +56,11 @@ namespace Eu {
 
 
 		m_Window = glfwCreateWindow((int)props.Width, (int)props.Height, m_Data.Title.c_str(), nullptr, nullptr);
-		glfwMakeContextCurrent(m_Window);
-		int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-		EU_CORE_ASSERT(status, "Failed to initialize!");
+
+		m_Context = new OpenGLRenderer(m_Window);
+
+		m_Context->Init();
+
 		glfwSetWindowUserPointer(m_Window, &m_Data);
 		SetVSync(true);
 
@@ -173,7 +183,8 @@ namespace Eu {
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
-		glfwSwapBuffers(m_Window);
+		m_Context->SwapBuffer();
+		
 	}
 	void WindowsWindow::SetVSync(bool vsync)
 	{

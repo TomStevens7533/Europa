@@ -18,7 +18,7 @@ namespace Eu
 		unsigned int Width;
 		unsigned int Height;
 
-		WindowProps(const std::string& title = "Big Black Dong",
+		WindowProps(const std::string& title = "gay lmao",
 			unsigned int width = 1280,
 			unsigned int height = 720)
 			: Title(title), Width(width), Height(height)
@@ -26,7 +26,7 @@ namespace Eu
 		}
 	};
 
-	class EUROPA_API Window
+	class  Window
 	{
 	public:
 		using EventCallbackFn = std::function<void(Event&)>;

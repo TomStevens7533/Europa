@@ -3,7 +3,8 @@
 
 #include "Europa/Window.h"
 #include "Europa/Log.h"
-#include <GLFW/glfw3.h>
+
+#include "Europa/Renderer/GraphicsContext.h"
 
 struct GLFWwindow;
 
@@ -27,11 +28,14 @@ namespace Eu {
 		inline virtual void* GetPureWindow() const { return m_Window; }
 	private:
 		GLFWwindow* m_Window;
+		GraphicsContext* m_Context;
 
 		virtual void Init(const WindowProps& props);
 		virtual void Shutdown();
 
 		struct WindowData {
+
+			
 			std::string Title;
 			unsigned int Width, Height;
 			bool VSync;

@@ -1,19 +1,6 @@
 #pragma once
 
-
-#ifdef EU_PLATFORM_WINDOWS
-	#ifdef EU_BUILD_DLL
-	#define EUROPA_API __declspec(dllexport)
-
-#else
-	#define EUROPA_API __declspec(dllimport)
-#endif
-#else
-	#error Europa only supports 64 bit Windows!!
-#endif 
-
-
-#if EU_DEBUG true
+#if EU_DEBUG
 #define EU_ENABLE_ASSERT
 #endif
 

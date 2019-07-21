@@ -6,7 +6,7 @@
 //
 //namespace Eu {
 //
-//	class EUROPA_API Update
+//	class  Update
 //	{
 //	public:
 //		Update();

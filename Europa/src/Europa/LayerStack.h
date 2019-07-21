@@ -7,7 +7,7 @@
 
 namespace Eu {
 
-	class EUROPA_API LayerStack
+	class  LayerStack
 	{
 	public:
 		LayerStack();

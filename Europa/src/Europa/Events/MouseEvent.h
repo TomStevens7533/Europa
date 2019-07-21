@@ -9,7 +9,7 @@
 namespace Eu
 {
 
-	class EUROPA_API MouseMovedEvent : public Event
+	class  MouseMovedEvent : public Event
 	{
 	public:
 		MouseMovedEvent(float x, float y)
@@ -33,7 +33,7 @@ namespace Eu
 
 	};
 
-	class EUROPA_API MouseScrolledEvent : public Event
+	class  MouseScrolledEvent : public Event
 	{
 	public: 
 		MouseScrolledEvent(float xOffset, float yOffSet)
@@ -58,7 +58,7 @@ namespace Eu
 
 	};
 
-	class EUROPA_API MouseButtonEvent : public Event
+	class  MouseButtonEvent : public Event
 	{
 	public: 
 		inline int GetMouseButton() const { return m_Button; }
@@ -71,7 +71,7 @@ namespace Eu
 		int m_Button;
 	};
 
-	class EUROPA_API MouseButtonPressedEvent : public MouseButtonEvent
+	class  MouseButtonPressedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonPressedEvent(int button)
@@ -90,7 +90,7 @@ namespace Eu
 
 	};
 
-	class EUROPA_API MouseButtonReleasedEvent : public MouseButtonEvent
+	class  MouseButtonReleasedEvent : public MouseButtonEvent
 	{
 	public:
 		MouseButtonReleasedEvent(int button)
