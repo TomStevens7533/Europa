@@ -3,6 +3,8 @@
 
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
+#include "Platform/OpenGL/OpenGLVertexArray.h"
+
 namespace Eu
 {
 	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
@@ -31,6 +33,9 @@ namespace Eu
 		EU_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
+
+	
+
 
 	
 

@@ -12,24 +12,7 @@ namespace Eu
 
 	Application* Application::s_Instance = nullptr;
 
-	static GLenum ShaderDataTypeToOpenGLBaseType(ShaderDataType type)
-	{
-		switch (type)
-		{
-			case Eu::ShaderDataType::Float:		return GL_FLOAT;
-			case Eu::ShaderDataType::Float2:	return GL_FLOAT;
-			case Eu::ShaderDataType::Float3:	return GL_FLOAT;
-			case Eu::ShaderDataType::Float4:	return GL_FLOAT;
-			case Eu::ShaderDataType::Mat3:		return GL_FLOAT;
-			case Eu::ShaderDataType::Mat4:		return GL_FLOAT;
-			case Eu::ShaderDataType::Int:		return GL_INT;
-			case Eu::ShaderDataType::Int2:		return GL_INT;
-			case Eu::ShaderDataType::Int3:		return GL_INT;
-			case Eu::ShaderDataType::Int4:		return GL_INT;
-			case Eu::ShaderDataType::Bool:		return GL_BOOL;
-		}
-	}
-
+	
 	Application::Application()
 	{
 		EU_CORE_ASSERT(!s_Instance, "Application already exists!");
@@ -42,6 +25,7 @@ namespace Eu
 		PushOverlay(m_ImGuiLayer);
 
 
+		m_VertexAray.reset(VertexArray::Create());
 
 		float vertices[3 * 7] =
 		{
@@ -51,34 +35,22 @@ namespace Eu
 		};
 
 		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
-		{
-			BufferLayout layout = {
-			{ShaderDataType::Float3, "a_Position"},
-			{ShaderDataType::Float4, "a_Color"}
+		
+		BufferLayout layout = {
+		{ShaderDataType::Float3, "a_Position"},
+		{ShaderDataType::Float4, "a_Color"}
 
-			};
+		};
 
-			m_VertexBuffer->SetLayout(layout);
-		}
+		m_VertexBuffer->SetLayout(layout);
+		m_VertexAray->AddVertexBuffer(m_VertexBuffer);
 
-		uint32_t index = 0;
-		for (const auto& element : m_VertexBuffer->GetLayout())
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
-				element.GetComponentCount(),
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE,
-				m_VertexBuffer->GetLayout().GetStride(),
-				(const void*)element.Offset);
-			index++;
-		}
-
-
+		
 
 		uint32_t indices[3] = { 0,1,2 };
 		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
 
+		m_VertexAray->AddIndexBuffer(m_IndexBuffer);
 
 		std::string VertexSrc = R"(
 			#version 330 core
@@ -163,7 +135,7 @@ namespace Eu
 			glClear(GL_COLOR_BUFFER_BIT);
 
 
-			glBindVertexArray(m_VertexArray);
+			m_VertexAray->Bind();
 			m_Shader->Bind();
 			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 

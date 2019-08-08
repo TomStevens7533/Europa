@@ -3,6 +3,7 @@
 
 
 
+
 namespace Eu
 {
 	class OpenGLVertexBuffer : public VertexBuffer
@@ -14,10 +15,13 @@ namespace Eu
 		virtual void Bind() const override;
 		virtual void Unbind() const override;
 
+
 		virtual const BufferLayout& GetLayout() const override { return m_Layout; }
 
 
 		virtual void SetLayout(const BufferLayout& layout) override { m_Layout = layout; }
+
+		const BufferLayout GetLayout() { return m_Layout; }
 		
 			
 
@@ -26,6 +30,8 @@ namespace Eu
 		BufferLayout m_Layout;
 		uint32_t m_RendererID;
 	};
+	
+
 
 	class OpenGLIndexBuffer : public IndexBuffer
 	{

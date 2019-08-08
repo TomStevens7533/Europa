@@ -4,6 +4,10 @@
 namespace Eu
 {
 
+
+	
+
+
 	//ARRAYBUFFER
 	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
 	{
@@ -44,4 +48,14 @@ namespace Eu
 	{
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
+	//BUFFERLAYOUT
+
+	/*OpenGLVertexBuffer::OpenGLVertexBuffer()
+	{
+		
+		
+	}
+
+*/
+
 }
