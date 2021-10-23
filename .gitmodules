@@ -7,6 +7,6 @@
 [submodule "Europa/vendor/glm"]
 	path = Europa/vendor/glm
 	url = https://github.com/g-truc/glm
-[submodule "Europa/vendor/imgui2"]
-	path = Europa/vendor/imgui2
+[submodule "Europa/vendor/imgui"]
+	path = Europa/vendor/imgui
 	url = https://github.com/TheCherno/imgui

@@ -17,18 +17,20 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 IncludeDir = {}
 IncludeDir["GLFW"] = "Europa/vendor/GLFW/include"
 IncludeDir["Glad"] = "Europa/vendor/Glad/include"
-IncludeDir["imgui"] = "Europa/vendor/imgui2"
+IncludeDir["imgui"] = "Europa/vendor/imgui"
 IncludeDir["glm"] = "Europa/vendor/glm"
 
 include "Europa/vendor/GLFW"
 include "Europa/vendor/Glad"
-include "Europa/vendor/imgui2"
+include "Europa/vendor/imgui"
 
 
 project "Europa"
 	location "Europa"
-	kind "SharedLib"
+	kind "StaticLib"
+	cppdialect "C++17"
 	language"C++"
+	staticruntime "On"
 
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
@@ -38,8 +40,13 @@ project "Europa"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
-		"%{prj.name}/vendor/glm/glm",
+		"%{prj.name}/vendor/glm/**.hpp",
+		"%{prj.name}/vendor/glm/**.inl"
 		
+	}
+	defines
+	{
+		"_CRT_SECURE_NO_WARNINGS"
 	}
 	includedirs
 	{
@@ -65,7 +72,6 @@ project "Europa"
 	}
 
 	filter "system:windows"
-		cppdialect "C++17"
 		staticruntime "On"
 		systemversion "latest"
 
@@ -76,27 +82,28 @@ project "Europa"
 			"GLFW_INCLUDE_NONE"
 		}
 
-		postbuildcommands
-		{
-			("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. outputdir .. "/Game")
-		}
-
+	
 
 	filter "configurations:Debug"
 		defines "EU_DEBUG"
+		runtime "Debug"
 		symbols "On"
 
 	filter "configurations:Release"
 		defines "EU_RELEASE"
+		runtime "Release"
 		optimize "On"
 
 	filter "configurations:Dist"
 		defines "EU_DIST"
+		runtime "Release"
 		optimize "On"
 
 project "Game"
 	location "Game"
 	kind "ConsoleApp"
+	staticruntime "On"
+	cppdialect "C++17"
 
 	language "C++"
 
@@ -124,7 +131,7 @@ project "Game"
 			"Europa"
 		}
 	filter "system:windows"
-		cppdialect "C++17"
+
 		staticruntime "On"
 		systemversion "latest"
 

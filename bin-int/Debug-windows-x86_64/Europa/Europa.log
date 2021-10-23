@@ -1,30 +1,40 @@
-﻿  ImGuiLayer.cpp
-c:\dekstop\dev\europa\europa\src\europa\core.h(16): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\dekstop\dev\europa\europa\src\europa\layer.h(22): warning C4251: 'Eu::Layer::m_DebugName': class 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>' needs to have dll-interface to be used by clients of class 'Eu::Layer'
-  c:\program files (x86)\microsoft visual studio\2017\community\vc\tools\msvc\14.16.27023\include\xstring(4373): note: see declaration of 'std::basic_string<char,std::char_traits<char>,std::allocator<char>>'
-c:\dekstop\dev\europa\europa\src\europa\log.h(26): warning C4251: 'Eu::Log::s_CoreLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Eu::Log'
-  c:\dekstop\dev\europa\europa\vendor\spdlog\include\spdlog\logger.h(158): note: see declaration of 'std::shared_ptr<spdlog::logger>'
-c:\dekstop\dev\europa\europa\src\europa\log.h(27): warning C4251: 'Eu::Log::s_ClientLogger': class 'std::shared_ptr<spdlog::logger>' needs to have dll-interface to be used by clients of class 'Eu::Log'
-  c:\dekstop\dev\europa\europa\vendor\spdlog\include\spdlog\logger.h(158): note: see declaration of 'std::shared_ptr<spdlog::logger>'
-c:\dekstop\dev\europa\europa\src\europa\layerstack.h(24): warning C4251: 'Eu::LayerStack::m_Layers': class 'std::vector<Eu::Layer *,std::allocator<_Ty>>' needs to have dll-interface to be used by clients of class 'Eu::LayerStack'
+﻿  InputManager.cpp
+  Application.cpp
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Application.cpp(83,32): warning C4312: 'type cast': conversion from 'const uint32_t' to 'const void *' of greater size
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Application.cpp(181,33): warning C4305: 'argument': truncation from 'double' to 'GLfloat'
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\include\memory(3416,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
-              _Ty=Eu::Layer *
+              _Ty=unsigned int
           ]
-  c:\dekstop\dev\europa\europa\src\europa\layerstack.h(21): note: see declaration of 'std::vector<Eu::Layer *,std::allocator<_Ty>>'
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Application.cpp(45): message : see reference to function template instantiation 'std::unique_ptr<Eu::Camera,std::default_delete<Eu::Camera>> std::make_unique<Eu::Camera,glm::vec3,int,unsigned int,unsigned int,0>(glm::vec3 &&,int &&,unsigned int &&,unsigned int &&)' being compiled
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.29.30133\include\memory(3416,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
-              _Ty=Eu::Layer *
+              _Ty=int
           ]
-c:\dekstop\dev\europa\europa\src\europa\application.h(27): warning C4251: 'Eu::Application::m_Window': class 'std::unique_ptr<Eu::Window,std::default_delete<_Ty>>' needs to have dll-interface to be used by clients of class 'Eu::Application'
-          with
-          [
-              _Ty=Eu::Window
-          ]
-  c:\dekstop\dev\europa\europa\src\europa\application.h(27): note: see declaration of 'std::unique_ptr<Eu::Window,std::default_delete<_Ty>>'
-          with
-          [
-              _Ty=Eu::Window
-          ]
-c:\dekstop\dev\europa\europa\src\europa\imgui\imguilayer.cpp(86): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
-  Europa.vcxproj -> C:\Dekstop\Dev\Europa\Europa\..\bin\Debug-windows-x86_64\Europa\Europa.dll
+  Camera.cpp
+  RenderCommand.cpp
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Renderer\RenderCommand.cpp(5,28): error C2039: 's_RenderAPI': is not a member of 'Eu::RendererAPI'
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Renderer\RendererAPI.h(7): message : see declaration of 'Eu::RendererAPI'
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Renderer\RenderCommand.cpp(6,1): error C2143: syntax error: missing ';' before '}'
+  Layer.cpp
+  LayerStack.cpp
+  Log.cpp
+  OnEventDo.cpp
+  OnUpdate.cpp
+  Buffer.cpp
+  Renderer.cpp
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Renderer\Renderer.cpp(15,3): error C2065: 'Rendercommand': undeclared identifier
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Renderer\Renderer.cpp(16,2): error C2143: syntax error: missing ';' before '}'
+  RendererAPI.cpp
+  Shader.cpp
+  ImGuiBuild.cpp
+  ImGuiLayer.cpp
+  OpenGLBuffer.cpp
+  OpenGLContext.cpp
+  WindowsWindow.cpp
+  WindowsWindowPolling.cpp
+  Generating Code...
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\Application.cpp(32): warning C4715: 'Eu::ShaderDataTypeToOpenGLBaseType': not all control paths return a value
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\src\Europa\renderer\Buffer.h(63): warning C4715: 'Eu::BufferElement::GetComponentCount': not all control paths return a value

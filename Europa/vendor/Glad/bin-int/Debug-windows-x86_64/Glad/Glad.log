@@ -1,2 +1,4 @@
 ﻿  glad.c
-  Glad.vcxproj -> C:\Dekstop\Dev\Europa\Europa\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.lib
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.18362.0\shared\minwindef.h(130,1): warning C4005: 'APIENTRY': macro redefinition
+C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\vendor\Glad\include\glad\glad.h(32): message : see previous definition of 'APIENTRY'
+  Glad.vcxproj -> C:\Users\Tom\OneDrive - Hogeschool West-Vlaanderen\Documenten\dev\DevBackup\Europa\Europa\vendor\Glad\bin\Debug-windows-x86_64\Glad\Glad.lib

@@ -15,7 +15,7 @@
 
 namespace Eu {
 
-	class EUROPA_API Log
+	class  Log
 	{
 	public:
 		static void Init();

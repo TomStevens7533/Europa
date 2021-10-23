@@ -9,7 +9,7 @@
 //
 //namespace Eu
 //{
-//	class EUROPA_API Input
+//	class  Input
 //	{
 //	public:
 //

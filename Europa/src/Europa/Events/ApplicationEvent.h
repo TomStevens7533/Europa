@@ -10,7 +10,7 @@
 
 namespace Eu
 {
-	class EUROPA_API WindowResizeEvent : public Event
+	class  WindowResizeEvent : public Event
 	{
 	public:
 		WindowResizeEvent(unsigned int width, unsigned int height)
@@ -33,7 +33,7 @@ namespace Eu
 		unsigned int m_Width, m_Height;
 	};
 
-	class EUROPA_API WindowCloseEvent : public Event
+	class  WindowCloseEvent : public Event
 	{
 	public:
 		WindowCloseEvent() {}
@@ -42,7 +42,7 @@ namespace Eu
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class EUROPA_API AppUpdateEvent : public Event
+	class  AppUpdateEvent : public Event
 	{
 		AppUpdateEvent() {}
 
@@ -50,7 +50,7 @@ namespace Eu
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class EUROPA_API AppTickEvent : public Event
+	class  AppTickEvent : public Event
 	{
 		AppTickEvent() {}
 
@@ -58,7 +58,7 @@ namespace Eu
 		EVENT_CLASS_CATEGORY(EventCategoryApplication)
 	};
 
-	class EUROPA_API AppRenderEvent : public Event
+	class  AppRenderEvent : public Event
 	{
 		AppRenderEvent() {}
 
