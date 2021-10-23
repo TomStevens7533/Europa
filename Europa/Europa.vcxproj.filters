@@ -1215,10 +1215,8 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Europa\Camera.h" />
-    <ClInclude Include="InputManager.h" />
-    <ClInclude Include="src\Europa\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\Europa\Renderer\RendererAPI.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
+    <ClInclude Include="src\Europa\Renderer\VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1266,9 +1264,7 @@
     <ClCompile Include="src\Platform\WindowsWindowPolling.cpp">
       <Filter>src\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="src\Europa\Camera.cpp" />
-    <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="src\Europa\Renderer\RenderCommand.cpp" />
-    <ClCompile Include="src\Europa\Renderer\RendererAPI.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
+    <ClCompile Include="src\Europa\Renderer\VertexArray.cpp" />
   </ItemGroup>
 </Project>

@@ -137,18 +137,15 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="InputManager.h" />
     <ClInclude Include="src\Eupch.h" />
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
-    <ClInclude Include="src\Europa\Camera.h" />
     <ClInclude Include="src\Europa\Core.h" />
     <ClInclude Include="src\Europa\EntryPoint.h" />
     <ClInclude Include="src\Europa\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Europa\Events\Event.h" />
     <ClInclude Include="src\Europa\Events\KeyEvent.h" />
     <ClInclude Include="src\Europa\Events\MouseEvent.h" />
-    <ClInclude Include="src\Europa\Renderer\RenderCommand.h" />
     <ClInclude Include="src\Europa\Input.h" />
     <ClInclude Include="src\Europa\KeyMouseCodes.h" />
     <ClInclude Include="src\Europa\Layer.h" />
@@ -159,12 +156,13 @@
     <ClInclude Include="src\Europa\Renderer\Buffer.h" />
     <ClInclude Include="src\Europa\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Europa\Renderer\Renderer.h" />
-    <ClInclude Include="src\Europa\Renderer\RendererAPI.h" />
     <ClInclude Include="src\Europa\Renderer\Shader.h" />
+    <ClInclude Include="src\Europa\Renderer\VertexArray.h" />
     <ClInclude Include="src\Europa\Window.h" />
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\WindowWindowPolling.h" />
     <ClInclude Include="src\Platform\WindowsWindow.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -533,10 +531,7 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="src\Europa\Application.cpp" />
-    <ClCompile Include="src\Europa\Camera.cpp" />
-    <ClCompile Include="src\Europa\Renderer\RenderCommand.cpp" />
     <ClCompile Include="src\Europa\Layer.cpp" />
     <ClCompile Include="src\Europa\LayerStack.cpp" />
     <ClCompile Include="src\Europa\Log.cpp" />
@@ -544,12 +539,13 @@
     <ClCompile Include="src\Europa\OnUpdate.cpp" />
     <ClCompile Include="src\Europa\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Europa\Renderer\Renderer.cpp" />
-    <ClCompile Include="src\Europa\Renderer\RendererAPI.cpp" />
     <ClCompile Include="src\Europa\Renderer\Shader.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Europa\Renderer\VertexArray.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\WindowsWindow.cpp" />
     <ClCompile Include="src\Platform\WindowsWindowPolling.cpp" />
   </ItemGroup>
