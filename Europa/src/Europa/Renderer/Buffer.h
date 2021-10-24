@@ -1,5 +1,6 @@
 #pragma once
 #include "Eupch.h"
+#include "../structs.h"
 
 namespace Eu
 {
@@ -117,7 +118,7 @@ namespace Eu
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		static VertexBuffer* Create(float* vertices, uint32_t size);
+		static VertexBuffer* Create(Vertex_Input* vertices, uint32_t size);
 	};
 
 	class IndexBuffer

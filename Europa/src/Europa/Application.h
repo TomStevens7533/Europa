@@ -7,6 +7,7 @@
 #include "Europa/imgui/ImGuiLayer.h"
 #include "renderer/Renderer.h"
 #include "Camera.h"
+#include "Renderer/VertexArray.h"
 namespace Eu
 {
 	class  Application
@@ -30,10 +31,11 @@ namespace Eu
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-		std::unique_ptr<VertexBuffer>m_VertexBuffer;
+		std::shared_ptr<VertexBuffer>m_VertexBuffer;
 		std::unique_ptr<Shader> m_Shader;
-		std::unique_ptr<IndexBuffer>m_IndexBuffer;
-		unsigned int m_VertexArray;
+		std::shared_ptr<IndexBuffer>m_IndexBuffer;
+		std::shared_ptr<VertexArray>m_VertexArray;
+
 		static Application* s_Instance;
 		std::unique_ptr<Camera> m_pCamera;
 

@@ -1,7 +1,8 @@
 #pragma once
 #include "Buffer.h"
 #include "Shader.h"
-#include "RendererAPI.h"
+#include "RenderCommand.h"
+
 namespace Eu
 {
 
@@ -12,7 +13,7 @@ namespace Eu
 		static void BeginScene();
 		static void EndScene();
 
-		static void Submit(const std::shared_ptr<int>& vertexArray);
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray);
 
 	public:
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }

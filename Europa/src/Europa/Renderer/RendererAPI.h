@@ -1,10 +1,11 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <memory>
+#include "VertexArray.h"
 
 namespace Eu {
 
-	class RendererAPI { //interface so we can use multiple apis
+	class RendererAPI { //interface so we can use multiple apis for now only opengl
 	public:
 		enum class API
 		{
@@ -15,7 +16,7 @@ namespace Eu {
 	public:
 		virtual void SetClearColor(const glm::vec4& color) = 0;
 		virtual void Clear() = 0;
-		virtual void DrawIndexed(std::shared_ptr<int>&) = 0;
+		virtual void DrawIndexed(const std::shared_ptr<VertexArray>&) = 0;
 
 		inline static API GetAPI() { return s_CurrentAPI; }
 

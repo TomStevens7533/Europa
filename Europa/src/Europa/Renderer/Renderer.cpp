@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "Eupch.h"
 #include <glad/glad.h>
+#include "RenderCommand.h"
 
 namespace Eu
 {
@@ -11,7 +12,9 @@ namespace Eu
 	void Renderer::EndScene()
 	{
 	}
-	void Renderer::Submit(const std::shared_ptr<int>& vertexArray) {
-		Rendercommand
+	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray) {
+		//Rendercommand
+		vertexArray->Bind();
+		RenderCommand::DrawIndexed(vertexArray); //render command
 	}
 }

@@ -27,9 +27,9 @@ namespace Eu {
 private:
 		float m_FOV;
 		float m_FOVAngle;
-		float m_CameraMovementSpeed{ 50.f };
+		float m_CameraMovementSpeed{ 500.f };
 		float m_CameraZoomInSpeed{ 20.f };
-		float m_RotationSpeed{ 4.f };
+		float m_RotationSpeed{ 10.f };
 		glm::vec3 m_Pos;
 
 		float m_Width;

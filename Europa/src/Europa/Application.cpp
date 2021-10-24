@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include "Input.h"
 #include <glm/glm.hpp>
-
+#include <Europa/mesh/Mesh.h>
 
 
 namespace Eu
@@ -44,22 +44,30 @@ namespace Eu
 
 		m_pCamera = std::make_unique<Camera>(glm::vec3{ 0,0, 2 }, 60, m_Window->GetWidth(), m_Window->GetHeight());
 
+		Mesh nieuwMesh{ "Resources/vehicle.obj" };
 
 
-
-
-		float vertices[3 * 7] =
+		float vertices[3 * 6] =
 		{
-			-0.5f,-0.5f,0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			0.5f, -0.5f,0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-			0.0f, 0.5f,0.0f, 0.8f, 0.8f, 0.2f, 1.0f,
+			//first thre positions last 4 color
+			-0.5f,-0.5f,0.0f, 1.f, 0.f, 0.f,
+			0.5f, -0.5f,0.0f, 0.2f, 0.3f, 0.8f,
+			0.0f, 0.5f,0.0f, 0.8f, 0.8f, 0.2f,
 		};
+		auto vertexBuffer = nieuwMesh.GetVertexBuffer();
+		auto indexBuffer = nieuwMesh.GetIndexBuffer();
 
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
+		m_VertexBuffer.reset(VertexBuffer::Create(vertexBuffer.data(), vertexBuffer.size()));
 		{
 			BufferLayout layout = {
 			{ShaderDataType::Float3, "a_Position"},
-			{ShaderDataType::Float4, "a_Color"},
+			{ShaderDataType::Float3, "a_Color"},
+			{ShaderDataType::Float2, "a_Uv"},
+			{ShaderDataType::Float3, "a_Normal"},
+
+
+
+
 
 
 
@@ -89,9 +97,11 @@ namespace Eu
 
 
 		uint32_t indices[3] = { 0,1,2 };
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		m_IndexBuffer.reset(IndexBuffer::Create(indexBuffer.data(), indexBuffer.size() ));
 
-
+		m_VertexArray.reset(VertexArray::Create());
+		m_VertexArray->AddIndexBuffer(m_IndexBuffer);
+		m_VertexArray->AddVertexBuffer(m_VertexBuffer);
 		std::string VertexSrc = R"(
 			#version 330 core
 			
@@ -178,18 +188,20 @@ namespace Eu
 
 		while (m_Running)
 		{
-			glClearColor(0.2, 0.2, 0.2, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			RenderCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1 });
+			RenderCommand::Clear();
 
+			Renderer::BeginScene();
 
-			glBindVertexArray(m_VertexArray);
 			m_Shader->Bind();
+			Renderer::Submit(m_VertexArray);
+
+			Renderer::EndScene();
+
 			m_pCamera->InputHandling();
 			auto mat = (m_pCamera->GetInverseONBMatrix());
 			m_Shader->SetUniformMatrix4(mat, "u_ViewProj");
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
 
-			Input::IsMouseButtonPressed(1);
 
 			for (Layer* layer : m_LayerStack)
 				layer->OnUpdate();

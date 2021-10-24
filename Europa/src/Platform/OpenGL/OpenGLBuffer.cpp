@@ -5,7 +5,7 @@ namespace Eu
 {
 
 	//ARRAYBUFFER
-	OpenGLVertexBuffer::OpenGLVertexBuffer(float* vertices, uint32_t size)
+	OpenGLVertexBuffer::OpenGLVertexBuffer(Vertex_Input* vertices, uint32_t size)
 	{
 		glCreateBuffers(1, &m_RendererID);			//generate buffer
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);//bind buffer with type GL_ARRAY_BUFFER
