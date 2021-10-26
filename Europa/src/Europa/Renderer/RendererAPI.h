@@ -18,6 +18,8 @@ namespace Eu {
 		virtual void Clear() = 0;
 		virtual void DrawIndexed(const std::shared_ptr<VertexArray>&) = 0;
 
+		virtual void EnableDepthTest() = 0;
+
 		inline static API GetAPI() { return s_CurrentAPI; }
 
 	private:

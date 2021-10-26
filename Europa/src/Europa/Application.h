@@ -8,6 +8,7 @@
 #include "renderer/Renderer.h"
 #include "Camera.h"
 #include "Renderer/VertexArray.h"
+#include "Texture.h"
 namespace Eu
 {
 	class  Application
@@ -35,6 +36,7 @@ namespace Eu
 		std::unique_ptr<Shader> m_Shader;
 		std::shared_ptr<IndexBuffer>m_IndexBuffer;
 		std::shared_ptr<VertexArray>m_VertexArray;
+		std::shared_ptr<Texture2D> m_Tex;
 
 		static Application* s_Instance;
 		std::unique_ptr<Camera> m_pCamera;

@@ -16,6 +16,7 @@ namespace Eu
 
 		static Shader* Create();
 		void SetUniformMatrix4(const glm::mat4& mat4, const char* name);
+		void SetUniformInt(const int index, const char* name);
 
 	private:
 		uint32_t m_RenderID = 0;

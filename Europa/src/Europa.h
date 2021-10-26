@@ -12,3 +12,7 @@
 //----------Basic-includes-------------------------
 
 
+//----------Rendering----------------
+#include "Europa/Texture.h"
+
+

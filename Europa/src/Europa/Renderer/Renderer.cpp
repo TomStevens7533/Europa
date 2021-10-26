@@ -8,6 +8,7 @@ namespace Eu
 {
 	void Renderer::BeginScene()
 	{
+		RenderCommand::EnableDepthTest();
 	}
 	void Renderer::EndScene()
 	{

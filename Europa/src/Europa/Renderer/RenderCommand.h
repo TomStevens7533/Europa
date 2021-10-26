@@ -10,6 +10,8 @@ namespace Eu {
 
 		static void DrawIndexed(const std::shared_ptr<VertexArray>& vA);
 
+		static void EnableDepthTest();
+
 	private:
 		static RendererAPI* s_RenderAPI;
 	};

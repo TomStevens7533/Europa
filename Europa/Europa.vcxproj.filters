@@ -16,6 +16,9 @@
     <Filter Include="src\Europa\imgui">
       <UniqueIdentifier>{F2414EDC-DE3A-6D2E-076D-52B3F3C44C3A}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Europa\mesh">
+      <UniqueIdentifier>{64C559B1-D050-C775-D961-4A6A456C2376}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Platform">
       <UniqueIdentifier>{21CA02E5-0D2D-9289-B6B2-CA3FA2F45D0C}</UniqueIdentifier>
     </Filter>
@@ -43,6 +46,9 @@
     <Filter Include="vendor\glm\glm\gtx">
       <UniqueIdentifier>{B3A6A76B-9F8A-68C1-08EB-6214F4ED5243}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vendor\stb_image">
+      <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Eupch.h">
@@ -52,6 +58,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Application.h">
+      <Filter>src\Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Camera.h">
       <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Core.h">
@@ -99,11 +108,23 @@
     <ClInclude Include="src\Europa\Renderer\GraphicsContext.h">
       <Filter>src\Europa\Renderer</Filter>
     </ClInclude>
+    <ClInclude Include="src\Europa\Renderer\RenderCommand.h">
+      <Filter>src\Europa\Renderer</Filter>
+    </ClInclude>
     <ClInclude Include="src\Europa\Renderer\Renderer.h">
+      <Filter>src\Europa\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Renderer\RendererAPI.h">
       <Filter>src\Europa\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Renderer\Shader.h">
       <Filter>src\Europa\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Renderer\VertexArray.h">
+      <Filter>src\Europa\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Texture.h">
+      <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Window.h">
       <Filter>src\Europa</Filter>
@@ -111,10 +132,22 @@
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h">
       <Filter>src\Europa\imgui</Filter>
     </ClInclude>
+    <ClInclude Include="src\Europa\mesh\Mesh.h">
+      <Filter>src\Europa\mesh</Filter>
+    </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLTexture.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h">
       <Filter>src\Platform\OpenGL</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\WindowWindowPolling.h">
@@ -1215,17 +1248,15 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
-    <ClInclude Include="src\Europa\Renderer\VertexArray.h" />
-    <ClInclude Include="src\Europa\Renderer\RenderCommand.h" />
-    <ClInclude Include="src\Europa\Renderer\RendererAPI.h" />
-    <ClInclude Include="src\Europa\Camera.h" />
-    <ClInclude Include="src\Platform\OpenGL\OpenGLRendererAPI.h" />
-    <ClInclude Include="src\Europa\mesh\Mesh.h" />
-    <ClInclude Include="structs.h" />
+    <ClInclude Include="vendor\stb_image\stb_image.h">
+      <Filter>vendor\stb_image</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
+      <Filter>src\Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Camera.cpp">
       <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Layer.cpp">
@@ -1246,11 +1277,23 @@
     <ClCompile Include="src\Europa\Renderer\Buffer.cpp">
       <Filter>src\Europa\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="src\Europa\Renderer\RenderCommand.cpp">
+      <Filter>src\Europa\Renderer</Filter>
+    </ClCompile>
     <ClCompile Include="src\Europa\Renderer\Renderer.cpp">
+      <Filter>src\Europa\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Renderer\RendererAPI.cpp">
       <Filter>src\Europa\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Renderer\Shader.cpp">
       <Filter>src\Europa\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Renderer\VertexArray.cpp">
+      <Filter>src\Europa\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Texture.cpp">
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\imgui\ImGuiBuild.cpp">
       <Filter>src\Europa\imgui</Filter>
@@ -1258,10 +1301,22 @@
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp">
       <Filter>src\Europa\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Europa\mesh\Mesh.cpp">
+      <Filter>src\Europa\mesh</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLTexture.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
     <ClCompile Include="src\Platform\WindowsWindow.cpp">
@@ -1270,12 +1325,8 @@
     <ClCompile Include="src\Platform\WindowsWindowPolling.cpp">
       <Filter>src\Platform</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
-    <ClCompile Include="src\Europa\Renderer\VertexArray.cpp" />
-    <ClCompile Include="src\Europa\Renderer\RenderCommand.cpp" />
-    <ClCompile Include="src\Europa\Renderer\RendererAPI.cpp" />
-    <ClCompile Include="src\Europa\Camera.cpp" />
-    <ClCompile Include="src\Platform\OpenGL\OpenGLRendererAPI.cpp" />
-    <ClCompile Include="src\Europa\mesh\Mesh.cpp" />
+    <ClCompile Include="vendor\stb_image\stb_image.cpp">
+      <Filter>vendor\stb_image</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

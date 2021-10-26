@@ -67,8 +67,7 @@ namespace Eu
 			// Either of them. Don't leak shaders.
 			glDeleteShader(vertexShader);
 
-			// Use the infoLog as you see fit.
-			EU_CORE_ASSERT(false, "Fragment shader compilation failed!!: {0}", infoLog.data());
+			EU_CORE_ASSERT(false, infoLog.data() );
 			// In this simple program, we'll just leave
 			return;
 		}
@@ -144,4 +143,13 @@ namespace Eu
 
 
 	
+	void Shader::SetUniformInt(const int index, const char* name)
+	{
+		GLint loc = glGetUniformLocation(m_RenderID, name);
+		if (loc == -1) {
+			EU_CORE_ASSERT(false, "Matrix not found at loc: ", loc);
+		}
+		glUniform1i(loc, index);
+	}
+
 }

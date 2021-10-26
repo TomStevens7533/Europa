@@ -46,7 +46,6 @@ namespace Eu
 
 		Mesh nieuwMesh{ "Resources/vehicle.obj" };
 
-
 		float vertices[3 * 6] =
 		{
 			//first thre positions last 4 color
@@ -95,8 +94,6 @@ namespace Eu
 		}
 
 
-
-		uint32_t indices[3] = { 0,1,2 };
 		m_IndexBuffer.reset(IndexBuffer::Create(indexBuffer.data(), indexBuffer.size() ));
 
 		m_VertexArray.reset(VertexArray::Create());
@@ -107,18 +104,18 @@ namespace Eu
 			
 			layout(location = 0) in vec3 a_Position;
 			layout(location = 1) in vec4 a_Color;
+			layout(location = 2) in vec2 a_Uv;
+
 
 			uniform mat4 u_ViewProj;
 
 
-			out vec3 v_Position;
-			out vec4 v_Color;
+			out vec2 v_TexCord;
 
 
 			void main()
 			{
-				v_Position = a_Position;
-				v_Color = a_Color;
+				v_TexCord = a_Uv;
 				gl_Position = u_ViewProj * vec4(a_Position, 1.0);
 				
 			}
@@ -129,23 +126,33 @@ namespace Eu
 			
 			layout(location = 0) out vec4 color;
 
+			in vec2 v_TexCord;			
 
+			uniform sampler2D u_Texture;
 
 
 			in vec3 v_Position;
 			in vec4 v_Color;
 			void main()
 			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0);
-				color = v_Color;
+
+				vec4 tempColor = texture(u_Texture, v_TexCord); 
+				tempColor.a = 1.f;
+				color = tempColor;
+
+				
+
+				
 			}
 		)";
 
 
 
 
-
+		m_Tex = Texture2D::Create("Resources/vehicle_diffuse.png");
 		m_Shader.reset(new Shader(VertexSrc, FragmentSrc));
+		m_Shader->SetUniformInt(0, "u_Texture");
+
 	}
 
 	Application::~Application()
@@ -173,7 +180,7 @@ namespace Eu
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		EU_CLIENT_TRACE("{0}", e);
+		//EU_CLIENT_TRACE("{0}", e);
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
@@ -193,6 +200,7 @@ namespace Eu
 
 			Renderer::BeginScene();
 
+			m_Tex->Bind();
 			m_Shader->Bind();
 			Renderer::Submit(m_VertexArray);
 
@@ -203,16 +211,19 @@ namespace Eu
 			m_Shader->SetUniformMatrix4(mat, "u_ViewProj");
 
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
-			
 
-			
+			//for (Layer* layer : m_LayerStack)
+			//	layer->OnUpdate();
+
+
+
+			//	m_ImGuiLayer->Begin();
+			//for (Layer* layer : m_LayerStack)
+			//	layer->OnImGuiRender();
+
 			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-
-
+			m_ImGuiLayer->OnUpdate();
+			m_ImGuiLayer->OnImGuiRender();
 			m_ImGuiLayer->End();
 			
 			m_Window->OnUpdate();

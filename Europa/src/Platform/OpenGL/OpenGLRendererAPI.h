@@ -12,6 +12,9 @@ namespace Eu {
 			virtual void Clear() override;
 
 			virtual void DrawIndexed(const std::shared_ptr<VertexArray>& a) override;
-		private:
+
+			virtual void EnableDepthTest() override;
+
+	private:
 	};
 }

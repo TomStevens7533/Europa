@@ -32,11 +32,7 @@ namespace Eu
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetPureWindow());
 		auto state = glfwGetMouseButton(window, button);
-		if (state == 1)
-		{
-			EU_CLIENT_ERROR("pressed");
-		}
-
+	
 		return state == EU_PRESS;
 	}
 

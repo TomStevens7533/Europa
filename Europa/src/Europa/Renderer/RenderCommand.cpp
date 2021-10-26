@@ -6,6 +6,7 @@
 namespace Eu {
 	RendererAPI* RenderCommand::s_RenderAPI = new OpenGLRendererAPI;
 
+
 	void RenderCommand::SetClearColor(const glm::vec4& color)
 	{
 		s_RenderAPI->SetClearColor(color);
@@ -21,5 +22,10 @@ namespace Eu {
 		s_RenderAPI->DrawIndexed(a);
 	}
 
+
+	void RenderCommand::EnableDepthTest()
+	{
+		s_RenderAPI->EnableDepthTest();
+	}
 
 }
