@@ -1,25 +1,55 @@
 #pragma once
 
 #include  <string>
-#include <glm/glm.hpp>
+#include "glm/glm.hpp"
+
 namespace Eu
 {
-	class Shader
+	class BaseShader {
+	public:
+		BaseShader(std::string path);
+		virtual ~BaseShader() {};
+
+		inline const unsigned int GetShaderID() { return m_ShaderID; }
+
+		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) = 0;
+		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) = 0;
+
+	protected:
+		std::string& GetData() { return m_Data; }
+
+	protected:
+		unsigned int m_ShaderID;
+	private:
+		void ParseFile(std::string& path);
+	private:
+		std::string m_Path;
+		std::string m_Data;
+	};
+
+	class VertexShader : public BaseShader
 	{
 	public:
-		Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
+		VertexShader(const std::string& path) : BaseShader(path) {};
+		virtual ~VertexShader() {};
 
-		~Shader();
+		static VertexShader* Create(const std::string& path);
+		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) = 0;
+		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) = 0;
 
-		void Bind() const;
-		void UnBind() const;
 
-		static Shader* Create();
-		void SetUniformMatrix4(const glm::mat4& mat4, const char* name);
-		void SetUniformInt(const int index, const char* name);
+	};
 
-	private:
-		uint32_t m_RenderID = 0;
-		
+	class IndexShader : public BaseShader
+	{
+	public:
+		IndexShader(const std::string& path) : BaseShader(path) {};
+		virtual ~IndexShader() {};
+
+		static IndexShader* Create(const std::string& path);
+		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) = 0;
+		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) = 0;
+
+
 	};
 }

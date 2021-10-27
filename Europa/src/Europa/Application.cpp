@@ -150,8 +150,12 @@ namespace Eu
 
 
 		m_Tex = Texture2D::Create("Resources/vehicle_diffuse.png");
-		m_Shader.reset(new Shader(VertexSrc, FragmentSrc));
-		m_Shader->SetUniformInt(0, "u_Texture");
+		m_Shader.reset(BaseProgram::Create());
+		m_Shader->AttachVertexShader("Resources/vertexShader.vert");
+		m_Shader->AttachPixelShader("Resources/fragmentShader.frag");
+		m_Shader->LinkProgram();
+
+		m_Shader->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader);
 
 	}
 
@@ -208,7 +212,7 @@ namespace Eu
 
 			m_pCamera->InputHandling();
 			auto mat = (m_pCamera->GetInverseONBMatrix());
-			m_Shader->SetUniformMatrix4(mat, "u_ViewProj");
+			m_Shader->SetUniformMatrix4(mat, "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
 
 
 

@@ -1251,6 +1251,9 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\OpenGLShader.h" />
+    <ClInclude Include="src\Europa\Renderer\Program.h" />
+    <ClInclude Include="src\Platform\OpenGL\OpenGLProgram.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1328,5 +1331,10 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\OpenGLShader.cpp" />
+    <ClCompile Include="src\Europa\Renderer\Program.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\Platform\OpenGL\OpenGLProgram.cpp" />
   </ItemGroup>
 </Project>

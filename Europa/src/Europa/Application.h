@@ -9,6 +9,8 @@
 #include "Camera.h"
 #include "Renderer/VertexArray.h"
 #include "Texture.h"
+#include "Renderer/Program.h"
+
 namespace Eu
 {
 	class  Application
@@ -33,7 +35,7 @@ namespace Eu
 		bool m_Running = true;
 		LayerStack m_LayerStack;
 		std::shared_ptr<VertexBuffer>m_VertexBuffer;
-		std::unique_ptr<Shader> m_Shader;
+		std::unique_ptr<BaseProgram> m_Shader;
 		std::shared_ptr<IndexBuffer>m_IndexBuffer;
 		std::shared_ptr<VertexArray>m_VertexArray;
 		std::shared_ptr<Texture2D> m_Tex;

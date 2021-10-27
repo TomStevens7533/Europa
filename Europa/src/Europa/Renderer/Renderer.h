@@ -1,6 +1,5 @@
 #pragma once
 #include "Buffer.h"
-#include "Shader.h"
 #include "RenderCommand.h"
 
 namespace Eu
