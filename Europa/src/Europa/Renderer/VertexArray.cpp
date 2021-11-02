@@ -11,9 +11,9 @@ namespace Eu
 
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
+		case RendererAPI::API::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 
-		case RendererAPI::OpenGL: EU_CORE_INFO("RendererAPI::OpenGL is active"); return new OpenGLVertexArray();
+		case RendererAPI::API::OpenGL: EU_CORE_INFO("RendererAPI::OpenGL is active"); return new OpenGLVertexArray();
 
 		}
 		EU_CORE_ASSERT(false, "Unknown RendererAPI");

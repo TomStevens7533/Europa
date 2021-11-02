@@ -56,6 +56,7 @@ namespace Eu {
 		{
 			return GetCategoryFlags() & category;
 		}
+
 	};
 
 	class EventDispatcher

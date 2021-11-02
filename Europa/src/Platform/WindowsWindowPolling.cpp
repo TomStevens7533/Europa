@@ -1,7 +1,6 @@
 #include "WindowWindowPolling.h"
 #include "Europa/KeyMouseCodes.h"
 #include "Europa/Application.h"
-#include <GLFW/glfw3.h>
 
 namespace Eu
 {
@@ -15,21 +14,29 @@ namespace Eu
 	
 		return state == EU_PRESS || state == EU_REPEAT;
 	}
+	glm::vec2 WindowsInput::GetDragDifference(int button) {
 
+		if (IsMouseButtonPressedImpl(button) && m_PreviousMousePosDrag != glm::vec2{0,0}) {
+
+			auto currentPair = GetMousePositionImpl();
+			glm::vec2 dragDifference = m_PreviousMousePosDrag - currentPair;
+			m_PreviousMousePosDrag = currentPair;//Set previous mouse pos
+
+			return dragDifference;
+		}
+		auto currentPair = GetMousePositionImpl();
+		m_PreviousMousePosDrag = currentPair;//Set previous mouse pos
+		return { 0,0 };
+	}
 	bool WindowsInput::IsMouseButtonPressedImpl(int button)
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetPureWindow());
 		auto state = glfwGetMouseButton(window, button);
 	
-		if (state == 1)
-		{
-			EU_CLIENT_ERROR("pressed");
-		}
-
 		return state == EU_PRESS;
 	}
 
-	std::pair<float, float> WindowsInput::GetMousePositionImpl()
+	glm::vec2 WindowsInput::GetMousePositionImpl()
 	{
 		auto window = static_cast<GLFWwindow*>(Application::Get().GetWindow().GetPureWindow());
 		double xpos, ypos;
@@ -40,14 +47,14 @@ namespace Eu
 
 	float WindowsInput::GetMouseXImpl()
 	{
-		auto[x, y] = GetMousePositionImpl();
-		return x;
+		
+		return GetMousePositionImpl().x;
 	}
 
 	float WindowsInput::GetMouseYImpl()
 	{
-		auto[x, y] = GetMousePositionImpl();
-		return y;
+		
+		return GetMousePositionImpl().y;
 	}
 }
 

@@ -6,10 +6,15 @@
 #include "Europa/LayerStack.h"
 #include "Europa/imgui/ImGuiLayer.h"
 #include "renderer/Renderer.h"
+#include "Camera.h"
 #include "Renderer/VertexArray.h"
+#include "Texture.h"
+#include "Renderer/Program.h"
 
 namespace Eu
 {
+	class gameObject;
+	class SkyBox;
 	class  Application
 	{
 	public:
@@ -31,12 +36,23 @@ namespace Eu
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-	
-		std::shared_ptr<Shader> m_Shader;
-		std::shared_ptr<IndexBuffer>m_IndexBuffer;
-		std::shared_ptr<VertexBuffer>m_VertexBuffer;
-		std::shared_ptr<VertexArray> m_VertexAray;
+		std::unique_ptr<BaseProgram> m_Shader;
+		std::shared_ptr<gameObject> m_pCar;
+		std::shared_ptr<gameObject> m_pCar2;
+		std::shared_ptr<SkyBox> m_pSkyBox;
+
+
 		static Application* s_Instance;
+		Camera m_Camera;
+
+
+		glm::mat4 m_WorldMatrix{
+		1,0,0,3,
+		0,1,0,0,
+		0,0,1,0,
+		0,0,0,1
+		};
+
 	};
 	// To be defined
 	Application* CreateApplication();

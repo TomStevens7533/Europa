@@ -19,6 +19,7 @@ IncludeDir["GLFW"] = "Europa/vendor/GLFW/include"
 IncludeDir["Glad"] = "Europa/vendor/Glad/include"
 IncludeDir["imgui"] = "Europa/vendor/imgui"
 IncludeDir["glm"] = "Europa/vendor/glm"
+IncludeDir["stb_image"] = "Europa/vendor/stb_image"
 
 include "Europa/vendor/GLFW"
 include "Europa/vendor/Glad"
@@ -31,7 +32,7 @@ project "Europa"
 	cppdialect "C++17"
 	language"C++"
 	staticruntime "On"
-
+	toolset ("v142")
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
@@ -40,6 +41,8 @@ project "Europa"
 	{
 		"%{prj.name}/src/**.h",
 		"%{prj.name}/src/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.cpp",
+		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/glm/**.hpp",
 		"%{prj.name}/vendor/glm/**.inl"
 		
@@ -56,6 +59,7 @@ project "Europa"
 		"%{IncludeDir.Glad}",
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
+		"%{IncludeDir.stb_image}"
 
 		
 			
@@ -104,6 +108,7 @@ project "Game"
 	kind "ConsoleApp"
 	staticruntime "On"
 	cppdialect "C++17"
+	toolset ("v142")
 
 	language "C++"
 

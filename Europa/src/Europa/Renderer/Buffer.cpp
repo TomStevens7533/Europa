@@ -3,39 +3,36 @@
 
 #include "Renderer.h"
 #include "Platform/OpenGL/OpenGLBuffer.h"
-#include "Platform/OpenGL/OpenGLVertexArray.h"
-
 namespace Eu
 {
-	VertexBuffer* VertexBuffer::Create(float* vertices, uint32_t size)
-	{
+	VertexBuffer* VertexBuffer::Create(Vertex_Input* vertices, uint32_t size)
+	{	//MULTIPLE VERTICES INFORMATION
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
+		case RendererAPI::API::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 
-		case RendererAPI::OpenGL: EU_CORE_INFO("RendererAPI::OpenGL is active"); return new OpenGLVertexBuffer(vertices, size);
+		case RendererAPI::API::OpenGL: EU_CORE_INFO("RendererAPI::OpenGL is active"); return new OpenGLVertexBuffer(vertices, size * sizeof(Vertex_Input));
 
 		}
 		EU_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
+
+
 
 	IndexBuffer* IndexBuffer::Create(uint32_t* Indices, uint32_t count)
 	{
 
 		switch (Renderer::GetAPI())
 		{
-		case RendererAPI::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
+		case RendererAPI::API::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 
-		case RendererAPI::OpenGL: return new OpenGLIndexBuffer(Indices, count);
+		case RendererAPI::API::OpenGL: return new OpenGLIndexBuffer(Indices, count);
 
 		}
 		EU_CORE_ASSERT(false, "Unknown RendererAPI");
 		return nullptr;
 	}
-
-	
-
 
 	
 

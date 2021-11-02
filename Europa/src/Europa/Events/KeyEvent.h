@@ -34,7 +34,7 @@ namespace Eu
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyPressedEvent: " << m_KeyCode << " Repeats: " << m_RepeatCount << ")";
+			//ss << "KeyPressedEvent: " << m_KeyCode << " Repeats: " << m_RepeatCount << ")";
 			return ss.str();
 		}
 
@@ -54,7 +54,7 @@ namespace Eu
 		std::string ToString() const override
 		{
 			std::stringstream ss;
-			ss << "KeyReleasedEvent: " << m_KeyCode;
+			//ss << "KeyReleasedEvent: " << m_KeyCode;
 			return ss.str();
 		}
 

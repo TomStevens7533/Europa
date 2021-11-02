@@ -3,6 +3,10 @@
 #include "Eupch.h"
 #include <glad/glad.h>
 #include "Input.h"
+#include <glm/glm.hpp>
+#include <Europa/mesh/Mesh.h>
+#include "glm/gtc/matrix_transform.hpp"
+#include "GameObject.h"
 
 
 
@@ -12,8 +16,9 @@ namespace Eu
 
 	Application* Application::s_Instance = nullptr;
 
-	
+
 	Application::Application()
+		: m_Camera(glm::vec3{ 0,0, 10 }, 60)
 	{
 		EU_CORE_ASSERT(!s_Instance, "Application already exists!");
 		s_Instance = this;
@@ -21,74 +26,32 @@ namespace Eu
 		m_Window = std::unique_ptr<Window>(Window::Create());
 		m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
 
+		m_Camera.SetWidthAndHeight({ m_Window->GetWidth(), m_Window->GetHeight() });
 		m_ImGuiLayer = new ImGuiLayer();
 		PushOverlay(m_ImGuiLayer);
 
 
-		m_VertexAray.reset(VertexArray::Create());
-
-		float vertices[3 * 7] =
-		{
-			-0.5f,-0.5f,0.0f, 0.8f, 0.2f, 0.8f, 1.0f,
-			0.5f, -0.5f,0.0f, 0.2f, 0.3f, 0.8f, 1.0f,
-			0.0f, 0.5f,0.0f, 0.8f, 0.8f, 0.2f, 1.0f,
-		};
-
-		m_VertexBuffer.reset(VertexBuffer::Create(vertices, sizeof(vertices)));
 		
-		BufferLayout layout = {
-		{ShaderDataType::Float3, "a_Position"},
-		{ShaderDataType::Float4, "a_Color"}
 
-		};
+		m_pCar = std::make_shared<gameObject>();
+		m_pCar->AddMesh("Resources/vehicle.obj");
+		m_pCar->AddTexture("Resources/vehicle_diffuse.png", TextureTypes::TEXTURE2D);
 
-		m_VertexBuffer->SetLayout(layout);
-		m_VertexAray->AddVertexBuffer(m_VertexBuffer);
+		m_pCar2 = std::make_shared<gameObject>();
+		m_pCar2->AddMesh("Resources/kubus.obj");
+		m_pCar2->AddTexture("Resources/skybox/skybox", TextureTypes::CUBETEXTURE);
+
+		m_pSkyBox = std::make_shared<SkyBox>();
+		m_pSkyBox->AddTexture("Resources/skybox/skybox");
+
+
 
 		
 
-		uint32_t indices[3] = { 0,1,2 };
-		m_IndexBuffer.reset(IndexBuffer::Create(indices, sizeof(indices) / sizeof(uint32_t)));
+		//m_SkyBoxProgram.reset(BaseProgram::Create());
 
-		m_VertexAray->AddIndexBuffer(m_IndexBuffer);
+		//m_SkyBoxProgram->SetUniformInt(0, "u_CubeTexture", BaseProgram::ShaderTypes::T_PixelShader);
 
-		std::string VertexSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) in vec3 a_Position;
-			layout(location = 1) in vec4 a_Color;
-
-			out vec3 v_Position;
-			out vec4 v_Color;
-
-			void main()
-			{
-				v_Position = v_Position;
-				v_Color = a_Color;
-				gl_Position = vec4(a_Position, 1.0);
-				
-			}
-		)";
-
-		std::string FragmentSrc = R"(
-			#version 330 core
-			
-			layout(location = 0) out vec4 color;
-
-			in vec3 v_Position;
-			in vec4 v_Color;
-			void main()
-			{
-				color = vec4(v_Position * 0.5 + 0.5, 1.0);
-				color = v_Color;
-			}
-		)";
-
-
-
-
-
-		m_Shader.reset(new Shader(VertexSrc, FragmentSrc));
 	}
 
 	Application::~Application()
@@ -111,16 +74,21 @@ namespace Eu
 
 	void Application::OnEvent(Event& e)
 	{
-		
+
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
 
-		EU_CLIENT_TRACE("{0}", e);
+		//EU_CLIENT_TRACE("{0}", e);
 
 		for (auto it = m_LayerStack.end(); it != m_LayerStack.begin(); )
 		{
 			(*--it)->OnEvent(e);
+			if (e.GetEventType() == EventType::MouseMoved) {
+				MouseMovedEvent* mouseEvent = dynamic_cast<MouseMovedEvent*>(&e);
+				m_Camera.MouseInputHandling({ mouseEvent->GetX(), mouseEvent->GetY() });
+			}
+				
 			if (e.Handled)
 				break;
 		}
@@ -128,28 +96,56 @@ namespace Eu
 
 	void Application::Run()
 	{
+		glm::vec3 motorPos = {0,-1,0};
+		glm::vec3 motorPos2 = { 1.f,2.f,1 };
+		m_pCar2->SetPos(motorPos2);
 
 		while (m_Running)
 		{
-			glClearColor(0.2, 0.2, 0.2, 1);
-			glClear(GL_COLOR_BUFFER_BIT);
+			//motorPos += glm::vec3{0.01f, 0, 0};
+			//m_pCar->SetPos(motorPos);
+			//m_pCar->Update();
+
+			//RenderCommand::SetClearColor(glm::vec4{ 0.2, 0.2, 0.2, 1 });
+			RenderCommand::Clear();
+
+			//m_pCar->Bind();
+
+			//motorPos2 += glm::vec3{ 0.01f, 0, 0 };
+			//m_pCar2->SetPos(motorPos2);
+			//m_pCar2->Update();
+			//m_pCamera->SetCameraOffsetPos(glm::vec3{ 0.01f, 0, 0 });
+			Renderer::BeginScene(m_Camera);
+
+			//m_pCar->AddRotation(glm::vec3{ 0.f, glm::radians(0.01f),0.f });
+
+			for (size_t x = 0; x < 10; x++)
+			{
+				m_pCar->SetPos({ motorPos.x + (20 * x), motorPos.y , motorPos.z });
+				m_pCar->Render();
+
+				for (size_t i = 0; i < 20; i++)
+				{
+					m_pCar->SetPos({ motorPos.x + (20 * x), motorPos.y , motorPos.z + (20 * i) });
+					m_pCar->Render();
+
+				}
+			}
+
+			m_pCar2->Render();
+			m_pSkyBox->Render();
 
 
-			m_VertexAray->Bind();
-			m_Shader->Bind();
-			glDrawElements(GL_TRIANGLES, m_IndexBuffer->GetCount(), GL_UNSIGNED_INT, nullptr);
+			Renderer::EndScene();
 
-			Input::IsMouseButtonPressed(1);
+			m_Camera.KeyInputHandling();
+			m_Camera.Update(0.1f);
 
-			for (Layer* layer : m_LayerStack)
-				layer->OnUpdate();
-			
 
-			
+
 			m_ImGuiLayer->Begin();
-			for (Layer* layer : m_LayerStack)
-				layer->OnImGuiRender();
-
+			m_ImGuiLayer->OnUpdate();
+			m_ImGuiLayer->OnImGuiRender();
 			m_ImGuiLayer->End();
 			
 			m_Window->OnUpdate();

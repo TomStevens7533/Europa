@@ -92,40 +92,39 @@ namespace Eu {
 		{
 			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-
+			//cant querry multiple keys 
 			switch (action)
 			{
-			case GLFW_PRESS:
-			{
-				KeyPressedEvent event(Key, 0);
-				data.EventCallback(event);
-				break;
-			}
-			case GLFW_RELEASE:
-			{
-				KeyReleasedEvent event(Key);
-				data.EventCallback(event);
-				break;
-			}
-			case GLFW_REPEAT:
-			{
-				KeyPressedEvent event(Key, 1);
-				data.EventCallback(event);
-				break;
-			}
+				case GLFW_PRESS:
+				{
+					KeyPressedEvent event(Key, 0);
+					data.EventCallback(event);
+					break;
+				}
+				case GLFW_REPEAT:
+				{
+					KeyPressedEvent event(Key, 1);
+					data.EventCallback(event);
+					break;
+				}
+				case GLFW_RELEASE:
+				{
+					break;
+				}
+		
 			}
 
 		});
 
 		glfwSetCharCallback(m_Window, [](GLFWwindow* window, unsigned int character)
-		{
-			WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
+			{
+				WindowData& data = *(WindowData*)glfwGetWindowUserPointer(window);
 
-			KeyTypedEvent event(character);
+				KeyTypedEvent event(character);
 
-			data.EventCallback(event);
-		
-		});
+				data.EventCallback(event);
+
+			});
 
 
 
@@ -177,6 +176,7 @@ namespace Eu {
 	}
 	void WindowsWindow::Shutdown()
 	{
+
 		glfwDestroyWindow(m_Window);
 	}
 

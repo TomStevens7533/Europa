@@ -18,7 +18,7 @@ namespace Eu
 		unsigned int Width;
 		unsigned int Height;
 
-		WindowProps(const std::string& title = "gay lmao",
+		WindowProps(const std::string& title = "pipapopieee",
 			unsigned int width = 1280,
 			unsigned int height = 720)
 			: Title(title), Width(width), Height(height)

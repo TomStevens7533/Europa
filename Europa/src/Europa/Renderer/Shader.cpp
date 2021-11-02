@@ -1,136 +1,59 @@
-#include "Eupch.h"
+#include "Renderer.h"
 #include "Shader.h"
+#include "Platform/OpenGL/OpenGLShader.h"
+#include <fstream>
+#include <iostream>
 
-#include  <glad/glad.h>
 
 namespace Eu
 {
-	Shader::Shader(const std::string& vertexSrc, const std::string& fragmentSrc)
+	BaseShader::BaseShader(std::string path)
 	{
-		
-			// Create an empty vertex shader handle
-			GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		//Read in data
+		ParseFile(path);
+	}
+	void BaseShader::ParseFile(std::string& path)
+	{
+		std::ifstream fileStream(path, std::ios::in);
 
-		// Send the vertex shader source code to GL
-		// Note that std::string's .c_str is NULL character terminated.
-		const GLchar *source = vertexSrc.c_str();
-		glShaderSource(vertexShader, 1, &source, 0);
-
-		// Compile the vertex shader
-		glCompileShader(vertexShader);
-
-		GLint isCompiled = 0;
-		glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(vertexShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			// The maxLength includes the NULL character
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(vertexShader, maxLength, &maxLength, &infoLog[0]);
-
-			// We don't need the shader anymore.
-			glDeleteShader(vertexShader);
-
-			// Use the infoLog as you see fit.
-			EU_CORE_ASSERT(false,"Vertex shader compilation failed!!: {0}", infoLog.data());
-			// In this simple program, we'll just leave
+		if (!fileStream.is_open()) {
+			EU_CORE_ERROR("Cannot open shader file!");
 			return;
 		}
 
-		// Create an empty fragment shader handle
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-
-		// Send the fragment shader source code to GL
-		// Note that std::string's .c_str is NULL character terminated.
-		source = fragmentSrc.c_str();
-		glShaderSource(fragmentShader, 1, &source, 0);
-
-		// Compile the fragment shader
-		glCompileShader(fragmentShader);
-
-		glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &isCompiled);
-		if (isCompiled == GL_FALSE)
-		{
-			GLint maxLength = 0;
-			glGetShaderiv(fragmentShader, GL_INFO_LOG_LENGTH, &maxLength);
-
-			// The maxLength includes the NULL character
-			std::vector<GLchar> infoLog(maxLength);
-			glGetShaderInfoLog(fragmentShader, maxLength, &maxLength, &infoLog[0]);
-
-			// We don't need the shader anymore.
-			glDeleteShader(fragmentShader);
-			// Either of them. Don't leak shaders.
-			glDeleteShader(vertexShader);
-
-			// Use the infoLog as you see fit.
-			EU_CORE_ASSERT(false, "Fragment shader compilation failed!!: {0}", infoLog.data());
-			// In this simple program, we'll just leave
-			return;
+		std::string line = "";
+		while (!fileStream.eof()) {
+			std::getline(fileStream, line);
+			m_Data.append(line + "\n");
 		}
-
-		// Vertex and fragment shaders are successfully compiled.
-		// Now time to link them together into a program.
-		// Get a program object.
-		m_RenderID = glCreateProgram();
-
-		// Attach our shaders to our program
-		glAttachShader(m_RenderID, vertexShader);
-		glAttachShader(m_RenderID, fragmentShader);
-
-		// Link our program
-		glLinkProgram(m_RenderID);
-
-		// Note the different functions here: glGetProgram* instead of glGetShader*.
-		GLint isLinked = 0;
-		glGetProgramiv(m_RenderID, GL_LINK_STATUS, (int *)&isLinked);
-		if (isLinked == GL_FALSE)
+	}
+	IndexShader* IndexShader::Create(const std::string& path)
+	{ 
+		switch (Renderer::GetAPI())
 		{
-			GLint maxLength = 0;
-			glGetProgramiv(m_RenderID, GL_INFO_LOG_LENGTH, &maxLength);
+		case RendererAPI::API::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
 
-			// The maxLength includes the NULL character
-			std::vector<GLchar> infoLog(maxLength);
-			glGetProgramInfoLog(m_RenderID, maxLength, &maxLength, &infoLog[0]);
+		case RendererAPI::API::OpenGL:  return new OpenGLIndexShader(path);
 
-			// We don't need the program anymore.
-			glDeleteProgram(m_RenderID);
-			// Don't leak shaders either.
-			glDeleteShader(vertexShader);
-			glDeleteShader(fragmentShader);
-
-			// Use the infoLog as you see fit.
-			EU_CORE_ASSERT(false, "shader link compilation failed!!: {0}", infoLog.data());
-			// In this simple program, we'll just leave
-			return;
 		}
-
-		// Always detach shaders after a successful link.
-		glDetachShader(m_RenderID, vertexShader);
-		glDetachShader(m_RenderID, fragmentShader);
+		EU_CORE_ASSERT(false, "Unknown RendererAPI");
+		return nullptr;
 
 	}
 
 
-	Shader::~Shader()
+
+	VertexShader* VertexShader::Create(const std::string& path)
 	{
-		glDeleteProgram(m_RenderID);
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None: EU_CORE_ASSERT(false, "RendererAPI::None is not supported"); return nullptr;
+
+		case RendererAPI::API::OpenGL: return new OpenGLVertexShader(path);
+
+		}
+		EU_CORE_ASSERT(false, "Unknown RendererAPI");
+		return nullptr;
 	}
 
-	
-	void Shader::Bind() const
-	{
-		glUseProgram(m_RenderID);
-	}
-
-	void Shader::UnBind() const
-	{
-		glUseProgram(0);
-	}
-
-
-
-	
 }
