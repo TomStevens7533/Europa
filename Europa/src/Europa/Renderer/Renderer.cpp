@@ -11,9 +11,9 @@
 namespace Eu
 {
 	//TODO make it onto the stack with no crashes 
-	Camera* Renderer::m_SceneData = nullptr;
+	const Camera* Renderer::m_SceneData = nullptr;
 
-	void Renderer::BeginScene(Camera& sceneCamera)
+	void Renderer::BeginScene(const Camera& sceneCamera)
 	{
 		RenderCommand::EnableDepthTest();
 		m_SceneData = &sceneCamera;
@@ -24,7 +24,7 @@ namespace Eu
 	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform) {
 		//Rendercommand
 		program->Bind();
-		program->SetUniformMatrix4(m_SceneData->GetInverseONBMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
+		program->SetUniformMatrix4(m_SceneData->GetViewProjectionMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
 		program->SetUniformMatrix4(transform, "u_TranslationMat", BaseProgram::ShaderTypes::T_VertexShader);
 
 		vertexArray->Bind();
@@ -37,9 +37,9 @@ namespace Eu
 		glm::mat4 view = glm::mat4(1.f);
 
 		if (isBackground) //remove translation data from matrix
-			view = glm::mat4(glm::mat3(m_SceneData->GetInverseONBMatrix()));
+			view = glm::mat4(glm::mat3(m_SceneData->GetViewProjectionMatrix()));
 		else
-			view = m_SceneData->GetInverseONBMatrix();
+			view = m_SceneData->GetViewProjectionMatrix();
 
 		program->SetUniformMatrix4(view, "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
 		program->SetUniformMatrix4(transform, "u_TranslationMat", BaseProgram::ShaderTypes::T_VertexShader);

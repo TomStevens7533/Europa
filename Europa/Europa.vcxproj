@@ -137,10 +137,11 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Europa\camera\CameraController.h" />
     <ClInclude Include="src\Eupch.h" />
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
-    <ClInclude Include="src\Europa\Camera.h" />
+    <ClInclude Include="src\Europa\camera\Camera.h" />
     <ClInclude Include="src\Europa\Core.h" />
     <ClInclude Include="src\Europa\Core\TimeStep.h" />
     <ClInclude Include="src\Europa\EntryPoint.h" />
@@ -551,8 +552,9 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Europa\camera\CameraController.cpp" />
     <ClCompile Include="src\Europa\Application.cpp" />
-    <ClCompile Include="src\Europa\Camera.cpp" />
+    <ClCompile Include="src\Europa\camera\Camera.cpp" />
     <ClCompile Include="src\Europa\GameObject.cpp" />
     <ClCompile Include="src\Europa\InputManager.cpp" />
     <ClCompile Include="src\Europa\Layer.cpp" />

@@ -39,7 +39,7 @@ namespace Eu {
 	//https://www.youtube.com/watch?v=U9-J8M-oslA
 
 		glEnable(GL_DEPTH_TEST);
-
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);

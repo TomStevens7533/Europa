@@ -3,7 +3,7 @@
 #include "RenderCommand.h"
 #include "Program.h"
 #include <glm/glm.hpp>
-#include "Europa/Camera.h"
+#include "Europa/Camera/Camera.h"
 
 namespace Eu
 {
@@ -12,7 +12,7 @@ namespace Eu
 	{
 
 	public: 
-		static void BeginScene(Camera& sceneCamera);
+		static void BeginScene(const Camera& sceneCamera);
 		static void EndScene();
 
 		static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f));
@@ -29,6 +29,6 @@ namespace Eu
 			glm::mat4 ViewProjectionMatrix;
 		};
 
-		static Camera* m_SceneData;
+		static const Camera* m_SceneData;
 	};
 }

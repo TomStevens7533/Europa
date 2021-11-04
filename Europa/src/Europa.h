@@ -22,7 +22,7 @@
 
 
 //----------Rendering----------------
-#include "Europa/Camera.h"
+#include "Europa/camera/CameraController.h"
 #include "Europa/Texture.h"
 
 //------------Scene-------------------
