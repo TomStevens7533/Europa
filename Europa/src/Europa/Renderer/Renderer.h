@@ -25,9 +25,10 @@ namespace Eu
 	private:
 		struct SceneData
 		{
+			//deprecated but will reimplement later for more advandec features
 			glm::mat4 ViewProjectionMatrix;
 		};
 
-		static SceneData* s_SceneData;
+		static Camera* m_SceneData;
 	};
 }

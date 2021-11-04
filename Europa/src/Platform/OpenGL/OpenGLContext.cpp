@@ -4,6 +4,7 @@
 
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
+#include <Platform/OpenGL/EuropaOpenGL.h>
 
 namespace Eu
 {
@@ -22,6 +23,7 @@ namespace Eu
 		EU_CORE_ASSERT(status, "Failed to initialize!");
 
 		EU_CORE_INFO("OpenGL Renderer: {0} {1} {2}", glGetString(GL_VENDOR), glGetString(GL_RENDERER), glGetString(GL_VERSION));
+
 	}
 
 	void OpenGLRenderer::SwapBuffer()

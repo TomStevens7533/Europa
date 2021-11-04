@@ -20,6 +20,7 @@ void main()
 		v_TextureDir = a_Position;
 		vec3 newPos = a_Position;
 		newPos.x = -newPos.x;
+
 		vec4 pos = u_ViewProj * (u_TranslationMat * vec4(newPos, 1.0));
 		gl_Position = pos.xyww;
 

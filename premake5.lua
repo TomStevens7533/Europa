@@ -20,6 +20,7 @@ IncludeDir["Glad"] = "Europa/vendor/Glad/include"
 IncludeDir["imgui"] = "Europa/vendor/imgui"
 IncludeDir["glm"] = "Europa/vendor/glm"
 IncludeDir["stb_image"] = "Europa/vendor/stb_image"
+IncludeDir["vld"] = "Europa/vendor/VLD"
 
 include "Europa/vendor/GLFW"
 include "Europa/vendor/Glad"
@@ -43,6 +44,7 @@ project "Europa"
 		"%{prj.name}/src/**.cpp",
 		"%{prj.name}/vendor/stb_image/**.cpp",
 		"%{prj.name}/vendor/stb_image/**.h",
+		"%{prj.name}/vendor/VLD/**.h",
 		"%{prj.name}/vendor/glm/**.hpp",
 		"%{prj.name}/vendor/glm/**.inl"
 		
@@ -60,6 +62,7 @@ project "Europa"
 		"%{IncludeDir.imgui}",
 		"%{IncludeDir.glm}",
 		"%{IncludeDir.stb_image}"
+	
 
 		
 			
@@ -69,7 +72,7 @@ project "Europa"
 		"GLFW",
 		"Glad",
 		"opengl32.lib",
-		"imgui",
+		"imgui"
 		
 		
 		
@@ -133,7 +136,10 @@ project "Game"
 
 		links
 		{
-			"Europa"
+			"Europa",
+			"Europa/vendor/VLD/vld"
+		
+
 		}
 	filter "system:windows"
 

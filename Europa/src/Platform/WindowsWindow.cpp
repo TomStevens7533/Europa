@@ -40,7 +40,6 @@ namespace Eu {
 		
 
 
-		glfwSetErrorCallback(GLFWErrorCallback);
 
 		EU_CORE_WARN("Creating window {0} ({1}, {2})", props.Title, props.Width, props.Height);
 
@@ -48,6 +47,7 @@ namespace Eu {
 		{
 			int succes = glfwInit();
 			EU_CORE_ASSERT(succes, "Could not intilaize GLFW!");
+			glfwSetErrorCallback(GLFWErrorCallback);
 
 			s_GLFWInitialized = true;
 
@@ -95,22 +95,24 @@ namespace Eu {
 			//cant querry multiple keys 
 			switch (action)
 			{
-				case GLFW_PRESS:
-				{
-					KeyPressedEvent event(Key, 0);
-					data.EventCallback(event);
-					break;
-				}
-				case GLFW_REPEAT:
-				{
-					KeyPressedEvent event(Key, 1);
-					data.EventCallback(event);
-					break;
-				}
-				case GLFW_RELEASE:
-				{
-					break;
-				}
+			case GLFW_PRESS:
+			{
+				KeyPressedEvent event(Key, 0);
+				data.EventCallback(event);
+				break;
+			}
+			case GLFW_RELEASE:
+			{
+				KeyReleasedEvent event(Key);
+				data.EventCallback(event);
+				break;
+			}
+			case GLFW_REPEAT:
+			{
+				KeyPressedEvent event(Key, 1);
+				data.EventCallback(event);
+				break;
+			}
 		
 			}
 
@@ -176,14 +178,18 @@ namespace Eu {
 	}
 	void WindowsWindow::Shutdown()
 	{
-
 		glfwDestroyWindow(m_Window);
+		glfwTerminate();
+		delete m_Context;
+
 	}
 
 	void WindowsWindow::OnUpdate()
 	{
 		glfwPollEvents();
 		m_Context->SwapBuffer();
+
+
 		
 	}
 	void WindowsWindow::SetVSync(bool vsync)
@@ -194,6 +200,9 @@ namespace Eu {
 			glfwSwapInterval(0);
 
 		m_Data.VSync = vsync;
+
+
+
 	}
 	bool WindowsWindow::IsVSync() const
 	{

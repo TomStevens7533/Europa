@@ -26,7 +26,7 @@ namespace Eu {
 		virtual float GetMouseYImpl() = 0;
 		virtual glm::vec2 GetDragDifference(int button) = 0;
 	private:
-		static Input* s_Instance;
+		static std::shared_ptr<Input> s_Instance;
 	};
 
 }

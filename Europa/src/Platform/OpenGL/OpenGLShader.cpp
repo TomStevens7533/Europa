@@ -2,12 +2,16 @@
 #include "OpenGLShader.h"
 #include "glm/gtc/type_ptr.inl"
 #include <glad/glad.h>
+#include "EuropaOpenGL.h"
 
 namespace Eu {
 
 	//vertexShader
 	OpenGLVertexShader::OpenGLVertexShader(const std::string& path) : VertexShader(path)
 	{
+
+
+
 		// Create an empty vertex shader handle
 		m_ShaderID = glCreateShader(GL_VERTEX_SHADER);
 
@@ -38,6 +42,7 @@ namespace Eu {
 			// In this simple program, we'll just leave
 			return;
 		}
+
 	}
 
 	OpenGLVertexShader::~OpenGLVertexShader()
@@ -52,6 +57,8 @@ namespace Eu {
 			EU_CORE_ASSERT(false, "Matrix not found at loc: ", loc);
 		}
 		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat4));
+		glCheckError();
+
 	}
 
 	void OpenGLVertexShader::SetUniformInt(const int index, const char* name, uint32_t renderID)
@@ -61,6 +68,8 @@ namespace Eu {
 			EU_CORE_ASSERT(false, "Matrix not found at loc: ", loc);
 		}
 		glUniform1i(loc, index);
+		glCheckError();
+
 	}
 
 
@@ -96,6 +105,8 @@ namespace Eu {
 			// In this simple program, we'll just leave
 			return;
 		}
+		glCheckError();
+
 
 	}
 
@@ -111,15 +122,19 @@ namespace Eu {
 			EU_CORE_ASSERT(false, "Matrix not found at loc: ", loc);
 		}
 		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat4));
+
 	}
 
 	void OpenGLIndexShader::SetUniformInt(const int index, const char* name, uint32_t renderID)
 	{
+
 		GLint loc = glGetUniformLocation(renderID, name);
-		if (loc == -1) {
+		if (loc == -1) 
 			EU_CORE_ASSERT(false, "Matrix not found at loc: ", loc);
-		}
-		glUniform1i(loc, index);
+		
+		glUniform1i(loc, index); //GIVES INVALID_OPERATION error
+
+
 	}
 
 }

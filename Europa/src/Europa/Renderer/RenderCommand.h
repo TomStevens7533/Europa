@@ -14,6 +14,6 @@ namespace Eu {
 		static void EnableDepthTest();
 
 	private:
-		static RendererAPI* s_RenderAPI;
+		static std::shared_ptr<RendererAPI> s_RenderAPI;
 	};
 }

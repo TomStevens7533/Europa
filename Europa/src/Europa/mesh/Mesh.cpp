@@ -108,10 +108,11 @@ namespace Eu {
 
 
 			}
-			std::cout << "OBJ file successfully loaded in\n Vertex amount: " << m_OBJ.m_VertexBuffer.size() << std::endl;
+			EU_CORE_TRACE("OBJ file successfully loaded in\n path: {0}\n Vertex amount : {1}",path , m_OBJ.m_VertexBuffer.size());
 
 		}
-		else std::cout << "Path not found\n";
+		else 
+			EU_CORE_WARN("PATH NOT FOUND: {0}", path)
 	}
 
 

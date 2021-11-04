@@ -7,6 +7,7 @@
 
 namespace Eu {
 
+
 	//base
 	void BaseGameObject::AddRotation(glm::vec3 newRotation)
 	{
@@ -37,23 +38,31 @@ namespace Eu {
 
 	gameObject::gameObject()
 	{
-		//Create program attach shaders
-		m_ResourceManager = ResourceManager::GetInstance();
+
+		//Create program attach shaders 
 		if(m_pRenderingProgram) //default to 2D texture program
-			m_pRenderingProgram = &m_ResourceManager->GetProgram(TextureTypes::TEXTURE2D);
+			m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(TextureTypes::TEXTURE2D);
 
 	}
 
 	void gameObject::AddMesh(const std::string& path)
 	{		
-		m_VertexArray = m_ResourceManager->GetModel(path);
+
+		m_VertexArray = &ResourceManager::GetInstance()->GetModel(path);
+
 	}
 
 	void gameObject::AddTexture(const std::string& path, const TextureTypes textureType)
 	{
-		m_ptexture = m_ResourceManager->GetTexture(path, textureType);
-		m_pRenderingProgram = &m_ResourceManager->GetProgram(textureType);
-		(*m_pRenderingProgram)->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader);
+
+		m_ptexture = &ResourceManager::GetInstance()->GetTexture(path, textureType);
+
+
+		m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(textureType);
+
+		if(m_pRenderingProgram != nullptr)
+			(*m_pRenderingProgram)->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader); //this gives opengl error
+
 
 		//set sampler2D
 
@@ -79,9 +88,12 @@ namespace Eu {
 	void gameObject::Render() const
 	{
 		//Bind current texture before rendering calll
-		m_ptexture->Bind();
+		if (m_ptexture != nullptr)
+			(*m_ptexture)->Bind();
 		auto TRSmatrix =  m_ToWorldMatrix * m_RotationMatrix * m_ScaleMatrix ;
-		Renderer::Submit(m_VertexArray, *m_pRenderingProgram, TRSmatrix);
+
+		if (m_VertexArray != nullptr && m_pRenderingProgram != nullptr)
+			Renderer::Submit(*m_VertexArray, *m_pRenderingProgram, TRSmatrix);
 
 
 	}
@@ -91,15 +103,15 @@ namespace Eu {
 
 	SkyBox::SkyBox()
 	{
-		m_ResourceManager = ResourceManager::GetInstance();
-		m_pRenderingProgram = &m_ResourceManager->GetProgram(TextureTypes::CUBETEXTURE);
+		m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(TextureTypes::CUBETEXTURE);
 		AddMesh("Resources/kubus.obj");
 	}
 
 	void SkyBox::AddTexture(const std::string& path)
 	{
-		m_ptexture = m_ResourceManager->GetTexture(path, TextureTypes::CUBETEXTURE);
-		(*m_pRenderingProgram)->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader);
+		m_ptexture = &ResourceManager::GetInstance()->GetTexture(path, TextureTypes::CUBETEXTURE);
+		if (m_pRenderingProgram != nullptr)
+			(*m_pRenderingProgram)->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader);
 	}
 
 	void SkyBox::SetPos(glm::vec3 position)
@@ -115,13 +127,16 @@ namespace Eu {
 	void SkyBox::Render() const
 	{
 		//Bind current texture before rendering calll
-		m_ptexture->Bind();
-		Renderer::SubmitNoDepth(m_VertexArray, *m_pRenderingProgram, m_RotationMatrix, true);
+		if (m_ptexture != nullptr)
+			(*m_ptexture)->Bind();
+
+		if (m_VertexArray != nullptr && m_pRenderingProgram != nullptr)
+			Renderer::SubmitNoDepth(*m_VertexArray, *m_pRenderingProgram, m_RotationMatrix, true);
 	}
 
 	void SkyBox::AddMesh(const std::string& path)
 	{
-		m_VertexArray = m_ResourceManager->GetModel(path);
+		m_VertexArray = &ResourceManager::GetInstance()->GetModel(path);
 
 	}
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "Core/TimeStep.h"
 
 namespace Eu {
 	class Camera final
@@ -13,11 +14,11 @@ namespace Eu {
 		const glm::mat4& GetProjectionMatrix() const;
 		void SwitchRenderStateFlag();
 
-		void KeyInputHandling();
+		void KeyInputHandling(TimeStep deltaTime);
 		void MouseInputHandling(glm::vec2 mousePos);
 		void SetCameraPos(glm::vec3 cameraPos);
 		void SetCameraOffsetPos(glm::vec3 cameraPos);
-		void SetWidthAndHeight(glm::vec2 widthHeightInfo);
+		void RecalcProjection();
 
 
 
@@ -31,8 +32,9 @@ namespace Eu {
 private:
 		float m_FOV;
 		float m_FOVAngle;
-		float m_CameraMovementSpeed{ 1000.f };
-		float m_CameraZoomInSpeed{ 20.f };
+		float m_AspectRatio;
+		float m_CameraMovementSpeed{ 2.5f };
+		float m_CameraZoomInSpeed{ 2.f };
 		float m_RotationSpeed{ 45.f };
 
 		float m_Width;
@@ -64,7 +66,34 @@ private:
 
 		bool m_IsCameraUpdated;
 
+		//Camera Frustum
+		//void CreateFrustumForCamera(float aspectRatio, float zNearPlane = 0.f, float zFarPlane = 1000.f);
+		//Frustum m_CurrentFrustum;
+
+
 
 	};
+	//FRUSTUM CULLING
+	//struct Plan
+	//{ // unit vector
+	//	Plan(glm::vec3 normal, float distance) : m_Normal{normal}, m_DistanceFromOrigin{distance}
+	//	{
+
+	//	}
+	//	float m_DistanceFromOrigin = 0.f;
+	//	glm::vec3 m_Normal = { 0.f, 1.f, 0.f };
+
+	//};
+	//struct Frustum
+	//{
+	//	Plan topFace;
+	//	Plan bottomFace;
+
+	//	Plan rightFace;
+	//	Plan leftFace;
+
+	//	Plan farFace;
+	//	Plan nearFace;
+	//};
 
 }

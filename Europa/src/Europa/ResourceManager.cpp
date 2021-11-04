@@ -3,23 +3,24 @@
 namespace Eu {
 
 	//TODO MAKE UNORDERED MAP
-	 
-	ResourceManager* ResourceManager::m_ResourceMangerSingleton = nullptr;
+	std::shared_ptr<ResourceManager> ResourceManager::m_ResourceMangerSingleton = nullptr;
 
-	ResourceManager* ResourceManager::GetInstance()
+
+
+	std::shared_ptr<ResourceManager>& ResourceManager::GetInstance()
 	{
 		if (m_ResourceMangerSingleton == nullptr) {
 			//create singleton
 			EU_CORE_INFO("Creating Resource Manager");
-			m_ResourceMangerSingleton = new ResourceManager();
+			m_ResourceMangerSingleton.reset(new ResourceManager());
 		}
 		return m_ResourceMangerSingleton;
 	}
 
-	std::shared_ptr<VertexArray> ResourceManager::GetModel(const std::string modelPath)
+	std::shared_ptr<VertexArray>& ResourceManager::GetModel(const std::string modelPath)
 	{
 		//check if string is already in map
-		size_t count = m_ResourceMap.count(modelPath);
+		size_t count = m_VertexMap.count(modelPath);
 
 		if (count == 0)
 		{	//is not in resource map
@@ -60,27 +61,26 @@ namespace Eu {
 			//AddVertexBuffer generate vertexattrivbutues
 
 			//insert return pair with iterator and if it succeeded
-			std::pair < std::map<std::string, std::any>::iterator, bool> itPair = m_ResourceMap.insert(std::pair{ modelPath, std::make_any<std::shared_ptr<VertexArray>>(pVertexArray) });
+			auto itPair = m_VertexMap.insert(std::pair{ modelPath, pVertexArray });
 
 			//free data on cpu mesh info has been moved to gpu
 			pMesh.reset();
 
 			//return const vertexArray* from Resourcemap
-			return std::any_cast<std::shared_ptr<VertexArray>>((*itPair.first).second);
+			return (*itPair.first).second;
 
 		}
 		else {
-			auto it = m_ResourceMap.find(modelPath);
+			auto it = m_VertexMap.find(modelPath);
 
 			//if resoure is already located in std::map
-			std::shared_ptr<VertexArray> returnSharedPtr = std::any_cast<std::shared_ptr<VertexArray>>(((*it).second));
-			return returnSharedPtr;
+			return (*it).second                                                                  ;
 		}
 	}
 
-	std::shared_ptr<BaseTexture> ResourceManager::GetTexture(const std::string texturePath, const TextureTypes type)
+	std::shared_ptr<BaseTexture>& ResourceManager::GetTexture(const std::string texturePath, const TextureTypes type)
 	{
-		size_t count = m_ResourceMap.count(texturePath);
+		size_t count = m_TextureMap.count(texturePath);
 
 
 		if (count == 0) {
@@ -99,17 +99,16 @@ namespace Eu {
 			}
 
 			//insert return pair with iterator and if it succeeded
-			std::pair < std::map<std::string, std::any>::iterator, bool> itPair = m_ResourceMap.insert(std::pair{ texturePath, std::make_any<std::shared_ptr<BaseTexture>>(pTexture) });
-			return std::any_cast<std::shared_ptr<BaseTexture>>((*itPair.first).second);
+			auto itPair = m_TextureMap.insert(std::pair{ texturePath, pTexture });
+			return (*itPair.first).second;
 
 
 		}
 		else {
-			auto it = m_ResourceMap.find(texturePath);
+			auto it = m_TextureMap.find(texturePath);
+			return (*it).second;
 
-
-			std::shared_ptr<BaseTexture> pReturnTex = std::any_cast<std::shared_ptr<BaseTexture>>(((*it).second));
-			return pReturnTex;
+			//make templated
 		}
 
 		
@@ -135,6 +134,7 @@ namespace Eu {
 				m_Program->AttachVertexShader("Resources/vertexShader2D.vert");
 				m_Program->AttachPixelShader("Resources/fragmentShader2D.frag");
 				m_Program->LinkProgram();
+
 				break;
 			case TextureTypes::CUBETEXTURE:
 				m_Program->AttachVertexShader("Resources/vertexShaderCUBE.vert");
@@ -155,6 +155,6 @@ namespace Eu {
 		}
 	}
 
-}
+	}
 
 

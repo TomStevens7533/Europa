@@ -11,6 +11,7 @@ namespace Eu {
 
 	class BaseGameObject {
 	public:
+		BaseGameObject() = default;
 		virtual ~BaseGameObject() = default;
 		virtual void Update() = 0;
 		virtual void Render() const = 0;
@@ -25,12 +26,9 @@ namespace Eu {
 		glm::mat4 m_ScaleMatrix = glm::mat4(1.f);
 
 		glm::vec3 m_RotationVec = { 0,0,0 };
-		uint32_t m_GoIndex;
 
 
-		ResourceManager* m_ResourceManager;
-		const std::shared_ptr<BaseProgram>* m_pRenderingProgram;
-
+		const std::shared_ptr<BaseProgram>* m_pRenderingProgram = nullptr;
 
 	};
 
@@ -48,17 +46,17 @@ namespace Eu {
 		virtual void SetPos(glm::vec3 position) override;
 		virtual void Update() override;
 		virtual void Render() const override;
+	private:
 
-	private: //attributes
-		std::shared_ptr<BaseTexture> m_ptexture;
-		std::shared_ptr<VertexArray> m_VertexArray;
+		std::shared_ptr<BaseTexture>* m_ptexture = nullptr;
+		std::shared_ptr<VertexArray>* m_VertexArray = nullptr;
 	};
 
 	class SkyBox : public BaseGameObject {
 	public:
 		//We can create empty gameobject
 		SkyBox();
-		virtual ~SkyBox() override {};
+		virtual ~SkyBox() override {  };
 
 		void AddTexture(const std::string& path);
 
@@ -68,9 +66,10 @@ namespace Eu {
 
 	private:
 		void AddMesh(const std::string& path);
-	private: //attributes
-		std::shared_ptr<BaseTexture> m_ptexture;
-		std::shared_ptr<VertexArray> m_VertexArray;
+
+
+		std::shared_ptr<BaseTexture>* m_ptexture = nullptr;
+		std::shared_ptr<VertexArray>* m_VertexArray = nullptr;
 	};
 
 	

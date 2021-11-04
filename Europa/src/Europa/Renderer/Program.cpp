@@ -3,6 +3,7 @@
 #include "Platform/OpenGL/OpenGLProgram.h"
 #include <glad/glad.h>
 
+
 //maybe use map im not gonna support multiple of the same shaders
 namespace Eu 
 {
@@ -63,8 +64,10 @@ namespace Eu
 
 	OpenGlProgram::OpenGlProgram()
 	{
+
 		// Get a program object.
 		m_RenderID = glCreateProgram();
+
 	}
 
 	OpenGlProgram::~OpenGlProgram()

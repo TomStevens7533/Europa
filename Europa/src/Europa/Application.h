@@ -1,20 +1,14 @@
 #pragma once
 
 #include "Window.h"
-#include "Log.h"
-#include "Europa/Events/ApplicationEvent.h"
-#include "Europa/LayerStack.h"
-#include "Europa/imgui/ImGuiLayer.h"
-#include "renderer/Renderer.h"
-#include "Camera.h"
-#include "Renderer/VertexArray.h"
-#include "Texture.h"
-#include "Renderer/Program.h"
+#include <glm/glm.hpp>
+#include "imgui/ImGuiLayer.h"
+#include "Core/TimeStep.h"
+#include "LayerStack.h"
+
 
 namespace Eu
 {
-	class gameObject;
-	class SkyBox;
 	class  Application
 	{
 	public:
@@ -32,18 +26,18 @@ namespace Eu
 		inline static Application& Get() { return *s_Instance; }
 	private:
 		bool OnWindowClose(WindowCloseEvent& e);
+	private:
 		std::unique_ptr<Window> m_Window;
 		ImGuiLayer* m_ImGuiLayer;
 		bool m_Running = true;
 		LayerStack m_LayerStack;
-		std::unique_ptr<BaseProgram> m_Shader;
-		std::shared_ptr<gameObject> m_pCar;
-		std::shared_ptr<gameObject> m_pCar2;
-		std::shared_ptr<SkyBox> m_pSkyBox;
+		TimeStep m_FrameTimeStep;
+		float m_LastFrameTime = 0.f;
+
+
 
 
 		static Application* s_Instance;
-		Camera m_Camera;
 
 
 		glm::mat4 m_WorldMatrix{

@@ -12,8 +12,9 @@ namespace Eu
 
 	OpenGLVertexArray::OpenGLVertexArray()
 	{
-		glCreateVertexArrays(1, &m_RendererID);
 
+		glCreateVertexArrays(1, &m_RendererID);
+		glCheckError();
 
 	}
 	void OpenGLVertexArray::Bind() const

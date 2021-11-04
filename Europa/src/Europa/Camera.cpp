@@ -6,6 +6,7 @@
 
 #include <Europa/KeyMouseCodes.h>
 #include "Input.h"
+#include "Application.h"
 
 namespace Eu {
 	Camera::Camera(glm::vec3 pos, float fovAngle) : m_CameraPos{ pos }, m_FOVAngle{ fovAngle }
@@ -16,11 +17,14 @@ namespace Eu {
 		
 		m_Pitch = 0;
 		m_Yaw = 0;
+		RecalcProjection();
+
 
 
 	}
 	void Camera::Update(float elapsedSec)
 	{
+		//RecalcProjection();
 
 		CalculateInverseONB();
 
@@ -55,7 +59,7 @@ namespace Eu {
 
 	}
 
-	void Camera::KeyInputHandling()
+	void Camera::KeyInputHandling(TimeStep deltaTime)
 	{
 		//glm::vec2 dragDiffernce = Input::GetMouseDrag(EU_MOUSE_BUTTON_2);
 
@@ -66,21 +70,23 @@ namespace Eu {
 		//}
 
 		if (Input::IsKeyPressed(EU_KEY_D))
-			m_CameraPos += glm::normalize(glm::cross(m_ForwardVector, m_UpVector)) * 0.01f;
+			m_CameraPos += glm::normalize(glm::cross(m_ForwardVector, m_UpVector)) * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
 		if (Input::IsKeyPressed(EU_KEY_A))
-			m_CameraPos -= glm::normalize(glm::cross(m_ForwardVector, m_UpVector)) * 0.01f;
+			m_CameraPos -= glm::normalize(glm::cross(m_ForwardVector, m_UpVector)) * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
 		if(Input::IsKeyPressed(EU_KEY_W))
-			m_CameraPos += m_ForwardVector *0.01f;
+			m_CameraPos += m_ForwardVector * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
 		if (Input::IsKeyPressed(EU_KEY_S))
-			m_CameraPos -= m_ForwardVector * 0.01f;
+			m_CameraPos -= m_ForwardVector *(deltaTime.GetSeconds() * m_CameraMovementSpeed);
 		if (Input::IsKeyPressed(EU_KEY_SPACE))
-			m_CameraPos += m_UpVector * 0.01f;
+			m_CameraPos += m_UpVector *(deltaTime.GetSeconds() * m_CameraMovementSpeed);
 		if (Input::IsKeyPressed(EU_KEY_C))
-			m_CameraPos -= m_UpVector *0.01f;
+			m_CameraPos -= m_UpVector * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
 	}
 
 	void Camera::MouseInputHandling(glm::vec2 mousePos)
 	{
+		//TODO REWORK
+
 		if (Input::IsMouseButtonPressed(EU_MOUSE_BUTTON_2)) {
 			if (m_IsFirstUpdate)
 			{
@@ -102,10 +108,10 @@ namespace Eu {
 			m_ScreenPosOffset.x *= sensitivity;
 
 			// make sure that when pitch is out of bounds, screen doesn't get flipped
-			//if (m_CameraRot.x >= 88.5f)
-			//	m_CameraRot.x = 180.5f;
-			//if (m_CameraRot.x <= -88.5f)
-			//	m_CameraRot.x = -88.5f;
+			if (m_CameraRot.x >= 88.5f)
+				m_CameraRot.x = 88.5f;
+			if (m_CameraRot.x <= -88.5f)
+				m_CameraRot.x = -88.5f;
 
 
 			m_CameraRot.x += m_ScreenPosOffset.y;
@@ -149,33 +155,61 @@ namespace Eu {
 
 		m_Model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
 	}
+
 	void Camera::CalculateInverseONB()
 	{	
 		CalculateView();
 		CalculateModel();
-		CalculateProjectionMatrix(1000.f, 0.1f);
 		m_ONB = m_Proj * m_View;
 		
 	}
 
 	void Camera::CalculateProjectionMatrix(float farPlane, float nearPlane)
 	{
-		float aspectRatio = float(m_Width) / float(m_Height);
+
+		glm::vec2 windowResolution = { Application::Get().GetWindow().GetWidth(),Application::Get().GetWindow().GetHeight() };
+
+
+		m_AspectRatio = static_cast<float>(windowResolution.x) / static_cast<float>(windowResolution.y);
 
 
 
-		m_Proj = glm::perspective(m_FOV, aspectRatio, nearPlane, farPlane);
+		m_Proj = glm::perspective(m_FOV, m_AspectRatio, nearPlane, farPlane);
 
 	}
 
-	void Camera::SetWidthAndHeight(glm::vec2 widthHeightInfo)
+	void Camera::RecalcProjection()
 	{
-		m_Width = widthHeightInfo.x;
-		m_Height = widthHeightInfo.y;
+		CalculateProjectionMatrix(1000.f, 0.1f);
 		CalculateInverseONB();
 
 	}
 
+
+
+	//frustum culling
+	//void Camera::CreateFrustumForCamera(float aspectRatio, float zNearPlane = 0.f, float zFarPlane = 1000.f)
+	//{
+	//	const float halfVSide = zFarPlane * tanf(m_FOV * .5f);
+	//	const float halfHSide = halfVSide * m_AspectRatio;
+	//	const glm::vec3 frontMultFar = zFarPlane * m_ForwardVector;
+
+	//	m_CurrentFrustum.nearFace = Plan{ glm::vec3{m_CameraPos + zNearPlane * m_ForwardVector}, m_ForwardVector };
+
+	//	m_CurrentFrustum.farFace = Plan{ m_ForwardVector + frontMultFar, -m_ForwardVector };
+
+	//	m_CurrentFrustum.rightFace = Plan{ m_CameraPos,
+	//							glm::cross(m_UpVector,frontMultFar + m_RightVector * halfHSide) };
+
+	//	m_CurrentFrustum.leftFace = Plan{ m_CameraPos,
+	//							glm::cross(frontMultFar - m_RightVector * halfHSide, m_UpVector) };
+
+	//	m_CurrentFrustum.topFace = Plan{ m_CameraPos,
+	//							glm::cross(m_RightVector, frontMultFar - m_UpVector * halfVSide) };
+
+	//	m_CurrentFrustum.bottomFace = Plan{ m_CameraPos,
+	//							glm::cross(frontMultFar + m_UpVector * halfVSide, m_RightVector) };
+	//}
 }
 
 

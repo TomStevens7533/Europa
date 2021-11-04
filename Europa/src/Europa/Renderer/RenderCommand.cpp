@@ -4,7 +4,7 @@
 //place for all renderer commands
 
 namespace Eu {
-	RendererAPI* RenderCommand::s_RenderAPI = new OpenGLRendererAPI;
+	std::shared_ptr<RendererAPI> RenderCommand::s_RenderAPI = std::make_shared<OpenGLRendererAPI>();
 
 
 	void RenderCommand::SetClearColor(const glm::vec4& color)

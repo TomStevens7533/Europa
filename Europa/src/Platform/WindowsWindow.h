@@ -43,5 +43,7 @@ namespace Eu {
 			EventCallbackFn EventCallback;
 		};
 		WindowData m_Data;
+
+
 	};
 }

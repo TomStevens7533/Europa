@@ -2,6 +2,7 @@
 
 #ifdef EU_PLATFORM_WINDOWS
 
+
 extern	Eu::Application* Eu::CreateApplication();
 
 int main(int argc, char** argv)

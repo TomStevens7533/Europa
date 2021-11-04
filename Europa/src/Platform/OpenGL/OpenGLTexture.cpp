@@ -18,7 +18,8 @@ namespace Eu {
 		m_Channels = channels;
 
 		if (channels == 4) {
-			EU_CORE_INFO("Creating 4 Channel Texture");
+			EU_CORE_TRACE("Creating 4 Channel Texture: \n From path: {0}", path);
+
 
 			//create texture
 			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateTextures.xhtml
@@ -37,11 +38,12 @@ namespace Eu {
 			//second paramater is level index
 			glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, tex);
 
+
 			m_HasAlphaChannel = true;
 		}
 		else if(channels == 3)
 		{
-			EU_CORE_INFO("Creating 3 Channel Texture");
+			EU_CORE_TRACE("Creating 3 Channel Texture: \n From path: {0}", path);
 
 
 			//create texture
@@ -59,13 +61,15 @@ namespace Eu {
 			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexSubImage2D.xhtml
 			//second paramater is level index
 			glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, tex);
+
+
 		}
 		else
 		{
 			EU_CORE_ASSERT(false, "Texture cannot be loaded: not enough channles! ");
 		}
 
-	
+		
 		//free mempory on cpu
 		stbi_image_free(tex);
 	}
@@ -77,9 +81,11 @@ namespace Eu {
 
 	void OpenGLTexture2D::Bind(uint32_t unitIndex) const
 	{
+		glActiveTexture(GL_TEXTURE0);
+
 		//opengl uses units so we can access multiple textures at once for more complex rendering tasks
 		glBindTexture(GL_TEXTURE_2D, m_RenderID);
-		glCheckError();
+		glCheckError();							//GIVES INVALID OPERATION ERROR ON FIRST TIME idk me dumbd
 	}
 
 	//---------------------------------- 
@@ -140,6 +146,7 @@ namespace Eu {
 
 	void OpenGLCubeTexture::Bind(uint32_t unitIndex) const
 	{
+		glActiveTexture(GL_TEXTURE0);
 		//opengl uses units so we can access multiple textures at once for more complex rendering tasks
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_RenderID);
 		glCheckError();

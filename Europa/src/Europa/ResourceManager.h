@@ -9,29 +9,29 @@
 namespace Eu {
 	class ResourceManager {
 	public:
-		static ResourceManager* GetInstance();
+		static std::shared_ptr<ResourceManager>& GetInstance();
 		~ResourceManager() {
-			std::cout << "Resourcemanager Deleteion\n";
+			EU_CORE_WARN("RESOURCE MANAGER DELETED!");
 		}
 	public:
 		//funtions
-		std::shared_ptr<VertexArray> GetModel(const std::string modelPath);
-		std::shared_ptr<BaseTexture> GetTexture(const std::string texturePath, const TextureTypes type);
+		std::shared_ptr<VertexArray>& GetModel(const std::string modelPath);
+		std::shared_ptr<BaseTexture>& GetTexture(const std::string texturePath, const TextureTypes type);
 		const std::shared_ptr<BaseProgram>& GetProgram(TextureTypes type);
 	
 	private:
 		//Variables
 		//map used for outside resources
-		std::map<std::string, std::any> m_ResourceMap;
+		std::map<std::string, std::shared_ptr<VertexArray>> m_VertexMap;
+		std::map<std::string, std::shared_ptr<BaseTexture>> m_TextureMap;
+
 		std::map<TextureTypes, std::shared_ptr<BaseProgram>> m_ProgramMap;
 
 		//singleton object
-		static ResourceManager* m_ResourceMangerSingleton;
+		static std::shared_ptr<ResourceManager> m_ResourceMangerSingleton;
 	private:
 		ResourceManager() = default;
-		// Stop the compiler generating methods of copy the object
-		ResourceManager(const ResourceManager& copy) = delete;            // Not Implemented
-		ResourceManager& operator=(const ResourceManager& copy) = delete; // Not Implemented
+
 
 	};
 }
