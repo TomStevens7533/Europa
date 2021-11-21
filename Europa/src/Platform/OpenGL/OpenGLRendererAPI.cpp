@@ -1,6 +1,8 @@
 #include "OpenGLRendererAPI.h"
 #include <glad/glad.h>
 #include <Platform/OpenGL/EuropaOpenGL.h>
+#include "Europa/Input.h"
+#include "Europa/KeyMouseCodes.h"
 
 //raw openGl calls
 
@@ -19,13 +21,11 @@ namespace Eu {
 
 	void OpenGLRendererAPI::DrawIndexed(const std::shared_ptr<VertexArray>& VertexArray)
 	{
-		glCheckError();
 		glDrawElements(GL_TRIANGLES, VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
 	void OpenGLRendererAPI::DrawIndexedNoDepth(const std::shared_ptr<VertexArray>& VertexArray)
 	{
-		glCheckError();
 		glDepthFunc(GL_LEQUAL); //Change depth function so depth test passen when values are equal or less to depth buffers content
 		glDrawElements(GL_TRIANGLES, VertexArray->GetIndexBuffer()->GetCount(), GL_UNSIGNED_INT, nullptr);
 		glDepthFunc(GL_LESS);
@@ -38,11 +38,16 @@ namespace Eu {
 	// https://www.youtube.com/watch?v=uJzXDkgm5Fw
 	//https://www.youtube.com/watch?v=U9-J8M-oslA
 
-		glEnable(GL_DEPTH_TEST);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+		glEnable(GL_DEPTH_TEST);
+
+		if(Input::IsKeyPressed(EU_KEY_0))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		else if(Input::IsKeyPressed(EU_KEY_9))
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+		//glEnable(GL_CULL_FACE);
+		//glCullFace(GL_BACK);
 	}
 
 }

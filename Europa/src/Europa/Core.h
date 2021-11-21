@@ -5,7 +5,7 @@
 #endif
 
 #ifdef EU_ENABLE_ASSERT
-#define EU_ASSERT(x, ...) {if(!(x)){ EU_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
+#define EU_ASSERT(x, ...) {if(!(x)){ EU_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
 #define EU_CORE_ASSERT(x, ...) {if(!(x)){ EU_CORE_ERROR("Assertion Failed: {0}", __VA_ARGS__); __debugbreak();}}
 #else
 #define EU_ASSERT(x, ...)

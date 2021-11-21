@@ -5,6 +5,7 @@
 #include "Renderer/VertexArray.h"
 #include "Texture.h"
 #include "Renderer/Program.h"
+#include "mesh/Mesh.h"
 
 namespace Eu {
 	class ResourceManager {

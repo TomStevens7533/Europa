@@ -1,6 +1,5 @@
 #include "Program.h"
 #include "Renderer.h"
-#include "Platform/OpenGL/OpenGLProgram.h"
 #include <glad/glad.h>
 
 
@@ -51,6 +50,12 @@ namespace Eu
 		m_ShaderMap.at(type)->SetUniformInt(index, name, m_RenderID);
 	}
 
+	void BaseProgram::SetUniformVec2(const glm::vec2 uniformVec2, const char* name, ShaderTypes type) const
+	{
+		m_ShaderMap.at(type)->SetUniformVec2(uniformVec2, name, m_RenderID);
+
+	}
+
 	void BaseProgram::ClearShaders()
 	{
 		m_ShaderMap.clear();
@@ -89,6 +94,7 @@ namespace Eu
 		// Note the different functions here: glGetProgram* instead of glGetShader*.
 		GLint isLinked = 0;
 		glGetProgramiv(m_RenderID, GL_LINK_STATUS, (int*)&isLinked);
+		Bind();
 		if (isLinked == GL_FALSE)
 		{
 			GLint maxLength = 0;
@@ -112,6 +118,8 @@ namespace Eu
 		// Always detach shaders after a successful link.
 		for (auto& keyValPair : m_ShaderMap)
 			glDetachShader(m_RenderID, keyValPair.second->GetShaderID());
+
+
 	}
 
 	void OpenGlProgram::Bind() const

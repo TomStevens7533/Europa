@@ -36,11 +36,3 @@
 #folders
 **bin-int/
 **bin/
-**Europa/vendor/
-bin/Debug-windows-x86_64/Europa/Europa.pdb
-bin-int/Debug-windows-x86_64/Game/Game.tlog/CL.read.1.tlog
-bin-int/Debug-windows-x86_64/Europa/Europa.tlog/CL.write.1.tlog
-bin-int/Debug-windows-x86_64/Europa/Europa.tlog/CL.read.1.tlog
-bin-int/Debug-windows-x86_64/Europa/Europa.tlog/CL.command.1.tlog
-bin-int/Debug-windows-x86_64/Europa/Europa.log
-bin-int/Debug-windows-x86_64/Europa/Europa.Build.CppClean.log

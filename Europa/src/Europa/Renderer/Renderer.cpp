@@ -12,6 +12,7 @@ namespace Eu
 {
 	//TODO make it onto the stack with no crashes 
 	const Camera* Renderer::m_SceneData = nullptr;
+	bool Renderer::m_IsFirstFrame = true;
 
 	void Renderer::BeginScene(const Camera& sceneCamera)
 	{
@@ -20,14 +21,20 @@ namespace Eu
 	}
 	void Renderer::EndScene()
 	{
+		m_IsFirstFrame = true;
 	}
 	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform) {
 		//Rendercommand
-		program->Bind();
-		program->SetUniformMatrix4(m_SceneData->GetViewProjectionMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
-		program->SetUniformMatrix4(transform, "u_TranslationMat", BaseProgram::ShaderTypes::T_VertexShader);
+		//program->Bind();
+		if (m_IsFirstFrame == true) {
+			program->SetUniformMatrix4(m_SceneData->GetViewProjectionMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
+			m_IsFirstFrame = false;
+		}
+		//(program)->SetUniformMatrix4(transform, "u_TranslationMat", BaseProgram::ShaderTypes::T_VertexShader);
 
 		vertexArray->Bind();
+
+
 		RenderCommand::DrawIndexed(vertexArray);
 	}
 	void Renderer::SubmitNoDepth(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform, bool isBackground) {

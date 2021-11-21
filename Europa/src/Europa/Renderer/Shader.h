@@ -14,6 +14,7 @@ namespace Eu
 
 		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) = 0;
 		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) = 0;
+		virtual void SetUniformVec2(const glm::vec2 index, const char* name, uint32_t renderID) = 0;
 
 	protected:
 		std::string& GetData() { return m_Data; }
@@ -36,6 +37,7 @@ namespace Eu
 		static VertexShader* Create(const std::string& path);
 		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) = 0;
 		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) = 0;
+		virtual void SetUniformVec2(const glm::vec2 index, const char* name, uint32_t renderID) = 0;
 
 
 	};
@@ -49,6 +51,8 @@ namespace Eu
 		static IndexShader* Create(const std::string& path);
 		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) = 0;
 		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) = 0;
+		virtual void SetUniformVec2(const glm::vec2 index, const char* name, uint32_t renderID) = 0;
+
 
 
 	};

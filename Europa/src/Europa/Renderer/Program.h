@@ -28,6 +28,7 @@ namespace Eu {
 
 		void SetUniformMatrix4(const glm::mat4& mat4, const char* name, ShaderTypes type);
 		void SetUniformInt(const int index, const char* name, ShaderTypes type) const;
+		void SetUniformVec2(const glm::vec2 index, const char* name, ShaderTypes type) const;
 
 
 

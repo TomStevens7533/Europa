@@ -20,7 +20,6 @@ namespace Eu
 	void OpenGLVertexArray::Bind() const
 	{
 		glBindVertexArray(m_RendererID);
-		glCheckError();
 	}
 	void OpenGLVertexArray::Unbind() const
 	{
@@ -46,7 +45,6 @@ namespace Eu
 				(const void*)element.Offset);
 			index++;
 		}
-		glCheckError();
 
 		m_VertexBuffers.push_back(VertexBuffer);
 		m_VertexBuffers.back()->Bind();

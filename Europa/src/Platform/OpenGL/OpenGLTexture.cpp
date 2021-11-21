@@ -24,6 +24,7 @@ namespace Eu {
 			//create texture
 			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateTextures.xhtml
 			glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
+			glBindTexture(GL_TEXTURE_2D, m_RenderID);
 			//ask for storage on GPU(VRAM)
 			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
 			glTextureStorage2D(m_RenderID, 1, GL_RGBA8, m_Width, m_Height);
@@ -39,6 +40,13 @@ namespace Eu {
 			glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, tex);
 
 
+			// Set the preferences:
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+
 			m_HasAlphaChannel = true;
 		}
 		else if(channels == 3)
@@ -49,6 +57,8 @@ namespace Eu {
 			//create texture
 			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateTextures.xhtml
 			glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
+			glBindTexture(GL_TEXTURE_2D, m_RenderID);
+
 			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
 			glTextureStorage2D(m_RenderID, 1, GL_RGB8, m_Width, m_Height);
 
@@ -61,6 +71,7 @@ namespace Eu {
 			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexSubImage2D.xhtml
 			//second paramater is level index
 			glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, tex);
+
 
 
 		}
@@ -85,7 +96,6 @@ namespace Eu {
 
 		//opengl uses units so we can access multiple textures at once for more complex rendering tasks
 		glBindTexture(GL_TEXTURE_2D, m_RenderID);
-		glCheckError();							//GIVES INVALID OPERATION ERROR ON FIRST TIME idk me dumbd
 	}
 
 	//---------------------------------- 
@@ -133,7 +143,7 @@ namespace Eu {
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	
+
 		//WE DONT NEED TEXTURE COORDINATES FOR A CUBETEXTURE THE TEXTURE COORDINATES ARE DIRECTION VECTOR FROM THE ORIGIN TO THE THAT POINT ON THE TEXTURE
 		//SO WE CAN JUST SUPPLY POSITION VECTORS
 	
@@ -149,7 +159,6 @@ namespace Eu {
 		glActiveTexture(GL_TEXTURE0);
 		//opengl uses units so we can access multiple textures at once for more complex rendering tasks
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_RenderID);
-		glCheckError();
 	}
 
 }

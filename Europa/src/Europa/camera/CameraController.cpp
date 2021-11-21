@@ -14,21 +14,28 @@ namespace Eu {
 		glm::vec3 forwardVec = m_Camera.GetForwardVec();
 		glm::vec3 rightVec = m_Camera.GetRightVec();
 		glm::vec3 upVec = m_Camera.GetUpVector();
-
+		int multiplier = 1;
+		if (Input::IsKeyPressed(EU_KEY_LEFT_ALT))
+			multiplier++;
 		if (Input::IsKeyPressed(EU_KEY_D))
-			m_CameraPos += glm::normalize(glm::cross(forwardVec, upVec)) * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
+			m_CameraPos += glm::normalize(glm::cross(forwardVec, upVec)) * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
 		if (Input::IsKeyPressed(EU_KEY_A))
-			m_CameraPos -= glm::normalize(glm::cross(forwardVec, upVec)) * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
+			m_CameraPos -= glm::normalize(glm::cross(forwardVec, upVec)) * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
 		if (Input::IsKeyPressed(EU_KEY_W))
-			m_CameraPos += forwardVec * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
+			m_CameraPos += forwardVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
 		if (Input::IsKeyPressed(EU_KEY_S))
-			m_CameraPos -= forwardVec * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
+			m_CameraPos -= forwardVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
 		if (Input::IsKeyPressed(EU_KEY_SPACE))
-			m_CameraPos += upVec * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
+			m_CameraPos += upVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
 		if (Input::IsKeyPressed(EU_KEY_C))
-			m_CameraPos -= upVec * (deltaTime.GetSeconds() * m_CameraMovementSpeed);
+			m_CameraPos -= upVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
 
 		m_Camera.SetPosition(m_CameraPos);
+	}
+
+	void PerspectiveCameraController::SetNewPosition(glm::vec3 cameraPos)
+	{
+		m_Camera.SetPosition(cameraPos);
 	}
 
 	void PerspectiveCameraController::OneEvent(Event& e)

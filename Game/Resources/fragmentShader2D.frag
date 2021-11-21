@@ -2,18 +2,28 @@
 
 layout(location = 0) out vec4 color;
 
-in vec2 v_TexCord;			
+in vec2 v_TexCord;	
+in vec3 v_Color;
+in vec3 v_Light;
+
+
+
+
 
 uniform sampler2D u_Texture;
 
 
-in vec3 v_Position;
-in vec4 v_Color;
 void main()
 {
+	vec4 tempColor;
+	
+	tempColor = texture(u_Texture, v_TexCord); 
 
-	vec4 tempColor = texture(u_Texture, v_TexCord); 
-	tempColor.a = 1.f;
+	tempColor.xyz = vec3(tempColor.x * v_Light.x, tempColor.y * v_Light.y,tempColor.z);
+
+	if(tempColor.a < 0.5f)
+		discard;
+
 	color = tempColor;
 
 	

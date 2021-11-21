@@ -15,4 +15,5 @@ namespace Eu {
 			else return false;
 		}
 	};
+
 }

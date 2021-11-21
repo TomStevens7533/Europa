@@ -17,6 +17,24 @@ namespace Eu {
 		m_OBJ.m_IndexBuffer.clear();
 	}
 
+	void Mesh::AddFaceToMesh(std::vector<Vertex_Input>& NewFaces, std::vector<int> newIndices)
+	{
+		m_OBJ.m_VertexBuffer.insert(m_OBJ.m_VertexBuffer.end(), NewFaces.begin(), NewFaces.end());
+		m_OBJ.m_IndexBuffer.insert(m_OBJ.m_IndexBuffer.end(), newIndices.begin(), newIndices.end());
+
+	}
+
+	void Mesh::Clear()
+	{
+		m_OBJ.m_VertexBuffer.clear();
+		m_OBJ.m_VertexBuffer.shrink_to_fit();
+
+		m_OBJ.m_IndexBuffer.clear();
+		m_OBJ.m_IndexBuffer.shrink_to_fit();
+
+
+	}
+
 	void Mesh::OBJParser(const std::string& path)
 	{
 		std::ifstream input;

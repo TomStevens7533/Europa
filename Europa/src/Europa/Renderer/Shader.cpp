@@ -43,6 +43,8 @@ namespace Eu
 
 
 
+
+
 	VertexShader* VertexShader::Create(const std::string& path)
 	{
 		switch (Renderer::GetAPI())

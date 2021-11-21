@@ -78,6 +78,7 @@ namespace Eu {
 		}
 	}
 
+
 	std::shared_ptr<BaseTexture>& ResourceManager::GetTexture(const std::string texturePath, const TextureTypes type)
 	{
 		size_t count = m_TextureMap.count(texturePath);

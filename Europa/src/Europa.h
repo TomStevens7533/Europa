@@ -14,6 +14,7 @@
 
 //----------Basic-includes-------------------------
 #include "Europa/Core/TimeStep.h"
+#include "Europa/KeyMouseCodes.h"
 
 //----------Rendering----------------
 #include "Europa/Texture.h"

@@ -30,5 +30,6 @@ namespace Eu
 		};
 
 		static const Camera* m_SceneData;
+		static  bool m_IsFirstFrame;
 	};
 }
