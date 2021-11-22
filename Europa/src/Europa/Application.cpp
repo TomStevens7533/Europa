@@ -5,6 +5,7 @@
 #include "Input.h"
 #include <glm/glm.hpp>
 #include "ResourceManager.h"
+#include "Renderer/Renderer.h"
 
 
 
@@ -52,6 +53,8 @@ namespace Eu
 
 		EventDispatcher dispatcher(e);
 		dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+		dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
+
 
 		//EU_CLIENT_TRACE("{0}", e);
 
@@ -74,13 +77,17 @@ namespace Eu
 			TimeStep timestep = time - m_LastFrameTime;
 			m_LastFrameTime = time;
 
+			if (!m_IsMinimized) {
+				for (Layer* currentLayer : m_LayerStack)
+					currentLayer->OnUpdate(timestep);
+			}
+
 
 			m_ImGuiLayer->Begin();
 			for (Layer* currentLayer : m_LayerStack)
-				currentLayer->OnUpdate(timestep);
-			for (Layer* currentLayer : m_LayerStack)
 				currentLayer->OnImGuiRender();
 			m_ImGuiLayer->End();
+
 			
 			m_Window->OnUpdate();
 		}
@@ -92,6 +99,20 @@ namespace Eu
 	{
 		m_Running = false;
 		return true;
+	}
+
+	bool Application::OnWindowResize(WindowResizeEvent& e)
+	{
+		if (e.GetWidth() == 0 || e.GetHeight() == 0)
+		{
+			m_IsMinimized = true;
+			return false;
+		}
+		m_IsMinimized = false;
+		Renderer::OnWindowResize(e.GetWidth(), e.GetHeight());
+
+		//All layers need to know about resizing
+		return false;
 	}
 
 }

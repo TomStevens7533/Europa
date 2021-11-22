@@ -42,27 +42,7 @@ bool Chunk::IsBlockSolidInChunk(int yIndex, int xIndex, int zIndex) const
 
 bool Chunk::IsBlockSolid(BlockTypes blockType) const
 {
-	switch (blockType)
-	{
-	case BlockTypes::AIR:
-		return false;
-		break;
-	case BlockTypes::WATER:
-		return false;
-		break;
-	case BlockTypes::ROSE:
-		return false;
-		break;
-	case BlockTypes::TULIP:
-		return false;
-		break;
-	case BlockTypes::AZURE:
-		return false;
-		break;
-	default:
-		return true;
-		break;
-	}
+	return m_ChunkMesh->BlockInfo.IsBlockSolid(blockType);
 }
 
 bool Chunk::Addblock(glm::vec3 posTo, const BlockTypes type)
@@ -80,7 +60,7 @@ bool Chunk::Addblock(glm::vec3 posTo, const BlockTypes type)
 		if (m_ChunkGeneration.GetTypeAtIndex(XIndex, YIndex, ZIndex) == BlockTypes::AIR && HasNeighbours(XIndex, YIndex, ZIndex)) {
 			m_ChunkGeneration.AddBlock(type, XIndex, YIndex, ZIndex);
 			//cubeArray[YIndex][XIndex][ZIndex]->SetPos({ XIndex + m_ChunkPosition.x, YIndex + (-chunkY + m_ChunkPosition.y), ZIndex + m_ChunkPosition.z });
-			EU_CORE_INFO("ADD xIndex: {0}, yIndex: {1}, zIndex: {2}", XIndex, YIndex, ZIndex);
+			//EU_CORE_INFO("ADD xIndex: {0}, yIndex: {1}, zIndex: {2}", XIndex, YIndex, ZIndex);
 
 			if(m_ChunkActive)
 				UpdateMesh();
@@ -113,7 +93,7 @@ bool Chunk::DestroyBlock(glm::vec3 posTolook)
 		if (m_ChunkGeneration.GetTypeAtIndex(XIndex, YIndex, ZIndex) != BlockTypes::AIR) {
 			m_ChunkGeneration.AddBlock(BlockTypes::AIR, XIndex, YIndex, ZIndex);
 			//cubeArray[YIndex][XIndex][ZIndex] = nullptr;
-			EU_CORE_INFO("DELETED xIndex: {0}, yIndex: {1}, zIndex: {2}", XIndex, YIndex, ZIndex);
+			//EU_CORE_INFO("DELETED xIndex: {0}, yIndex: {1}, zIndex: {2}", XIndex, YIndex, ZIndex);
 			UpdateMesh();
 			return true;
 		}

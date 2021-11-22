@@ -13,6 +13,9 @@ namespace Eu {
 
 		static void EnableDepthTest();
 
+		static void SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t heigth);
+
+
 	private:
 		static std::shared_ptr<RendererAPI> s_RenderAPI;
 	};

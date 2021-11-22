@@ -23,6 +23,8 @@ BlockInfromation::BlockInfromation()
 	m_UVMAP.insert({ BlockTypes::TULIP, block });
 	block = new Leaves;
 	m_UVMAP.insert({ BlockTypes::LEAVES, block });
+	block = new Leaves;
+	m_UVMAP.insert({ BlockTypes::LEAVES, block });
 
 
 
@@ -47,5 +49,15 @@ glm::vec2* BlockInfromation::GetUVFaceInformation(BlockTypes blockType, Faces fa
 bool BlockInfromation::IsBlockCube(BlockTypes blockType)
 {
 	return m_UVMAP[blockType]->isCube();
+}
+
+bool BlockInfromation::IsBlockSolid(BlockTypes blockType)
+{
+	if (blockType != BlockTypes::AIR) {
+		return m_UVMAP[blockType]->isSolid();
+	}
+	else
+		return false;
+
 }
 

@@ -22,6 +22,8 @@ namespace Eu {
 
 		virtual void EnableDepthTest() = 0;
 
+		virtual void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t heigth) = 0;
+
 		inline static API GetAPI() { return s_CurrentAPI; }
 
 	private:

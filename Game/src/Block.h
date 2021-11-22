@@ -13,6 +13,8 @@ public:
 	~BlockInfromation();
 	glm::vec2* GetUVFaceInformation(BlockTypes blockType, Faces faceDir);
 	bool IsBlockCube(BlockTypes blockType);
+	bool IsBlockSolid(BlockTypes blockType);
+
 
 private:
 	std::map<BlockTypes, BaseEntity*> m_UVMAP;

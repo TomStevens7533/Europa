@@ -27,8 +27,8 @@ private:
 	int m_MinLeafWidth = 2;
 	int m_MaxLeafWith = 4;
 
-	float m_FlowerChance = 1.f; //10 percent;
-	float m_TreeChance = 0.1f; //20 percent;
+	float m_FlowerChance = 15.f; //10 percent;
+	float m_TreeChance = 0.3f; //20 percent;
 	int m_XLength;
 	int m_YLength;
 	int m_ZLength;

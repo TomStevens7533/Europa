@@ -45,6 +45,8 @@ Dirt::Dirt()
 
 }
 
+
+
 Grass::Grass()
 {
 	TOP =	{ glm::vec2{0.5f, 0.f},  glm::vec2{ 0.5f, 0.25f },  glm::vec2{ 0.75f, 0.25f },  glm::vec2{ 0.75f, 0.0f } };
@@ -142,7 +144,7 @@ Leaves::Leaves()
 	LEFT =	 { glm::vec2{0.0f, 0.25f},  glm::vec2{ 0.0f, 0.5f },  glm::vec2{ 0.25f, 0.5f },  glm::vec2{ 0.25f, 0.25f } };
 	RIGHT =  { glm::vec2{0.0f, 0.25f},  glm::vec2{ 0.0f, 0.5f },  glm::vec2{ 0.25f, 0.5f },  glm::vec2{ 0.25f, 0.25f } };
 
-	m_MeshType = MeshType::Solid;
+	m_MeshType = MeshType::Flora;
 	m_MeshStyle = MeshStyle::Block;
 	m_State = State::Solid;
 }

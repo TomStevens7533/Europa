@@ -83,7 +83,7 @@ bool ChunkManager::AddBlockAtPos(glm::vec3 posToLook, BlockTypes type)
 		}
 	}
 	else {
-		EU_CORE_INFO("CREATING Block CHUNK AT INDEX: {0}, {1}, POSITION: x:{2},y:{3}, z:{4}", indexX, indexY, indexX * m_Xdiff, 0, indexY * m_Zdiff);
+		//EU_CORE_INFO("CREATING Block CHUNK AT INDEX: {0}, {1}, POSITION: x:{2},y:{3}, z:{4}", indexX, indexY, indexX * m_Xdiff, 0, indexY * m_Zdiff);
 
 		Chunk* newChunk = new Chunk{ glm::vec3{ indexX * m_Xdiff, 0, indexY * m_Zdiff}, this, {indexX,indexY}, true };
 		newChunk->Addblock(posToLook, type);
@@ -108,7 +108,7 @@ void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraCon
 	while (it != m_ChunkVec.end())
 	{
 		if (glm::fastDistance((*it).second->GetChunkPosition(), { cameraPos.x, cameraPos.z }) > (m_ChunkLoadDistance * 2.f)) {
-			EU_CORE_TRACE("DEACTIVING CHUNK AT INDEX: {0}, {1}", (*it).first.first, (*it).first.second);
+			//EU_CORE_TRACE("DEACTIVING CHUNK AT INDEX: {0}, {1}", (*it).first.first, (*it).first.second);
 			(*it).second->SetChunkActiveState(false);
 			++it;
 		}
@@ -136,7 +136,7 @@ void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraCon
 		if (chunkIt == m_ChunkVec.end()) {
 			Chunk* newChunk = new Chunk{ glm::vec3{ xIndex * m_Xdiff, 0, yIndex * m_Zdiff}, this, {xIndex,yIndex}, true };
 			m_ChunkVec.insert({ {xIndex, yIndex},newChunk });
-			EU_CORE_INFO("CREATING CHUNK AT INDEX: {0}, {1}, POSITION: x:{2},y:{3}, z:{4}", xIndex, yIndex, xIndex * m_Xdiff, 0, yIndex * m_Zdiff);
+			//EU_CORE_INFO("CREATING CHUNK AT INDEX: {0}, {1}, POSITION: x:{2},y:{3}, z:{4}", xIndex, yIndex, xIndex * m_Xdiff, 0, yIndex * m_Zdiff);
 			//reload neighbouring meshes to fill in missing meshes
 			ReloadNeighbouringChunks({ xIndex, yIndex });
 			newChunk->UpdateMesh();

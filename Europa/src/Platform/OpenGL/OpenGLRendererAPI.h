@@ -17,6 +17,8 @@ namespace Eu {
 
 			virtual void EnableDepthTest() override;
 
+			void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t heigth) override;
+
 	private:
 	};
 }

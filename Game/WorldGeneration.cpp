@@ -63,7 +63,7 @@ BlockTypes ChunkGeneration::GetBlockType(int x, int y, int z)
 			int maxValue = 100;
 			//flowers
 			if (((rand() % 1000) / 10.f) <= m_FlowerChance) {
-				int randFlower = rand() % 3;
+				int randFlower = rand() % 4;
 				switch (randFlower)
 				{
 				case 0:
@@ -132,13 +132,10 @@ void ChunkGeneration::BuildTree(int x, int y, int z)
 			{
 				if (IsIndexInBounds((x + xIndex), y + leaveLength - (currentMaxLeafHeight - YIndex), (z + zIndex))) {
 					//Fill inn this chunk
-					//if (GetTypeAtIndex((x + xIndex), y + leaveLength - (currentMaxLeafHeight - YIndex), (z + zIndex)) != BlockTypes::AIR)
-					//	continue;
-
 					AddBlock(BlockTypes::LEAVES, (x + xIndex), y + leaveLength - (currentMaxLeafHeight - YIndex), (z + zIndex));
 				}
-					//fill in in neighbouring chunk 
 				else {
+					//fill in in neighbouring chunk 
 					m_pChunkManager->AddBlockAtPos({ m_ChunkPos.x + (x + xIndex), m_ChunkPos.y +
 						(y + leaveLength - (currentMaxLeafHeight - YIndex)) ,  m_ChunkPos.z + (z + zIndex) }, BlockTypes::STONE);
 				}
