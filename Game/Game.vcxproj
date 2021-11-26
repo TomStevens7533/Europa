@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -134,27 +134,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BlockDatabase.h" />
-    <ClInclude Include="BlockStruct.h" />
-    <ClInclude Include="src\Chunk.h" />
-    <ClInclude Include="src\Chunkmanager.h" />
+    <ClInclude Include="src\BlockDatabase.h" />
+    <ClInclude Include="src\BlockStruct.h" />
     <ClInclude Include="src\Block.h" />
+    <ClInclude Include="src\Chunk.h" />
     <ClInclude Include="src\ChunkMesh.h" />
-    <ClInclude Include="WorldGeneration.h" />
+    <ClInclude Include="src\Chunkmanager.h" />
+    <ClInclude Include="src\WorldGeneration.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BlockDatabase.cpp" />
-    <ClCompile Include="src\Chunk.cpp" />
-    <ClCompile Include="src\Chunkmanager.cpp" />
-    <ClCompile Include="src\ChunkMesh.cpp" />
-    <ClCompile Include="src\GameApp.cpp" />
+    <ClCompile Include="src\BlockDatabase.cpp" />
     <ClCompile Include="src\Block.cpp" />
-    <ClCompile Include="WorldGeneration.cpp" />
+    <ClCompile Include="src\Chunk.cpp" />
+    <ClCompile Include="src\ChunkMesh.cpp" />
+    <ClCompile Include="src\Chunkmanager.cpp" />
+    <ClCompile Include="src\GameApp.cpp" />
+    <ClCompile Include="src\WorldGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Europa\Europa.vcxproj">
       <Project>{519558B1-3D37-8387-26F2-96DB12330AD8}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="imgui.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

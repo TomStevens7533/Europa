@@ -1,8 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
-#include "../BlockStruct.h"
+#include "BlockStruct.h"
 #include <utility>
-#include "../WorldGeneration.h"
+#include "WorldGeneration.h"
 
 
 

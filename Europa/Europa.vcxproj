@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|x64">
       <Configuration>Debug</Configuration>
@@ -137,11 +137,9 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Europa\camera\CameraController.h" />
     <ClInclude Include="src\Eupch.h" />
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
-    <ClInclude Include="src\Europa\camera\Camera.h" />
     <ClInclude Include="src\Europa\Core.h" />
     <ClInclude Include="src\Europa\Core\TimeStep.h" />
     <ClInclude Include="src\Europa\EntryPoint.h" />
@@ -170,6 +168,8 @@
     <ClInclude Include="src\Europa\Scenegraph.h" />
     <ClInclude Include="src\Europa\Texture.h" />
     <ClInclude Include="src\Europa\Window.h" />
+    <ClInclude Include="src\Europa\camera\Camera.h" />
+    <ClInclude Include="src\Europa\camera\CameraController.h" />
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h" />
     <ClInclude Include="src\Europa\mesh\Mesh.h" />
     <ClInclude Include="src\Europa\structs.h" />
@@ -182,7 +182,7 @@
     <ClInclude Include="src\Platform\OpenGL\OpenGLVertexArray.h" />
     <ClInclude Include="src\Platform\WindowWindowPolling.h" />
     <ClInclude Include="src\Platform\WindowsWindow.h" />
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="src\Europa\Utils.h" />
     <ClInclude Include="vendor\VLD\include\vld.h" />
     <ClInclude Include="vendor\VLD\include\vld_def.h" />
     <ClInclude Include="vendor\glm\glm\common.hpp" />
@@ -552,9 +552,7 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Europa\camera\CameraController.cpp" />
     <ClCompile Include="src\Europa\Application.cpp" />
-    <ClCompile Include="src\Europa\camera\Camera.cpp" />
     <ClCompile Include="src\Europa\GameObject.cpp" />
     <ClCompile Include="src\Europa\InputManager.cpp" />
     <ClCompile Include="src\Europa\Layer.cpp" />
@@ -572,6 +570,8 @@
     <ClCompile Include="src\Europa\ResourceManager.cpp" />
     <ClCompile Include="src\Europa\Scenegraph.cpp" />
     <ClCompile Include="src\Europa\Texture.cpp" />
+    <ClCompile Include="src\Europa\camera\Camera.cpp" />
+    <ClCompile Include="src\Europa\camera\CameraController.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Europa\mesh\Mesh.cpp" />
@@ -583,7 +583,7 @@
     <ClCompile Include="src\Platform\OpenGL\OpenGLVertexArray.cpp" />
     <ClCompile Include="src\Platform\WindowsWindow.cpp" />
     <ClCompile Include="src\Platform\WindowsWindowPolling.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="src\Europa\Utils.cpp" />
     <ClCompile Include="vendor\stb_image\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>

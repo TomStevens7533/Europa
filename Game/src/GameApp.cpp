@@ -2,8 +2,8 @@
 
 #include "VLD/include/vld.h"
 #include "Chunkmanager.h"
-#include "../Utils.h"
 #include "Europa/ResourceManager.h"
+#include "Europa/Utils.h"
 
 class MineCraftLayer : public Eu::Layer {
 public:

@@ -1,7 +1,7 @@
 #include "WorldGeneration.h"
 #include "glm/gtc/noise.hpp"
 #include <iostream>
-#include "src/Chunkmanager.h"
+#include "Chunkmanager.h"
 
 ChunkGeneration::ChunkGeneration(const glm::vec3& chunkPos, int xSize, int YSize, int Zsize, ChunkManager* pMAnager) 
 	: m_XLength{ xSize }, m_ZLength{ Zsize }, m_YLength{ YSize }, m_pChunkManager{ pMAnager }, m_ChunkPos{chunkPos}
@@ -137,7 +137,7 @@ void ChunkGeneration::BuildTree(int x, int y, int z)
 				else {
 					//fill in in neighbouring chunk 
 					m_pChunkManager->AddBlockAtPos({ m_ChunkPos.x + (x + xIndex), m_ChunkPos.y +
-						(y + leaveLength - (currentMaxLeafHeight - YIndex)) ,  m_ChunkPos.z + (z + zIndex) }, BlockTypes::STONE);
+						(y + leaveLength - (currentMaxLeafHeight - YIndex)) ,  m_ChunkPos.z + (z + zIndex) }, BlockTypes::LEAVES);
 				}
 			}
 

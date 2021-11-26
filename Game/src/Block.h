@@ -2,7 +2,7 @@
 #include "Europa/GameObject.h"
 #include <vector>
 #include "Chunk.h"
-#include "../BlockDatabase.h"
+#include "BlockDatabase.h"
 
 
 

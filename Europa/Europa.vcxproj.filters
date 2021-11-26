@@ -16,6 +16,9 @@
     <Filter Include="src\Europa\Renderer">
       <UniqueIdentifier>{2E8B1BB3-9AEC-F8C0-235A-3F738FBA2F80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Europa\camera">
+      <UniqueIdentifier>{206E4157-8C84-3FED-D5FB-CA0E41511075}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Europa\imgui">
       <UniqueIdentifier>{F2414EDC-DE3A-6D2E-076D-52B3F3C44C3A}</UniqueIdentifier>
     </Filter>
@@ -67,9 +70,6 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Application.h">
-      <Filter>src\Europa</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Europa\camera\Camera.h">
       <Filter>src\Europa</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Core.h">
@@ -155,6 +155,12 @@
     </ClInclude>
     <ClInclude Include="src\Europa\Window.h">
       <Filter>src\Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\camera\Camera.h">
+      <Filter>src\Europa\camera</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\camera\CameraController.h">
+      <Filter>src\Europa\camera</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h">
       <Filter>src\Europa\imgui</Filter>
@@ -1293,14 +1299,10 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Europa\camera\CameraController.h" />
-    <ClInclude Include="Utils.h" />
+    <ClInclude Include="src\Europa\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
-      <Filter>src\Europa</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Europa\camera\Camera.cpp">
       <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\GameObject.cpp">
@@ -1354,6 +1356,12 @@
     <ClCompile Include="src\Europa\Texture.cpp">
       <Filter>src\Europa</Filter>
     </ClCompile>
+    <ClCompile Include="src\Europa\camera\Camera.cpp">
+      <Filter>src\Europa\camera</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\camera\CameraController.cpp">
+      <Filter>src\Europa\camera</Filter>
+    </ClCompile>
     <ClCompile Include="src\Europa\imgui\ImGuiBuild.cpp">
       <Filter>src\Europa\imgui</Filter>
     </ClCompile>
@@ -1390,7 +1398,6 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Europa\camera\CameraController.cpp" />
-    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="src\Europa\Utils.cpp" />
   </ItemGroup>
 </Project>
