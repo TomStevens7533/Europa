@@ -33,6 +33,16 @@ namespace Eu {
 		s_RenderAPI->EnableDepthTest();
 	}
 
+	void RenderCommand::EnableWireFrame()
+	{
+		s_RenderAPI->EnableWireFrame();
+	}
+
+	void RenderCommand::DisablewireFrame()
+	{
+		s_RenderAPI->DisableWireFrame();
+	}
+
 	void RenderCommand::SetViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t heigth)
 	{
 		s_RenderAPI->SetViewPort(x, y, width, heigth);

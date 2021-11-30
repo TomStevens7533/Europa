@@ -28,7 +28,7 @@ namespace Eu {
 	{
 		//Create program attach shaders 
 		if(m_pRenderingProgram) //default to 2D texture program
-			m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(TextureTypes::TEXTURE2D);
+			m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(ShaderType::TEXTURE2D_WORLDSPACE_SHADER);
 
 
 	}
@@ -44,9 +44,6 @@ namespace Eu {
 	{
 		if (m_ptexture == nullptr)
 			m_ptexture = &ResourceManager::GetInstance()->GetTexture(path, textureType);
-
-		if (m_pRenderingProgram == nullptr)
-			m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(textureType);
 
 			//(*m_pRenderingProgram)->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader); //this gives opengl error
 
@@ -140,7 +137,7 @@ namespace Eu {
 
 	SkyBox::SkyBox()
 	{
-		m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(TextureTypes::CUBETEXTURE);
+		m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(ShaderType::CUBETEXTURE_LOCALSPACE_SHADER);
 		AddMesh("Resources/kubus.obj");
 	}
 

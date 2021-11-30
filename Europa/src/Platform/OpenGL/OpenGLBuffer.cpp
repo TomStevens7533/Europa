@@ -11,7 +11,6 @@ namespace Eu
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
 		glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
-		glCheckError();
 
 
 
@@ -37,7 +36,6 @@ namespace Eu
 		glCreateBuffers(1, &m_RendererID);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), Indices, GL_STATIC_DRAW);
-		glCheckError();
 
 	}
 	OpenGLIndexBuffer::~OpenGLIndexBuffer()

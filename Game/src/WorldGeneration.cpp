@@ -15,6 +15,8 @@ ChunkGeneration::ChunkGeneration(const glm::vec3& chunkPos, int xSize, int YSize
 			float value = glm::simplex(glm::vec2{ voxelxPos / 64.f, voxedzPos / 64.f });
 			float value2 = glm::simplex(glm::vec2{ voxelxPos / 128.f, voxedzPos / 128.f });
 			float value3 = glm::simplex(glm::vec2{ voxelxPos / 1000.f, voxedzPos / 1000.f });
+			
+
 			//make between 0 and 1.0
 			float totalValue = (value * value2 * value3 * value3 - 0.f) / (1.f - 0.f);
 			totalValue = (totalValue + 1) / 2;

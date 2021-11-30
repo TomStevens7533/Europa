@@ -121,7 +121,7 @@ namespace Eu {
 		
 	
 
-	const std::shared_ptr<BaseProgram>& ResourceManager::GetProgram(TextureTypes type)
+	const std::shared_ptr<BaseProgram>& ResourceManager::GetProgram(ShaderType type)
 	{
 		size_t count = m_ProgramMap.count(type);
 		if (count == 0) {
@@ -131,19 +131,25 @@ namespace Eu {
 
 			switch (type)
 			{
-			case TextureTypes::TEXTURE2D:
+			case ShaderType::TEXTURE2D_WORLDSPACE_SHADER:
 				m_Program->AttachVertexShader("Resources/vertexShader2D.vert");
 				m_Program->AttachPixelShader("Resources/fragmentShader2D.frag");
 				m_Program->LinkProgram();
 
 				break;
-			case TextureTypes::CUBETEXTURE:
+			case ShaderType::CUBETEXTURE_LOCALSPACE_SHADER:
 				m_Program->AttachVertexShader("Resources/vertexShaderCUBE.vert");
 				m_Program->AttachPixelShader("Resources/fragmentShaderCUBE.frag");
 				m_Program->LinkProgram();
 				break;
+			case ShaderType::TEXTURE2D_UILOCALSPACE_SHADER:
+				m_Program->AttachVertexShader("Resources/VertexShaderUI.vert");
+				m_Program->AttachPixelShader("Resources/FragmentShaderUI.frag");
+				m_Program->LinkProgram();
+				break;
 			default:
 				break;
+			
 			}
 			//put new program in programmap;
 			auto it = m_ProgramMap.insert(std::pair{ type, m_Program });

@@ -4,6 +4,13 @@
 #include <map>
 
 namespace Eu {
+
+	enum class ShaderType {
+		TEXTURE2D_WORLDSPACE_SHADER,
+		CUBETEXTURE_LOCALSPACE_SHADER,
+		TEXTURE2D_UILOCALSPACE_SHADER
+	};
+
 	class BaseShader;
 	class BaseProgram
 	{
@@ -29,6 +36,8 @@ namespace Eu {
 		void SetUniformMatrix4(const glm::mat4& mat4, const char* name, ShaderTypes type);
 		void SetUniformInt(const int index, const char* name, ShaderTypes type) const;
 		void SetUniformVec2(const glm::vec2 index, const char* name, ShaderTypes type) const;
+		void SetUniformVec4(const glm::vec4& vec4Uniform, const char* name, ShaderTypes type) const;
+
 
 
 

@@ -56,6 +56,13 @@ namespace Eu
 
 	}
 
+	void BaseProgram::SetUniformVec4(const glm::vec4& vec4Uniform, const char* name, ShaderTypes type) const
+	{
+		m_ShaderMap.at(type)->SetUniformVec4(vec4Uniform, name, m_RenderID);
+
+
+	}
+
 	void BaseProgram::ClearShaders()
 	{
 		m_ShaderMap.clear();

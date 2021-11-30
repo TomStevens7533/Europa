@@ -12,10 +12,9 @@ namespace Eu {
 
 		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) override;
 		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) override;
-
-
-
 		virtual void SetUniformVec2(const glm::vec2 index, const char* name, uint32_t renderID)override;
+		virtual void SetUniformVec4(const glm::vec4& vec4Uniform, const char* name, uint32_t renderID)override;
+
 	};
 
 	class OpenGLIndexShader : public IndexShader
@@ -27,5 +26,7 @@ namespace Eu {
 		virtual void SetUniformMatrix4(const glm::mat4& mat4, const char* name, uint32_t renderID) override;
 		virtual void SetUniformInt(const int index, const char* name, uint32_t renderID) override;
 		virtual void SetUniformVec2(const glm::vec2 index, const char* name, uint32_t renderID)override;
+		virtual void SetUniformVec4(const glm::vec4& vec4Uniform, const char* name, uint32_t renderID)override;
+
 	};
 }

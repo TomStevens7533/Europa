@@ -41,14 +41,20 @@ public:
 
 		Eu::RenderCommand::SetClearColor({ 0.f, 0.3f, 0.8f, 1.f });
 		Eu::RenderCommand::Clear();
+
+
 		Eu::Renderer::BeginScene(m_Camera.GetCamera());
-
 		//m_Chunk->Render();
-
 		m_ChunkManager->Render();
 		//m_pScene->RenderScene();
-
 		Eu::Renderer::EndScene();
+
+
+
+		Eu::Renderer2D::BeginUIScene();
+		Eu::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.05f, 0.1f }, { 0.8f, 0.f, 0.2f, 1.f });
+		Eu::Renderer2D::EndUIScene();
+
 
 	}
 

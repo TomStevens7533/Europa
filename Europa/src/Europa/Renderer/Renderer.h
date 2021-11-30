@@ -12,9 +12,14 @@ namespace Eu
 	{
 
 	public: 
+		static void Init();
+
 		static void BeginScene(const Camera& sceneCamera);
 		static void EndScene();
 		static void OnWindowResize(uint32_t width, uint32_t height);
+
+		static void EnableWireFrame();
+		static void DisableWireFrame();
 
 		static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f));
 		static void SubmitNoDepth(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f), bool isBackground = false);

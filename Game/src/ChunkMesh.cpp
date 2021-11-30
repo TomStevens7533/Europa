@@ -35,7 +35,7 @@ const std::array<float, 12> bottomFace{ 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1 };
 ChunkMesh::ChunkMesh()
 {
 	if (m_pRenderingProgram == nullptr) //default to 2D texture program
-		m_pRenderingProgram = &Eu::ResourceManager::GetInstance()->GetProgram(Eu::TextureTypes::TEXTURE2D);
+		m_pRenderingProgram = &Eu::ResourceManager::GetInstance()->GetProgram(Eu::ShaderType::TEXTURE2D_WORLDSPACE_SHADER);
 	m_pChunkMesh = std::make_shared<Eu::Mesh>();
 }
 

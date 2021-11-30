@@ -79,6 +79,16 @@ namespace Eu {
 
 	}
 
+	void OpenGLVertexShader::SetUniformVec4(const glm::vec4& vec4Uniform, const char* name, uint32_t renderID)
+	{
+		GLint loc = glGetUniformLocation(renderID, name);
+		if (loc == -1) {
+			EU_CORE_ASSERT(false, "vec4 uniform not found at loc: ", loc);
+		}
+		glUniform4f(loc, vec4Uniform.x, vec4Uniform.y, vec4Uniform.z, vec4Uniform.w);
+
+	}
+
 	//IndexShader
 	OpenGLIndexShader::OpenGLIndexShader(const std::string& path): IndexShader(path)
 	{
@@ -130,6 +140,7 @@ namespace Eu {
 		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat4)); //NO ERROR
 
 
+
 	}
 
 	void OpenGLIndexShader::SetUniformInt(const int index, const char* name, uint32_t renderID)
@@ -156,6 +167,16 @@ namespace Eu {
 			return;
 		}
 		glUniform2fv(m_ShaderID, loc, &index.x); //GIVES INVALID_OPERATION error
+
+	}
+
+	void OpenGLIndexShader::SetUniformVec4(const glm::vec4& vec4Uniform, const char* name, uint32_t renderID)
+	{
+		GLint loc = glGetUniformLocation(renderID, name);
+		if (loc == -1) {
+			EU_CORE_ASSERT(false, "vec4 uniform not found at loc: ", loc);
+		}
+		glUniform4f(loc, vec4Uniform.x, vec4Uniform.y, vec4Uniform.z, vec4Uniform.w);
 
 	}
 

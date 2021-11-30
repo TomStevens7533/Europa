@@ -35,19 +35,25 @@ namespace Eu {
 	void OpenGLRendererAPI::EnableDepthTest()
 	{
 		//openGl depth buffer explained 
-	// https://www.youtube.com/watch?v=uJzXDkgm5Fw
-	//https://www.youtube.com/watch?v=U9-J8M-oslA
+		// https://www.youtube.com/watch?v=uJzXDkgm5Fw
+		//https://www.youtube.com/watch?v=U9-J8M-oslA
 
 
 		glEnable(GL_DEPTH_TEST);
-
-		if(Input::IsKeyPressed(EU_KEY_0))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		else if(Input::IsKeyPressed(EU_KEY_9))
-			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
 		//glEnable(GL_CULL_FACE);
 		//glCullFace(GL_BACK);
+	}
+
+	void OpenGLRendererAPI::EnableWireFrame()
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+	}
+
+	void OpenGLRendererAPI::DisableWireFrame()
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
 	}
 
 	void OpenGLRendererAPI::SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t heigth)

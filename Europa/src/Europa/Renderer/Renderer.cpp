@@ -3,6 +3,7 @@
 #include "Eupch.h"
 #include <glad/glad.h>
 #include "RenderCommand.h"
+#include "Renderer2D.h"
 
 
 
@@ -14,9 +15,20 @@ namespace Eu
 	const Camera* Renderer::m_SceneData = nullptr;
 	bool Renderer::m_IsFirstFrame = true;
 
-	void Renderer::BeginScene(const Camera& sceneCamera)
+	void Renderer::Init()
 	{
 		RenderCommand::EnableDepthTest();
+		Renderer2D::Init();
+
+	}
+
+	void Renderer::ShutDown()
+	{
+		Renderer2D::shutdown();
+	}
+
+	void Renderer::BeginScene(const Camera& sceneCamera)
+	{
 		m_SceneData = &sceneCamera;
 	}
 	void Renderer::EndScene()
@@ -29,10 +41,21 @@ namespace Eu
 		RenderCommand::SetViewport(0, 0, width, height);
 	}
 
+	void Renderer::EnableWireFrame()
+	{
+		RenderCommand::EnableWireFrame();
+	}
+
+	void Renderer::DisableWireFrame()
+	{
+		RenderCommand::DisablewireFrame();
+	}
+
 	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform) {
 		//Rendercommand
 		//program->Bind();
 		if (m_IsFirstFrame == true) {
+			program->Bind();
 			program->SetUniformMatrix4(m_SceneData->GetViewProjectionMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
 			m_IsFirstFrame = false;
 		}

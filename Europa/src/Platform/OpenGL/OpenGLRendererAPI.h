@@ -16,6 +16,11 @@ namespace Eu {
 			virtual void DrawIndexedNoDepth(const std::shared_ptr<VertexArray>& VertexArray) override;
 
 			virtual void EnableDepthTest() override;
+		
+			virtual void EnableWireFrame() override;
+
+			virtual void DisableWireFrame() override;
+
 
 			void SetViewPort(uint32_t x, uint32_t y, uint32_t width, uint32_t heigth) override;
 

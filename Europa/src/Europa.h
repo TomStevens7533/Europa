@@ -19,6 +19,7 @@
 //----------Rendering----------------
 #include "Europa/Texture.h"
 #include "Europa/Renderer/Renderer.h"
+#include "Europa/Renderer/Renderer2D.h"
 #include "Europa/Renderer/RenderCommand.h"
 
 

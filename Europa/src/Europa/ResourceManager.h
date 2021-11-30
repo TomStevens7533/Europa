@@ -18,7 +18,7 @@ namespace Eu {
 		//funtions
 		std::shared_ptr<VertexArray>& GetModel(const std::string modelPath);
 		std::shared_ptr<BaseTexture>& GetTexture(const std::string texturePath, const TextureTypes type);
-		const std::shared_ptr<BaseProgram>& GetProgram(TextureTypes type);
+		const std::shared_ptr<BaseProgram>& GetProgram(ShaderType type);
 	
 	private:
 		//Variables
@@ -26,7 +26,7 @@ namespace Eu {
 		std::map<std::string, std::shared_ptr<VertexArray>> m_VertexMap;
 		std::map<std::string, std::shared_ptr<BaseTexture>> m_TextureMap;
 
-		std::map<TextureTypes, std::shared_ptr<BaseProgram>> m_ProgramMap;
+		std::map<ShaderType, std::shared_ptr<BaseProgram>> m_ProgramMap;
 
 		//singleton object
 		static std::shared_ptr<ResourceManager> m_ResourceMangerSingleton;
