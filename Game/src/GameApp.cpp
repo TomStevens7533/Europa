@@ -19,8 +19,7 @@ public:
 		   
 			///mpScene->AddItemToSceneGraph(newSkyBox);
 			m_ptexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/TextureAtlas.png", Eu::TextureTypes::TEXTURE2D);
-
-			(*m_ptexture)->Bind();
+			m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
 		}
 
 	void OnAttach() override
@@ -44,6 +43,8 @@ public:
 
 
 		Eu::Renderer::BeginScene(m_Camera.GetCamera());
+		(*m_ptexture)->Bind();
+
 		//m_Chunk->Render();
 		m_ChunkManager->Render();
 		//m_pScene->RenderScene();
@@ -51,8 +52,8 @@ public:
 
 
 
-		Eu::Renderer2D::BeginUIScene();
-		Eu::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.05f, 0.1f }, { 0.8f, 0.f, 0.2f, 1.f });
+		Eu::Renderer2D::BeginUIScene(m_Camera.GetCamera());
+		Eu::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.1f, 0.2f }, *m_pCrosshairTexture , { 0.8f, 0.f, 0.2f, 1.f });
 		Eu::Renderer2D::EndUIScene();
 
 
@@ -95,6 +96,7 @@ private:
 
 	
 	 std::shared_ptr<Eu::BaseTexture>* m_ptexture;
+	 std::shared_ptr<Eu::BaseTexture>* m_pCrosshairTexture;
 
 	Eu::PerspectiveCameraController m_Camera;
 };

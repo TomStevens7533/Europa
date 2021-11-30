@@ -14,9 +14,12 @@ void main()
 	vec4 tempColor;
 
 
-	tempColor = v_Color;
+	tempColor = texture(u_Texture, v_TexCord);
+	 
 
-	color = v_Color;
+
+
+	color = tempColor;
 
 	
 

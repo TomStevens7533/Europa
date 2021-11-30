@@ -29,6 +29,8 @@ namespace Eu {
 
 		virtual void DisableWireFrame() =0;
 
+		virtual void SetBlending() = 0;
+
 		inline static API GetAPI() { return s_CurrentAPI; }
 
 	private:

@@ -17,7 +17,7 @@ namespace Eu
 
 	void Renderer::Init()
 	{
-		RenderCommand::EnableDepthTest();
+		RenderCommand::Init();
 		Renderer2D::Init();
 
 	}

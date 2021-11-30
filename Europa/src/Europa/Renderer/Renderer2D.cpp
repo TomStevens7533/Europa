@@ -24,9 +24,9 @@ namespace Eu {
 
 			std::vector<Vertex_Input> squareVertices;
 			squareVertices.push_back(Vertex_Input{ {-0.5f, -0.5f, 0.0f},{-0.f, -0.f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f} });
-			squareVertices.push_back(Vertex_Input{ {0.5f,-0.5f,	0.0,},{-0.f, -0.f, 0.0f},	{0.f, 0.f}, {0.f, 0.f, 0.f} });
-			squareVertices.push_back(Vertex_Input{ {0.5f, 0.5f, 0.0f},{-0.f, -0.f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f} });
-			squareVertices.push_back(Vertex_Input{ {-0.5f, 0.5f, 0.0f},{-0.f, -0.f, 0.0f}, {0.f, 0.f}, {0.f, 0.f, 0.f} });
+			squareVertices.push_back(Vertex_Input{ {0.5f,-0.5f,	0.0,},{-0.f, -0.f, 0.0f},	{1.f, 0.f}, {0.f, 0.f, 0.f} });
+			squareVertices.push_back(Vertex_Input{ {0.5f, 0.5f, 0.0f},{-0.f, -0.f, 0.0f}, {1.f, 1.f}, {0.f, 0.f, 0.f} });
+			squareVertices.push_back(Vertex_Input{ {-0.5f, 0.5f, 0.0f},{-0.f, -0.f, 0.0f}, {0.f, 1.f}, {0.f, 0.f, 0.f} });
 
 			std::shared_ptr<VertexBuffer> quadVertexBuffer;
 			quadVertexBuffer.reset(VertexBuffer::Create(squareVertices.data(), squareVertices.size()));
@@ -54,9 +54,15 @@ namespace Eu {
 		
 	}
 
-	void Renderer2D::BeginUIScene()
+	void Renderer2D::BeginUIScene(const Camera& sceneCamera)
 	{
+
+
 		s_2DData->QuadProgram->Bind();
+		s_2DData->QuadProgram->SetUniformInt(0, "u_Texture", Eu::BaseProgram::ShaderTypes::T_PixelShader);
+
+
+		s_2DData->QuadProgram->SetUniformMatrix4(sceneCamera.GetProjectionMatrix(), "u_Proj", BaseProgram::ShaderTypes::T_VertexShader);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
@@ -69,6 +75,12 @@ namespace Eu {
 		RenderCommand::DrawIndexed(s_2DData->QuadVertexArray);
 	}
 
+	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<BaseTexture>& Texture, const glm::vec4& color)
+	{
+		Texture->Bind();
+		DrawQuad(position, size, color);
+	}
+
 	void Renderer2D::shutdown()
 	{
 		delete s_2DData;
@@ -79,6 +91,7 @@ namespace Eu {
 	{
 
 	}
+
 
 }
 

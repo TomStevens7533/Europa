@@ -13,6 +13,7 @@ namespace Eu
 
 	public: 
 		static void Init();
+		static void ShutDown();
 
 		static void BeginScene(const Camera& sceneCamera);
 		static void EndScene();
@@ -23,6 +24,8 @@ namespace Eu
 
 		static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f));
 		static void SubmitNoDepth(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f), bool isBackground = false);
+	
+	
 	public:
 		inline static RendererAPI::API GetAPI() { return RendererAPI::GetAPI(); }
 	

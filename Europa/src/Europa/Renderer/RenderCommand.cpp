@@ -7,6 +7,12 @@ namespace Eu {
 	std::shared_ptr<RendererAPI> RenderCommand::s_RenderAPI = std::make_shared<OpenGLRendererAPI>();
 
 
+	void RenderCommand::Init()
+	{
+		RenderCommand::EnableDepthTest();
+		s_RenderAPI->SetBlending();
+	}
+
 	void RenderCommand::SetClearColor(const glm::vec4& color)
 	{
 		s_RenderAPI->SetClearColor(color);
