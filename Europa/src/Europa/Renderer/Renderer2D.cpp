@@ -62,7 +62,7 @@ namespace Eu {
 		s_2DData->QuadProgram->SetUniformInt(0, "u_Texture", Eu::BaseProgram::ShaderTypes::T_PixelShader);
 
 
-		s_2DData->QuadProgram->SetUniformMatrix4(sceneCamera.GetProjectionMatrix(), "u_Proj", BaseProgram::ShaderTypes::T_VertexShader);
+		s_2DData->QuadProgram->SetUniformMatrix4(glm::mat4(1) * sceneCamera.GetProjectionMatrix(), "u_Proj", BaseProgram::ShaderTypes::T_VertexShader);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {

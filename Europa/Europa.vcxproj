@@ -156,6 +156,8 @@
     <ClInclude Include="src\Europa\Log.h" />
     <ClInclude Include="src\Europa\OnEventDo.h" />
     <ClInclude Include="src\Europa\OnUpdate.h" />
+    <ClInclude Include="src\Europa\Profiling\Timer.h" />
+    <ClInclude Include="src\Europa\Profiling\TimerManager.h" />
     <ClInclude Include="src\Europa\Renderer\Buffer.h" />
     <ClInclude Include="src\Europa\Renderer\GraphicsContext.h" />
     <ClInclude Include="src\Europa\Renderer\Program.h" />
@@ -561,6 +563,8 @@
     <ClCompile Include="src\Europa\Log.cpp" />
     <ClCompile Include="src\Europa\OnEventDo.cpp" />
     <ClCompile Include="src\Europa\OnUpdate.cpp" />
+    <ClCompile Include="src\Europa\Profiling\Timer.cpp" />
+    <ClCompile Include="src\Europa\Profiling\TimerManager.cpp" />
     <ClCompile Include="src\Europa\Renderer\Buffer.cpp" />
     <ClCompile Include="src\Europa\Renderer\Program.cpp" />
     <ClCompile Include="src\Europa\Renderer\RenderCommand.cpp" />

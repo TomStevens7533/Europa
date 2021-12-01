@@ -1305,6 +1305,8 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
+    <ClInclude Include="src\Europa\Profiling\Timer.h" />
+    <ClInclude Include="src\Europa\Profiling\TimerManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1409,5 +1411,7 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
+    <ClCompile Include="src\Europa\Profiling\Timer.cpp" />
+    <ClCompile Include="src\Europa\Profiling\TimerManager.cpp" />
   </ItemGroup>
 </Project>

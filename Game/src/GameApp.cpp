@@ -4,6 +4,8 @@
 #include "Chunkmanager.h"
 #include "Europa/ResourceManager.h"
 #include "Europa/Utils.h"
+#include "Europa/Profiling/TimerManager.h"
+
 
 class MineCraftLayer : public Eu::Layer {
 public:
@@ -35,6 +37,7 @@ public:
 
 	void OnUpdate(Eu::TimeStep deltaTime) override
 	{
+		auto updateTimer = m_TimerManager.AddTimer("OnUpdate");
 		m_Camera.OnUpdate(deltaTime);
 		m_ChunkManager->Update(deltaTime, m_Camera);
 
@@ -56,7 +59,7 @@ public:
 		Eu::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.2f, 0.2f }, *m_pCrosshairTexture , { 0.8f, 0.f, 0.2f, 1.f });
 		Eu::Renderer2D::EndUIScene();
 
-
+		m_TimerManager.StopTimer(updateTimer);
 	}
 
 
@@ -89,11 +92,23 @@ public:
 
 	void OnImGuiRender() override
 	{
+		ImGui::Begin("TIMINGS");
+
+		for (auto trResult : m_TimerManager.GetTimerResults())
+		{
+			char label[50];
+			strcpy(label, trResult.Name);
+			strcat(label, " %.3fms");
+
+			ImGui::Text(label, trResult.Time);
+		}
+		ImGui::End();
+		m_TimerManager.ClearTimerResults();
 	}
 private:
 	//std::shared_ptr<Eu::ScenGraph> m_pScene = std::make_shared<Eu::ScenGraph>();
 	ChunkManager* m_ChunkManager;
-
+	Eu::TimerManager m_TimerManager;
 	
 	 std::shared_ptr<Eu::BaseTexture>* m_ptexture;
 	 std::shared_ptr<Eu::BaseTexture>* m_pCrosshairTexture;
@@ -107,6 +122,7 @@ class Sandbox : public Eu::Application
 public:
 	Sandbox()
 	{
+
 		PushLayer(new MineCraftLayer);
 
 
