@@ -1,5 +1,4 @@
 #include "OpenGLTexture.h"
-#include <glad/glad.h>
 #include "stb_image.h"
 #include <Platform/OpenGL/EuropaOpenGL.h>
 
@@ -16,73 +15,85 @@ namespace Eu {
 		m_Width = width;
 		m_Height = height;
 		m_Channels = channels;
-
 		if (channels == 4) {
 			EU_CORE_TRACE("Creating 4 Channel Texture: \n From path: {0}", path);
-
-
-			//create texture
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateTextures.xhtml
-			glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
-			glBindTexture(GL_TEXTURE_2D, m_RenderID);
-			//ask for storage on GPU(VRAM)
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
-			glTextureStorage2D(m_RenderID, 1, GL_RGBA8, m_Width, m_Height);
-
-			//set some texture parameters
-			//for example when texture does not fit exacltly(min or maxification)
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
-			glTextureParameteri(m_RenderID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-			//upload texture
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexSubImage2D.xhtml
-			//second paramater is level index
-			glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, tex);
-
-
-			// Set the preferences:
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-			glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-
+			m_InternalFormat = GL_RGBA8;
+			m_DataFormat = GL_RGBA;
 			m_HasAlphaChannel = true;
+
 		}
-		else if(channels == 3)
+		else if (channels == 3)
 		{
 			EU_CORE_TRACE("Creating 3 Channel Texture: \n From path: {0}", path);
-
-
-			//create texture
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateTextures.xhtml
-			glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
-			glBindTexture(GL_TEXTURE_2D, m_RenderID);
-
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
-			glTextureStorage2D(m_RenderID, 1, GL_RGB8, m_Width, m_Height);
-
-			//set some texture parameters
-			//for example when texture does not fit exacltly(min or maxification)
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
-			glTextureParameteri(m_RenderID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-
-			//upload texture
-			//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexSubImage2D.xhtml
-			//second paramater is level index
-			glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, GL_RGB, GL_UNSIGNED_BYTE, tex);
-
-
-
+			m_InternalFormat = GL_RGB8;
+			m_DataFormat = GL_RGB;
 		}
-		else
-		{
-			EU_CORE_ASSERT(false, "Texture cannot be loaded: not enough channles! ");
-		}
+
+
+		//create texture
+		//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glCreateTextures.xhtml
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
+		glBindTexture(GL_TEXTURE_2D, m_RenderID);
+		//ask for storage on GPU(VRAM)
+		//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
+		glTextureStorage2D(m_RenderID, 1, GL_RGBA8, m_Width, m_Height);
+
+		//set some texture parameters
+		//for example when texture does not fit exacltly(min or maxification)
+		//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
+		glTextureParameteri(m_RenderID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		//upload texture
+		//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexSubImage2D.xhtml
+		//second paramater is level index
+		glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, GL_RGBA, GL_UNSIGNED_BYTE, tex);
+
+
+		// Set the preferences:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+
+		
+		
 
 		
 		//free mempory on cpu
 		stbi_image_free(tex);
+	}
+
+	OpenGLTexture2D::OpenGLTexture2D(uint32_t width, uint32_t height)
+		: m_Width{width}, m_Height{m_Width}
+	{
+		m_InternalFormat = GL_RGBA8;
+		m_DataFormat = GL_RGBA;
+
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_RenderID);
+		//ask for storage on GPU(VRAM)
+		//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexStorage2D.xhtml
+		glTextureStorage2D(m_RenderID, 1, m_InternalFormat, m_Width, m_Height);
+
+		//set some texture parameters
+		//for example when texture does not fit exacltly(min or maxification)
+		//https://www.khronos.org/registry/OpenGL-Refpages/gl4/html/glTexParameter.xhtml
+		glTextureParameteri(m_RenderID, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+
+
+
+		// Set the preferences:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}
+	void OpenGLTexture2D::SetData(void* data, uint32_t size)
+	{
+		//TODO SUPPORT TO CHANGE PART OF TEXTURE CHANGE SIZE TO VEC
+		glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
+
 	}
 	OpenGLTexture2D::~OpenGLTexture2D()
 	{
@@ -97,6 +108,8 @@ namespace Eu {
 		//opengl uses units so we can access multiple textures at once for more complex rendering tasks
 		glBindTexture(GL_TEXTURE_2D, m_RenderID);
 	}
+
+
 
 	//---------------------------------- 
 	//CUBETETURE
@@ -151,7 +164,7 @@ namespace Eu {
 
 	OpenGLCubeTexture::~OpenGLCubeTexture()
 	{
-
+		glDeleteTextures(1, &m_RenderID);
 	}
 
 	void OpenGLCubeTexture::Bind(uint32_t unitIndex) const
@@ -159,6 +172,12 @@ namespace Eu {
 		glActiveTexture(GL_TEXTURE0);
 		//opengl uses units so we can access multiple textures at once for more complex rendering tasks
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_RenderID);
+	}
+
+	void OpenGLCubeTexture::SetData(void* data, uint32_t size)
+	{
+		//TODO SUPPORT TO CHANGE PART OF TEXTURE CHANGE SIZE TO VEC
+		//glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 	}
 
 }

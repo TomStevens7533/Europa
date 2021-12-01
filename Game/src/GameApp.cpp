@@ -27,7 +27,7 @@ public:
 	}
 
 
-	void OnDetach() override
+	void OnDetach() override 
 	{
 		delete m_ChunkManager;
 	}
@@ -53,7 +53,7 @@ public:
 
 
 		Eu::Renderer2D::BeginUIScene(m_Camera.GetCamera());
-		Eu::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.1f, 0.2f }, *m_pCrosshairTexture , { 0.8f, 0.f, 0.2f, 1.f });
+		Eu::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.2f, 0.2f }, *m_pCrosshairTexture , { 0.8f, 0.f, 0.2f, 1.f });
 		Eu::Renderer2D::EndUIScene();
 
 

@@ -16,8 +16,26 @@ namespace Eu {
 			break;
 
 		case RendererAPI::API::OpenGL: 
-			EU_CORE_INFO("RendererAPI::OpenGL is active");
 			return  std::make_shared<OpenGLTexture2D>(path);
+			break;
+
+		}
+		EU_CORE_ASSERT(false, "Unknown RendererAPI");
+		return nullptr;
+	}
+
+	std::shared_ptr<Texture2D> Texture2D::Create(uint32_t width, uint32_t height)
+	{
+		EU_CORE_INFO("Creating 2D Texture with size: {0}, {1} ", width, height);
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			EU_CORE_ASSERT(false, "RendererAPI::None is not supported");
+			return nullptr;
+			break;
+
+		case RendererAPI::API::OpenGL:
+			return  std::make_shared<OpenGLTexture2D>(width, height);
 			break;
 
 		}

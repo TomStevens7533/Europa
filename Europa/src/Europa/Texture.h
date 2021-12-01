@@ -18,6 +18,9 @@ namespace Eu {
 		virtual uint32_t GetHeigh() const = 0;
 
 		virtual void Bind(uint32_t unitIndex = 0) const = 0;
+
+
+		virtual void SetData(void* data, uint32_t size) = 0; //upload given pointer to gpu
 		//Elite::RGBColor Sample(const Elite::FVector2& uv, uint8_t& transparancy) const;
 
 	private:
@@ -27,11 +30,15 @@ namespace Eu {
 	class Texture2D : public BaseTexture {
 	public:
 		static std::shared_ptr<Texture2D> Create(const std::string& path);
+		static std::shared_ptr<Texture2D> Create(uint32_t width, uint32_t height);
+
 
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeigh() const = 0;
 
 		virtual void Bind(uint32_t unitIndex = 0) const = 0;
+		virtual void SetData(void* data, uint32_t size) = 0; //upload given pointer to gpu
+
 	};
 
 	class CubeTexture : public BaseTexture {
@@ -42,5 +49,7 @@ namespace Eu {
 		virtual uint32_t GetHeigh() const = 0;
 
 		virtual void Bind(uint32_t unitIndex = 0) const = 0;
+		virtual void SetData(void* data, uint32_t size) = 0; //upload given pointer to gpu
+
 	};
 }
