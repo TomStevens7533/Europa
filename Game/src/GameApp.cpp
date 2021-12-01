@@ -37,9 +37,12 @@ public:
 
 	void OnUpdate(Eu::TimeStep deltaTime) override
 	{
-		auto updateTimer = m_TimerManager.AddTimer("OnUpdate");
+		auto updateTimer = m_TimerManager.AddTimer("Entire OnUpdate");
 		m_Camera.OnUpdate(deltaTime);
 		m_ChunkManager->Update(deltaTime, m_Camera);
+
+
+		auto NrmlRendertimer = m_TimerManager.AddTimer("3D Render");
 
 		Eu::RenderCommand::SetClearColor({ 0.f, 0.3f, 0.8f, 1.f });
 		Eu::RenderCommand::Clear();
@@ -52,14 +55,16 @@ public:
 		m_ChunkManager->Render();
 		//m_pScene->RenderScene();
 		Eu::Renderer::EndScene();
+		m_TimerManager.StopTimer(NrmlRendertimer);
 
+		auto UIRendertimer = m_TimerManager.AddTimer("UIRENDER");
 
 
 		Eu::Renderer2D::BeginUIScene(m_Camera.GetCamera());
 		Eu::Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.2f, 0.2f }, *m_pCrosshairTexture , { 0.8f, 0.f, 0.2f, 1.f });
 		Eu::Renderer2D::EndUIScene();
-
-		m_TimerManager.StopTimer(updateTimer);
+		
+		m_TimerManager.StopAllTimers();
 	}
 
 
@@ -97,8 +102,8 @@ public:
 		for (auto trResult : m_TimerManager.GetTimerResults())
 		{
 			char label[50];
-			strcpy(label, trResult.Name);
-			strcat(label, " %.3fms");
+			strcpy(label, " %.3fms  ");
+			strcat(label, trResult.Name);
 
 			ImGui::Text(label, trResult.Time);
 		}
