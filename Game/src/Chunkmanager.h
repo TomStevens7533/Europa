@@ -5,7 +5,7 @@
 #include "Europa/camera/CameraController.h"
 #include <map>
 #include <utility>
-
+#include "Block.h"
 
 
 class ChunkManager
@@ -24,6 +24,8 @@ private:
 	void ReloadNeighbouringChunks(std::pair<int, int> chunkIndex);
 private:
 	std::map<std::pair<int, int>, Chunk*> m_ChunkVec;
+	BlockInfromation BlockInfo;
+
 	int m_Xdiff = 16;
 	int m_Zdiff = 16;
 	int m_ChunkLoadDistance = 128;

@@ -40,21 +40,21 @@ BlockInfromation::~BlockInfromation()
 	}
 }
 
-glm::vec2* BlockInfromation::GetUVFaceInformation(BlockTypes blockType, Faces faceDir)
+glm::vec2* BlockInfromation::GetUVFaceInformation(BlockTypes blockType, Faces faceDir) const
 {
-	return (m_UVMAP[blockType]->GetUV(faceDir));
+	return (m_UVMAP.at(blockType)->GetUV(faceDir));
 
 }
 
-bool BlockInfromation::IsBlockCube(BlockTypes blockType)
+bool BlockInfromation::IsBlockCube(BlockTypes blockType) const
 {
-	return m_UVMAP[blockType]->isCube();
+	return m_UVMAP.at(blockType)->isCube();
 }
 
-bool BlockInfromation::IsBlockSolid(BlockTypes blockType)
+bool BlockInfromation::IsBlockSolid(BlockTypes blockType) const
 {
 	if (blockType != BlockTypes::AIR) {
-		return m_UVMAP[blockType]->isSolid();
+		return m_UVMAP.at(blockType)->isSolid();
 	}
 	else
 		return false;

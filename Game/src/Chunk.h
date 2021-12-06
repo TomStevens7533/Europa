@@ -8,11 +8,12 @@
 
 class ChunkManager;
 class ChunkMesh;
+class BlockInfromation;
 class Chunk
 {
 public:
 
-	Chunk(glm::vec3 ChunkPosition, ChunkManager* pchunkManager, std::pair<int,int>chunkIndex, bool setActive);
+	Chunk(BlockInfromation* blockInfo, glm::vec3 ChunkPosition, ChunkManager* pchunkManager, std::pair<int,int>chunkIndex, bool setActive);
 	~Chunk();
 
 	void Render() const;
@@ -25,13 +26,15 @@ public:
 	bool HasNeighbours(int xIndex, int yIndex, int zIndex);
 	void UpdateMesh();
 	bool IsBlockSolid(BlockTypes blockType) const;
-
+	void DellaocateData();
+	void Allocate();
 private:
 	int chunkX = 16;
 	int chunkZ = 16;
 	int chunkY = 256;
 
-	ChunkMesh* m_ChunkMesh;
+	BlockInfromation* BlockInfo = nullptr;
+	ChunkMesh* m_ChunkMesh = nullptr;
 	ChunkGeneration m_ChunkGeneration;
 	ChunkManager* m_pChunkManager;
 	std::pair<int, int> m_ChunkIndex;

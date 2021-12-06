@@ -25,8 +25,8 @@ enum class State
 class BaseEntity {
 public:
 	virtual glm::vec2* GetUV(Faces face) = 0;
-	bool isCube() { return m_MeshStyle == MeshStyle::Block; }
-	bool isSolid() { return m_MeshType == MeshType::Solid; }
+	bool isCube() const { return m_MeshStyle == MeshStyle::Block; }
+	bool isSolid() const { return m_MeshType == MeshType::Solid; }
 protected:
 	MeshType m_MeshType;
 	MeshStyle m_MeshStyle;

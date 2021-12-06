@@ -6,15 +6,14 @@
 
 
 
-Chunk::Chunk(glm::vec3 ChunkPosition, ChunkManager* pchunkManager, std::pair<int, int>chunkIndex, bool setActive) : 
+Chunk::Chunk(BlockInfromation* blockInfo, glm::vec3 ChunkPosition, ChunkManager* pchunkManager, std::pair<int, int>chunkIndex, bool setActive) : 
 	m_ChunkPosition{ ChunkPosition }, m_pChunkManager{ pchunkManager }, m_ChunkIndex{ chunkIndex }, m_ChunkGeneration{ChunkPosition, chunkX, chunkY, chunkZ, pchunkManager}, m_ChunkActive{setActive}
 {
 
 
-
+	BlockInfo = blockInfo;
+	Allocate();
 	m_ChunkGeneration.GenerateChunk();
-	m_ChunkMesh = new ChunkMesh();
-	UpdateMesh();
 
 
 }
@@ -42,7 +41,23 @@ bool Chunk::IsBlockSolidInChunk(int yIndex, int xIndex, int zIndex) const
 
 bool Chunk::IsBlockSolid(BlockTypes blockType) const
 {
-	return m_ChunkMesh->BlockInfo.IsBlockSolid(blockType);
+	return BlockInfo->IsBlockSolid(blockType);
+}
+
+void Chunk::DellaocateData()
+{
+	if (!m_ChunkActive) {
+		delete m_ChunkMesh;
+		m_ChunkMesh = nullptr;
+	}
+}
+
+void Chunk::Allocate()
+{
+	if (m_ChunkActive && m_ChunkMesh == nullptr) {
+		m_ChunkMesh = new ChunkMesh(BlockInfo);
+		UpdateMesh();
+	}
 }
 
 bool Chunk::Addblock(glm::vec3 posTo, const BlockTypes type)
@@ -150,105 +165,112 @@ bool Chunk::HasNeighbours(int xIndex, int yIndex, int zIndex)
 
 void Chunk::UpdateMesh()
 {
-	bool IsSideSoldid[6] = { false, false, false, false, false, false };
-
-	int isYallSolid = 0;
-	for (int yIndex = 0; yIndex < chunkY; yIndex++)
-	{
+	//if (m_ChunkMesh != nullptr) {
 
 
-		for (int xIndex = 0; xIndex < chunkX; xIndex++)
+		bool IsSideSoldid[6] = { false, false, false, false, false, false };
+
+		int isYallSolid = 0;
+		for (int yIndex = 0; yIndex < chunkY; yIndex++)
 		{
 
 
-			isYallSolid = 0;
-			for (int zIndex = 0; zIndex < chunkZ; zIndex++)
+			for (int xIndex = 0; xIndex < chunkX; xIndex++)
 			{
-				BlockTypes currentLookUpType = m_ChunkGeneration.GetTypeAtIndex(xIndex, yIndex, zIndex);
-				if (currentLookUpType != BlockTypes::AIR) { //if AIR/Seetrouh skip no faces need to be added
-					//YSolidCheck
 
-					if (yIndex != chunkY - 1) {
-						if (yIndex != 0) { //Bottom Block Check
-							int botIndex = yIndex - 1;
-							if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, botIndex, zIndex)) == false) {
-								//if solid
-								if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::BOT, currentLookUpType))
+
+				isYallSolid = 0;
+				for (int zIndex = 0; zIndex < chunkZ; zIndex++)
+				{
+					BlockTypes currentLookUpType = m_ChunkGeneration.GetTypeAtIndex(xIndex, yIndex, zIndex);
+					if (currentLookUpType != BlockTypes::AIR) { //if AIR/Seetrouh skip no faces need to be added
+						//YSolidCheck
+
+						if (yIndex != chunkY - 1) {
+							if (yIndex != 0) { //Bottom Block Check
+								int botIndex = yIndex - 1;
+								if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, botIndex, zIndex)) == false) {
+									//if solid
+									if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::BOT, currentLookUpType))
+										continue;
+								}
+							}
+
+
+
+							int TopIndex = yIndex + 1;
+							if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, TopIndex, zIndex)) == false)
+							{
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::TOP, currentLookUpType))
 									continue;
+
 							}
 						}
-
-
-
-						int TopIndex = yIndex + 1;
-						if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, TopIndex, zIndex)) == false)
-						{
-							if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::TOP, currentLookUpType))
+						if (yIndex == 0) //No face rendering at bottom of chunk
+							IsSideSoldid[1] = true;
+						if (yIndex >= chunkY - 1) //render faces at top of chunk
+							if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::TOP, currentLookUpType))
 								continue;
+
+
+						//check left/right
+						if (xIndex != 0) { //left check
+							int leftIndex = xIndex - 1;
+							if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(leftIndex, yIndex, zIndex)) == false)
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::LEFT, currentLookUpType))
+									continue;
+						}
+						if (xIndex == 0) { //left boundary check
+							if (m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first - 1, m_ChunkIndex.second }, (chunkX - 1) - xIndex, yIndex, zIndex) == false) //if not solid render face
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::LEFT, currentLookUpType))
+									continue;
 
 						}
-					}
-					if (yIndex == 0) //No face rendering at bottom of chunk
-						IsSideSoldid[1] = true;
-					if(yIndex >= chunkY - 1) //render faces at top of chunk
-						if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::TOP, currentLookUpType))
-							continue;
 
-
-					//check left/right
-					if (xIndex != 0) { //left check
-						int leftIndex = xIndex - 1;
-						if(IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(leftIndex, yIndex, zIndex)) == false)
-							if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::LEFT, currentLookUpType))
-								continue;
-					}
-					if (xIndex == 0) { //left boundary check
-						if(m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first - 1, m_ChunkIndex.second }, (chunkX - 1) - xIndex, yIndex, zIndex) == false) //if not solid render face
-							if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::LEFT, currentLookUpType))
-								continue;
-
-					}
-
-					if (xIndex != chunkX - 1) { // right check
-						int rightIndex = xIndex + 1;
-						 if(IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(rightIndex, yIndex, zIndex)) == false)
-							if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::RIGHT, currentLookUpType))
-								continue;
-
-					}
-					if (xIndex == chunkX - 1) { //right boundary check
-						if(m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first + 1, m_ChunkIndex.second }, (chunkX - 1) - xIndex, yIndex, zIndex) == false)
-							if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::RIGHT, currentLookUpType))
-								continue;
-										
-
-					}
-					
-					//ZCheckingaa
-					if (zIndex != 0) { //z is -1 is back +1 is front in opengl rasterization
-						int backIndex = zIndex - 1;
-							if(IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, yIndex, backIndex)) == false)
-								if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::BACK, currentLookUpType))
+						if (xIndex != chunkX - 1) { // right check
+							int rightIndex = xIndex + 1;
+							if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(rightIndex, yIndex, zIndex)) == false)
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::RIGHT, currentLookUpType))
 									continue;
 
-					}
-					if (zIndex == 0) { //back boundary check
-						if (m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first, m_ChunkIndex.second - 1 }, xIndex, yIndex, (chunkZ - 1) - zIndex) == false)
-							if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::BACK, currentLookUpType))
-								continue;
-					}
-
-					if (zIndex != chunkZ - 1) { //front check
-						int frontIndex = zIndex + 1;
-							if(IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, yIndex, frontIndex)) == false)
-								if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::FRONT, currentLookUpType))
+						}
+						if (xIndex == chunkX - 1) { //right boundary check
+							if (m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first + 1, m_ChunkIndex.second }, (chunkX - 1) - xIndex, yIndex, zIndex) == false)
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::RIGHT, currentLookUpType))
 									continue;
 
-					}
-					if (zIndex == chunkZ - 1) { //front chunk bounday check
-						if(m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first, m_ChunkIndex.second + 1 }, xIndex, yIndex, (chunkZ - 1) - zIndex) == false)
-							if(m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::FRONT, currentLookUpType))
-								continue;
+
+						}
+
+						//ZCheckingaa
+						if (zIndex != 0) { //z is -1 is back +1 is front in opengl rasterization
+							int backIndex = zIndex - 1;
+							if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, yIndex, backIndex)) == false)
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::BACK, currentLookUpType))
+									continue;
+
+						}
+						if (zIndex == 0) { //back boundary check
+							if (m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first, m_ChunkIndex.second - 1 }, xIndex, yIndex, (chunkZ - 1) - zIndex) == false)
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::BACK, currentLookUpType))
+									continue;
+						}
+
+						if (zIndex != chunkZ - 1) { //front check
+							int frontIndex = zIndex + 1;
+							if (IsBlockSolid(m_ChunkGeneration.GetTypeAtIndex(xIndex, yIndex, frontIndex)) == false)
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::FRONT, currentLookUpType))
+									continue;
+
+						}
+						if (zIndex == chunkZ - 1) { //front chunk bounday check
+							if (m_pChunkManager->IsBlockSolidInChunk({ m_ChunkIndex.first, m_ChunkIndex.second + 1 }, xIndex, yIndex, (chunkZ - 1) - zIndex) == false)
+								if (m_ChunkMesh->AddFace(m_ChunkPosition, glm::vec3{ static_cast<float>(xIndex), static_cast<float>(yIndex), static_cast<float>(zIndex) }, Faces::FRONT, currentLookUpType))
+									continue;
+
+						}
+
+
 
 					}
 
@@ -257,11 +279,9 @@ void Chunk::UpdateMesh()
 				}
 
 
-
 			}
-
-
 		}
-	}
-	m_ChunkMesh->BufferMesh();
+		m_ChunkMesh->BufferMesh();
+	//}
+
 }

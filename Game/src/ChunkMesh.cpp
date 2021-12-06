@@ -2,6 +2,7 @@
 #include "Europa/structs.h"
 #include "Europa/ResourceManager.h"
 #include "Europa/Renderer/Renderer.h"
+#include "Block.h"
 
 const std::array<float, 12> xFace1{
 	0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0,
@@ -32,8 +33,10 @@ const std::array<float, 12> topFace{
 const std::array<float, 12> bottomFace{ 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1 };
 
 
-ChunkMesh::ChunkMesh()
+ChunkMesh::ChunkMesh(const BlockInfromation* blockInfo)
 {
+	BlockInfo = blockInfo;
+
 	if (m_pRenderingProgram == nullptr) //default to 2D texture program
 		m_pRenderingProgram = &Eu::ResourceManager::GetInstance()->GetProgram(Eu::ShaderType::TEXTURE2D_WORLDSPACE_SHADER);
 	m_pChunkMesh = std::make_shared<Eu::Mesh>();
@@ -46,8 +49,9 @@ bool ChunkMesh::AddFace(glm::vec3 ChunPos, glm::vec3 BlockPos, Faces dir, BlockT
 	std::vector<Eu::Vertex_Input> m_vertices;
 	std::vector<int> m_Indices;
 
-	glm::vec2* uvInformation = BlockInfo.GetUVFaceInformation(blockType, dir);
-	bool isCube = BlockInfo.IsBlockCube(blockType);
+	glm::vec2* uvInformation = BlockInfo->GetUVFaceInformation(blockType, dir);
+	
+	bool isCube = BlockInfo->IsBlockCube(blockType);
 	float LightLevel = 1.f;
 
 

@@ -29,9 +29,11 @@ private:
 
 	float m_FlowerChance = 15.f; //10 percent;
 	float m_TreeChance = 0.3f; //20 percent;
+
 	int m_XLength;
 	int m_YLength;
 	int m_ZLength;
+
 	ChunkManager* m_pChunkManager;
 	glm::vec3 m_ChunkPos;
 	BlockTypes cubeArray[256][16][16]{BlockTypes::AIR};
