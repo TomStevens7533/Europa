@@ -21,6 +21,13 @@ namespace Eu {
 
 		static void EndUIScene();
 	private:
+		
+	struct Renderer2DStorage {
+		std::shared_ptr<VertexArray> QuadVertexArray;
+		std::shared_ptr<BaseProgram> QuadProgram;
+	};
+
+	static Renderer2DStorage* s_2DData;
 
 	};
 

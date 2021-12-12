@@ -1,4 +1,5 @@
 #pragma once
+#include "Log.h"
 
 #if EU_DEBUG
 #define EU_ENABLE_ASSERT

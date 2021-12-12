@@ -23,7 +23,7 @@ void ChunkManager::Update(Eu::TimeStep ts, Eu::PerspectiveCameraController& Came
 	int yQuadrant = (CameraPos.z / m_Zdiff);
 
 	if ((xQuadrant != m_XCameraQuadrant || yQuadrant != m_YCameraQuadrant))  {
-		UpdateLoadedChunks(CameraController);
+		//UpdateLoadedChunks(CameraController);
 		m_XCameraQuadrant = xQuadrant;
 		m_YCameraQuadrant = yQuadrant;
 	}

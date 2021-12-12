@@ -22,6 +22,6 @@ void main()
 	v_TexCord = a_Uv;
 	v_Color = u_Color;
 	v_Light = a_Light;
-	gl_Position =  u_TransForm * (vec4(a_Position , 1.0));
+	gl_Position =  (u_TransForm) * (vec4(a_Position , 1.0));
 	
 }

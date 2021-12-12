@@ -2,17 +2,12 @@
 #include "../ResourceManager.h"
 #include "RenderCommand.h"
 #include "glm/gtx/transform.hpp"
-#include <Platform/OpenGL/EuropaOpenGL.h>
 
 
 namespace Eu {
 
-	struct Renderer2DStorage {
-		std::shared_ptr<VertexArray> QuadVertexArray;
-		std::shared_ptr<BaseProgram> QuadProgram;
-	};
+	Renderer2D::Renderer2DStorage* Renderer2D::s_2DData = nullptr;
 
-	static Renderer2DStorage* s_2DData = nullptr;
 
 	void Renderer2D::Init()
 	{
@@ -62,7 +57,7 @@ namespace Eu {
 		s_2DData->QuadProgram->SetUniformInt(0, "u_Texture", Eu::BaseProgram::ShaderTypes::T_PixelShader);
 
 
-		s_2DData->QuadProgram->SetUniformMatrix4(glm::mat4(1) * sceneCamera.GetProjectionMatrix(), "u_Proj", BaseProgram::ShaderTypes::T_VertexShader);
+		//s_2DData->QuadProgram->SetUniformMatrix4(glm::mat4(1) * sceneCamera.GetProjectionMatrix(), "u_Proj", BaseProgram::ShaderTypes::T_VertexShader);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {

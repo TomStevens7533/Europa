@@ -45,22 +45,31 @@ namespace Eu {
 
 	std::shared_ptr<CubeTexture> CubeTexture::Create(const std::string& path)
 	{
-		EU_CORE_INFO("Creating CubeTexture Texture from path: " + path);
-		switch (Renderer::GetAPI())
+		try
 		{
-		case RendererAPI::API::None:
-			EU_CORE_ASSERT(false, "RendererAPI::None is not supported");
+			EU_CORE_INFO("Creating CubeTexture Texture from path: " + path);
+			switch (Renderer::GetAPI())
+			{
+			case RendererAPI::API::None:
+				EU_CORE_ASSERT(false, "RendererAPI::None is not supported");
+				return nullptr;
+				break;
+
+			case RendererAPI::API::OpenGL:
+				EU_CORE_INFO("RendererAPI::OpenGL is active");
+				return  std::make_shared<OpenGLCubeTexture>(path);
+				break;
+
+			}
+			EU_CORE_ASSERT(false, "Unknown RendererAPI");
 			return nullptr;
-			break;
-
-		case RendererAPI::API::OpenGL:
-			EU_CORE_INFO("RendererAPI::OpenGL is active");
-			return  std::make_shared<OpenGLCubeTexture>(path);
-			break;
-
 		}
-		EU_CORE_ASSERT(false, "Unknown RendererAPI");
-		return nullptr;
+		catch (...)
+		{
+			EU_CORE_ERROR("CUBE TEXTURE FROM PATH: {0}  CANNOT BE LOADED!!", path);
+		}
+
+		
 	}
 }
 
