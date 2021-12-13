@@ -14,6 +14,8 @@ namespace Eu {
 		virtual void UnBind() override;
 
 		virtual inline uint32_t GetColorAttachment() const override { return m_ColorAttached; }
+		virtual inline uint32_t GetDepthAttachment() const override { return m_DepthAttachment; }
+
 
 		virtual inline FrameBufferSpecific& GetSpecification() override { return m_FrameBufferSpecifics; }
 

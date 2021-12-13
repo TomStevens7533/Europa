@@ -12,7 +12,7 @@ namespace Eu
 	class  Application
 	{
 	public:
-		Application();
+		Application(WindowProps& windowProp);
 		virtual ~Application();
 
 		void Run();

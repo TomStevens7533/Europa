@@ -9,7 +9,6 @@
 
 #include "Europa/Core/TimeStep.h"
 //----------Entry point----------------------------
-#include "Europa/EntryPoint.h"
 #include "Europa/Events/Event.h"
 
 //----------Basic-includes-------------------------

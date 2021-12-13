@@ -15,10 +15,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{7FA9857C-6BE0-860D-14CD-6C1000E3020F}</ProjectGuid>
+    <ProjectGuid>{696758B1-D527-D4E7-9E62-1D650AE218C4}</ProjectGuid>
     <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Game</RootNamespace>
+    <RootNamespace>Europe-Editor</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -55,23 +55,23 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Debug-windows-x86_64\Game\</OutDir>
-    <IntDir>..\bin-int\Debug-windows-x86_64\Game\</IntDir>
-    <TargetName>Game</TargetName>
+    <OutDir>..\bin\Debug-windows-x86_64\Europe-Editor\</OutDir>
+    <IntDir>..\bin-int\Debug-windows-x86_64\Europe-Editor\</IntDir>
+    <TargetName>Europe-Editor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>..\bin\Release-windows-x86_64\Game\</OutDir>
-    <IntDir>..\bin-int\Release-windows-x86_64\Game\</IntDir>
-    <TargetName>Game</TargetName>
+    <OutDir>..\bin\Release-windows-x86_64\Europe-Editor\</OutDir>
+    <IntDir>..\bin-int\Release-windows-x86_64\Europe-Editor\</IntDir>
+    <TargetName>Europe-Editor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
-    <LinkIncremental>true</LinkIncremental>
-    <OutDir>..\bin\Dist-windows-x86_64\Game\</OutDir>
-    <IntDir>..\bin-int\Dist-windows-x86_64\Game\</IntDir>
-    <TargetName>Game</TargetName>
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\bin\Dist-windows-x86_64\Europe-Editor\</OutDir>
+    <IntDir>..\bin-int\Dist-windows-x86_64\Europe-Editor\</IntDir>
+    <TargetName>Europe-Editor</TargetName>
     <TargetExt>.exe</TargetExt>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -118,17 +118,40 @@
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>EU_PLATFORM_WINDOWS;EU_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>..\Europa\vendor\spdlog\include;..\Europa\src;..\Europa\vendor\glm;..\Europa\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>..\Europa\vendor\VLD\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\GameApp.cpp" />
+    <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\Minecraft\Block.h" />
+    <ClInclude Include="src\Minecraft\BlockDatabase.h" />
+    <ClInclude Include="src\Minecraft\BlockStruct.h" />
+    <ClInclude Include="src\Minecraft\Chunk.h" />
+    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
+    <ClInclude Include="src\Minecraft\ChunkMesh.h" />
+    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\EditorApp.cpp" />
+    <ClCompile Include="src\Minecraft\Block.cpp" />
+    <ClCompile Include="src\Minecraft\BlockDatabase.cpp" />
+    <ClCompile Include="src\Minecraft\Chunk.cpp" />
+    <ClCompile Include="src\Minecraft\Chunkmanager.cpp" />
+    <ClCompile Include="src\Minecraft\ChunkMesh.cpp" />
+    <ClCompile Include="src\Minecraft\WorldGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Europa\Europa.vcxproj">

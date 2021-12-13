@@ -21,6 +21,7 @@ namespace Eu {
 		virtual void Bind() = 0;
 		virtual void UnBind() = 0;
 		virtual inline uint32_t GetColorAttachment() const = 0;
+		virtual inline uint32_t GetDepthAttachment() const = 0;
 
 		virtual FrameBufferSpecific& GetSpecification() = 0;
 		

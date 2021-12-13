@@ -106,7 +106,63 @@ project "Europa"
 		runtime "Release"
 		optimize "On"
 
-project "Game"
+project "Europe-Editor"
+	location "Europe-Editor"
+	kind "ConsoleApp"
+	staticruntime "On"
+	cppdialect "C++17"
+	toolset ("v142")
+
+	language "C++"
+
+		targetdir("bin/" .. outputdir .. "/%{prj.name}")
+		objdir("bin-int/" .. outputdir .. "/%{prj.name}")
+
+		
+
+		files
+		{
+			"%{prj.name}/src/**.h",
+			"%{prj.name}/src/**.cpp"
+		}
+		includedirs
+		{
+			"Europa/vendor/spdlog/include",
+			"Europa/src",
+			"%{IncludeDir.glm}",
+			"Europa/vendor"
+
+		}
+
+		links
+		{
+			"Europa",
+			"Europa/vendor/VLD/vld"
+		}
+	filter "system:windows"
+
+		staticruntime "On"
+		systemversion "latest"
+
+		defines
+		{
+			"EU_PLATFORM_WINDOWS"
+		}
+
+	filter "configurations:Debug"
+		defines "EU_DEBUG"
+		symbols "On"
+
+	filter "configurations:Release"
+		defines "EU_RELEASE"
+		optimize "On"
+
+	filter "configurations:Dist"
+		defines "EU_DIST"
+		optimize "On"
+
+
+		project "Game"
 	location "Game"
 	kind "ConsoleApp"
 	staticruntime "On"
@@ -138,8 +194,6 @@ project "Game"
 		{
 			"Europa",
 			"Europa/vendor/VLD/vld"
-		
-
 		}
 	filter "system:windows"
 
@@ -161,4 +215,4 @@ project "Game"
 
 	filter "configurations:Dist"
 		defines "EU_DIST"
-		optimize "On"
+	

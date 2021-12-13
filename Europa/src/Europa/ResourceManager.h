@@ -11,9 +11,7 @@ namespace Eu {
 	class ResourceManager {
 	public:
 		static std::shared_ptr<ResourceManager>& GetInstance();
-		~ResourceManager() {
-			EU_CORE_WARN("RESOURCE MANAGER DELETED!");
-		}
+		~ResourceManager();
 	public:
 		//funtions
 		std::shared_ptr<VertexArray>& GetModel(const std::string modelPath);

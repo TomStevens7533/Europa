@@ -17,6 +17,13 @@ namespace Eu {
 		return m_ResourceMangerSingleton;
 	}
 
+	
+
+	ResourceManager::~ResourceManager()
+	{
+		//EU_CORE_INFO("RESOURCE MANAGER DELETED!");
+	}
+
 	std::shared_ptr<VertexArray>& ResourceManager::GetModel(const std::string modelPath)
 	{
 		//check if string is already in map
