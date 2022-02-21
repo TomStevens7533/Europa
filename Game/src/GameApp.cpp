@@ -8,7 +8,7 @@
 class Sandbox : public Eu::Application
 {
 public:
-	Sandbox(Eu::WindowProps& pr) : Eu::Application()
+	Sandbox(Eu::WindowProps& pr) : Eu::Application(pr)
 	{
 
 		//PushLayer(new MineCraftLayer);
@@ -27,5 +27,5 @@ Eu::Application* Eu::CreateApplication()
 {
 	Eu::WindowProps pr;
 	pr.Title = "Test Enviroment";
-	return new Sandbox();
+	return new Sandbox(pr);
 }

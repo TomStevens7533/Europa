@@ -36,7 +36,7 @@ private:
 	BlockInfromation* BlockInfo = nullptr;
 	ChunkMesh* m_ChunkMesh = nullptr;
 	ChunkGeneration m_ChunkGeneration;
-	ChunkManager* m_pChunkManager;
+	const ChunkManager* m_pChunkManager;
 	std::pair<int, int> m_ChunkIndex;
 	glm::vec3 m_ChunkPosition;
 	bool m_ChunkActive;

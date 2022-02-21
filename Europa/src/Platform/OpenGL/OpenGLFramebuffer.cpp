@@ -14,10 +14,19 @@ namespace Eu {
 	OpenGLFrameBuffer::~OpenGLFrameBuffer()
 	{
 		glDeleteFramebuffers(1, &m_RendererID);
+		glDeleteTextures(1, &m_ColorAttached);
+		glDeleteTextures(1, &m_DepthAttachment);
 	}
 
 	void OpenGLFrameBuffer::Invalidate()
 	{
+		if (m_RendererID) {
+			glDeleteFramebuffers(1, &m_RendererID);
+			glDeleteTextures(1, &m_ColorAttached);
+			glDeleteTextures(1, &m_DepthAttachment);
+		}
+
+
 		glCreateFramebuffers(1, &m_RendererID);
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
 
@@ -56,6 +65,7 @@ namespace Eu {
 	void OpenGLFrameBuffer::Bind()
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, m_RendererID);
+		glViewport(0, 0, m_FrameBufferSpecifics.Width, m_FrameBufferSpecifics.Height);
 
 	}
 
@@ -65,5 +75,11 @@ namespace Eu {
 
 	}
 
+	void OpenGLFrameBuffer::Resize(uint32_t width, uint32_t height)
+	{
+		m_FrameBufferSpecifics.Width = width;
+		m_FrameBufferSpecifics.Height = height;
+		Invalidate();
+	}
 
 }

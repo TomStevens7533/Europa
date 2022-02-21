@@ -37,6 +37,8 @@ namespace Eu {
 		std::shared_ptr<Eu::BaseTexture>* m_pCrosshairTexture;
 
 		Eu::PerspectiveCameraController m_Camera;
+
+		glm::vec2 m_ViewportSize;
 	};
 
 

@@ -164,18 +164,30 @@ namespace Eu {
 			}
 
 
-			uint32_t textureID = m_pFramebuffer->GetColorAttachment();
-			ImGui::Image((void*)textureID, ImVec2{ 320.0f,180.0f }, ImVec2{ 0,1 }, ImVec2{1,0});
-			ImGui::End();
+
 			m_TimerManager.ClearTimerResults();
 
 			//viewport
+			ImGui::End();
 
 
 			ImGui::EndMenuBar();
 		}
 
 		ImGui::End();
+
+		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0,0 });
+		ImGui::Begin("ViewPort");
+		ImVec2 viewPortSize = ImGui::GetContentRegionAvail();
+		if (m_ViewportSize != *(glm::vec2*)&viewPortSize) {
+			m_ViewportSize = { viewPortSize.x, viewPortSize.y }; //assign new viewport size;
+			m_pFramebuffer->Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y)); //resize framebuffer
+		}
+		EU_CORE_WARN("Viewport Size: {0}, {1}", viewPortSize.x, viewPortSize.y);
+		uint32_t textureID = m_pFramebuffer->GetColorAttachment();
+		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+		ImGui::End();
+		ImGui::PopStyleVar();
 
 	}
 
