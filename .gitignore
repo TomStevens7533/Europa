@@ -40,3 +40,8 @@ Vendor/
 bin/Debug-windows-x86_64/Game/imgui.ini
 bin/Debug-windows-x86_64/Europa/Europa.pdb
 bin/Debug-windows-x86_64/Game/Game.ilk
+*.pdb
+*.tlog
+*.log
+*.lastbuildstate
+*.pdb

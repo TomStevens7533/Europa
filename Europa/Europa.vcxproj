@@ -26,19 +26,19 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -140,6 +140,9 @@
     <ClInclude Include="src\Eupch.h" />
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
+    <ClInclude Include="src\Europa\Components\BaseComponent.h" />
+    <ClInclude Include="src\Europa\Components\EntityManager.h" />
+    <ClInclude Include="src\Europa\Components\TransformComponent.h" />
     <ClInclude Include="src\Europa\Core.h" />
     <ClInclude Include="src\Europa\Core\TimeStep.h" />
     <ClInclude Include="src\Europa\EntryPoint.h" />
@@ -558,6 +561,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp" />
+    <ClCompile Include="src\Europa\Components\EntityManager.cpp" />
+    <ClCompile Include="src\Europa\Components\TransformComponent.cpp" />
     <ClCompile Include="src\Europa\GameObject.cpp" />
     <ClCompile Include="src\Europa\InputManager.cpp" />
     <ClCompile Include="src\Europa\Layer.cpp" />

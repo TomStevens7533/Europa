@@ -2,84 +2,83 @@
 #include "Eupch.h"
 #include <glm/glm.hpp>
 #include "Texture.h"
+#include "Components/BaseComponent.h"
+#include "Components/TransformComponent.h"
+#include "Components/EntityManager.h"
 
 namespace Eu {
-	class VertexArray;
-	class BaseTexture;
-	class BaseProgram;
-	class ResourceManager;
-
-	class BaseGameObject {
-	public:
-		BaseGameObject() = default;
-		virtual ~BaseGameObject() = default;
-		virtual void Update() = 0;
-		virtual void Render() const = 0;
-		virtual void SetPos(glm::vec3 position) = 0;
-		virtual void AddPos(glm::vec3 position) = 0;
-		virtual void SetUVBounds(int wIndex, int HIndex, int colSize, int rowSize) = 0;
-		void AddRotation(glm::vec3 newRotation);
-		void AddScale(glm::vec3 scale);
-
-	protected:
-		//matrices
-		glm::vec3 m_RotationVec = { 0,0,0 };
-		glm::vec3 m_Position;
-
-
-	};
-
-
-	class gameObject : public BaseGameObject
+	class GameObject final
 	{
 	public:
-		//We can create empty gameobject
-		gameObject();
-		virtual ~gameObject() override {};
+		void Start();
+		void Update();
+		void FixedUpdate();
+		void Render() const;
+		void SetName(std::string name);
+		inline std::string GetName() { return m_GameobjectName; }
 
-		void AddMesh(const std::string& path);
-		void AddTexture(const std::string& path, const TextureTypes textureType);
-		virtual void SetUVBounds(int wIndex, int HIndex, int colSize, int rowSize) override;
-		virtual void AddPos(glm::vec3 position) override;
+		template<class TComponent>
+		bool AddComponent(std::shared_ptr<BaseComponent> component) {
+			component->SetAttachedGo(this);
+			return m_EntityManager.AddComponent<TComponent>(component);
+		}
+		template<class TComponent>
+		TComponent* AddOrGetComponent() {
+			return m_EntityManager.AddOrGetComponent<TComponent>(this).get();
+		}
+		template<class TComponent>
+		TComponent* const GetComponent() {
+			return m_EntityManager.GetComponent<TComponent>().get();
+		}
+		template<class TComponent>
+		void RemoveComponent() {
+			return m_EntityManager.RemoveComponent<TComponent>();
+		}
+		void SetPosition(float x, float y);
+		void SetPosition(glm::vec2 pos);
 
+		GameObject() = default;
+		virtual ~GameObject();
+		GameObject(const GameObject& other) = delete;
+		GameObject(GameObject&& other) = delete;
+		GameObject& operator=(const GameObject& other) = delete;
+		GameObject& operator=(GameObject&& other) = delete;
 
-		virtual void SetPos(glm::vec3 position) override;
-		virtual void Update() override;
-		virtual void Render() const override;
+		void SetParent(GameObject* parent);
+		GameObject* GetParent() const;
+		size_t GetChildCount() const;
+		std::shared_ptr<GameObject> GetChildAt(int Index) const;
+		void RemoveChild(int index);
+		void RemoveChild(std::shared_ptr<GameObject> childToRemove);
+		void AddChild(std::shared_ptr<GameObject>& go);
+		void ChangeRootPos(int newRootPos);
+		int GetPosFromRoot();
+
+		inline TransformComponent& GetTransform() { return m_Transform; }
+		glm::vec3 RelativePositionToParent();
+
+		bool GetDestroyFlag() { return m_DestoryFlag; }
+		void SetDestroyFlag(bool isDestroy) { m_DestoryFlag = isDestroy; }
+		bool GetInitState() { return m_IsInitialized; }
+
 	private:
-		bool isBoundingUVs = false;
-		glm::vec2 uBounds;
-		glm::vec2 vBounds;
+		TransformComponent m_Transform;
+		// todo: mmm, every gameobject has a texture? Is that correct?
 
-		static std::shared_ptr<BaseTexture>* m_ptexture;
-		static std::shared_ptr<VertexArray>* m_VertexArray;
-		const static std::shared_ptr<BaseProgram>* m_pRenderingProgram;
+		//parent child
+		GameObject* m_Parent = nullptr;
+		std::vector<std::shared_ptr<GameObject>> m_Children;
+		int m_PositionFromRoot = 0;
+		//Entities
+		EntityManager m_EntityManager;
+
+		bool m_DestoryFlag = false;
+		bool m_IsInitialized = false;
+		std::string m_GameobjectName{};
+
 
 	};
-
-	class SkyBox : public BaseGameObject {
-	public:
-		//We can create empty gameobject
-		SkyBox();
-		virtual ~SkyBox() override {  };
-
-		void AddTexture(const std::string& path);
-		virtual void SetUVBounds(int wIndex, int HIndex, int colSize, int rowSize) override;
-		virtual void SetPos(glm::vec3 position) override;
-		virtual void AddPos(glm::vec3 position) override;
-
-		virtual void Update() override;
-		virtual void Render() const override;
-
-	private:
-		void AddMesh(const std::string& path);
-
-		static std::shared_ptr<BaseTexture>* m_ptexture;
-		static std::shared_ptr<VertexArray>* m_VertexArray;
-		const static std::shared_ptr<BaseProgram>* m_pRenderingProgram;
-		glm::mat4 m_TRSMatrix = glm::mat4(1.f);
-
-	};
+}
 
 	
 

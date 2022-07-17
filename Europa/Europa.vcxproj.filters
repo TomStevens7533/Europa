@@ -7,6 +7,9 @@
     <Filter Include="src\Europa">
       <UniqueIdentifier>{886EB70E-7426-F95B-DD2D-D2B7C904944C}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Europa\Components">
+      <UniqueIdentifier>{9D2EEDFE-099B-A8F9-D28E-40573EBACA61}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Europa\Core">
       <UniqueIdentifier>{E0E742B1-4C73-B075-5584-336AC18E0C76}</UniqueIdentifier>
     </Filter>
@@ -74,6 +77,15 @@
     </ClInclude>
     <ClInclude Include="src\Europa\Application.h">
       <Filter>src\Europa</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Components\BaseComponent.h">
+      <Filter>src\Europa\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Components\EntityManager.h">
+      <Filter>src\Europa\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Components\TransformComponent.h">
+      <Filter>src\Europa\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Core.h">
       <Filter>src\Europa</Filter>
@@ -1324,6 +1336,12 @@
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
       <Filter>src\Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Components\EntityManager.cpp">
+      <Filter>src\Europa\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Components\TransformComponent.cpp">
+      <Filter>src\Europa\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\GameObject.cpp">
       <Filter>src\Europa</Filter>
