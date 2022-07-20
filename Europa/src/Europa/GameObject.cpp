@@ -6,189 +6,149 @@
 #include "ResourceManager.h"
 
 namespace Eu {
+	GameObject::~GameObject() = default;
 
-
-	//base
-	void BaseGameObject::AddRotation(glm::vec3 newRotation)
+	void GameObject::SetParent(GameObject * parent)
 	{
-		//we use radians
-		m_RotationVec += newRotation;
+		m_Parent = parent;
 
-		//clamp between 2PI TODO: fix negative
-		m_RotationVec.x = fmod(m_RotationVec.x, 2.0f * glm::pi<float>());
-		m_RotationVec.y = fmod(m_RotationVec.y, 2.0f * glm::pi<float>());
-		m_RotationVec.z = fmod(m_RotationVec.z, 2.0f * glm::pi<float>());
-	}
-
-	void BaseGameObject::AddScale(glm::vec3 scale)
-	{
-	}
-
-	gameObject::gameObject()
-	{
-		//Create program attach shaders 
-		if(m_pRenderingProgram) //default to 2D texture program
-			m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(ShaderType::TEXTURE2D_WORLDSPACE_SHADER);
-
+		//Reshuffle root pos for all children
+		ChangeRootPos((parent->GetPosFromRoot() + static_cast<int>(parent->GetChildCount())));
 
 	}
 
-	void gameObject::AddMesh(const std::string& path)
-	{		
+	void GameObject::ChangeRootPos(int newRootPos)
+	{
+		m_PositionFromRoot = newRootPos;
 
-		m_VertexArray = &ResourceManager::GetInstance()->GetModel(path);
+		for (auto& child : m_Children)
+		{
+			newRootPos++;
+			assert(child->GetPosFromRoot() > this->GetPosFromRoot()); //assert if circular included 
+			child->ChangeRootPos(newRootPos);
+			RemoveChild(child->GetPosFromRoot());
 
+		}
 	}
 
-	void gameObject::AddTexture(const std::string& path, const TextureTypes textureType)
+
+	int GameObject::GetPosFromRoot()
 	{
-		if (m_ptexture == nullptr)
-			m_ptexture = &ResourceManager::GetInstance()->GetTexture(path, textureType);
-
-			//(*m_pRenderingProgram)->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader); //this gives opengl error
-
-
-		//set sampler2D
-
-
+		return m_PositionFromRoot;
 	}
 
-	void gameObject::SetUVBounds(int wIndex, int HIndex, int colSize, int rowSize)
+	glm::vec3 GameObject::RelativePositionToParent()
 	{
-		if (m_ptexture) {
-			glm::vec2 texWidthAndHeight = glm::vec2{ (*m_ptexture)->GetWidth(), (*m_ptexture)->GetHeigh() };
-			float texWidth = texWidthAndHeight.x / static_cast<float>(colSize);
-			float texHeight = texWidthAndHeight.y / static_cast<float>(rowSize);
-			
-			 uBounds = { (texWidth * (wIndex)) / texWidthAndHeight.x, ((texWidth * wIndex) + texWidth)/ texWidthAndHeight.x };
-			 vBounds = { (texHeight * (HIndex)) / texWidthAndHeight.y, ((texHeight * HIndex) + texHeight) / texWidthAndHeight.y };
+		glm::vec3 currPos = GetTransform().GetPosition();
 
-			 //(*m_pRenderingProgram)->SetUniformInt(1, "isBoundingUV", BaseProgram::ShaderTypes::T_PixelShader);
+		auto parent = GetParent();
+		while (parent != nullptr) {
+			currPos += parent->GetTransform().GetPosition();
+			parent = parent->GetParent();
+		}
+		return currPos;
+	}
 
-			 //isBoundingUVs = true;
+	GameObject* GameObject::GetParent() const
+	{
+		return m_Parent;
+	}
+
+	size_t GameObject::GetChildCount() const
+	{
+		return m_Children.size();
+	}
+
+	std::shared_ptr<GameObject> GameObject::GetChildAt(int Index) const
+	{
+		if (Index <= static_cast<int>(m_Children.size()))
+			return m_Children[Index];
+		else {
+			return nullptr;
 		}
 
-		
-
 	}
 
-	void gameObject::AddPos(glm::vec3 position)
+	void GameObject::RemoveChild(int index)
 	{
-		m_Position += position;
-
+		EU_CLIENT_INFO("Child gameobject removed at index: " + index);
+		m_Children.erase(std::next(m_Children.begin(), glm::clamp(index, 0, static_cast<int>(m_Children.size() - 1))));
 	}
 
-	void gameObject::SetPos(glm::vec3 position)
+	void GameObject::RemoveChild(std::shared_ptr<GameObject> childToRemove)
 	{
-		m_Position = position;
-
-		//send worldMatrix to GPU
-
+		m_Children.erase(std::remove(m_Children.begin(), m_Children.end(), childToRemove), m_Children.end());
 	}
 
-	
-
-	void gameObject::Update()
+	void GameObject::AddChild(std::shared_ptr<Eu::GameObject>&go)
 	{
-		//Do update stuff to member variablesddd
+		m_Children.push_back(go);
+		go->SetParent(this);
+		//go->SetScene(this->GetScene());
 
-
+		//Call start on new Child
+		go->Start();
 	}
 
-	void gameObject::Render() const
+	void GameObject::Start()
 	{
+		//this component first
+		m_EntityManager.Start();
 
-		glm::mat4 rotMat;
-		rotMat = glm::rotate(glm::mat4(1.f), m_RotationVec.x, glm::vec3(1, 0, 0));
-		rotMat = glm::rotate(rotMat, m_RotationVec.y, glm::vec3(0, 1, 0));
-		rotMat = glm::rotate(rotMat, m_RotationVec.z, glm::vec3(0, 0, 1));
-
-		//Bind current texture before rendering calll
-		if (m_ptexture != nullptr) {
-			//(*m_ptexture)->Bind();
-
-			if (isBoundingUVs) {
-				(*m_pRenderingProgram)->SetUniformVec2(uBounds, "BoundingU", BaseProgram::ShaderTypes::T_VertexShader);
-				(*m_pRenderingProgram)->SetUniformVec2(vBounds, "BoundingV", BaseProgram::ShaderTypes::T_VertexShader);
-			}
-			else {
-				(*m_pRenderingProgram)->SetUniformInt(0, "isBoundingUV", BaseProgram::ShaderTypes::T_PixelShader);
-
-			}
-		
+		for (auto& child : m_Children)
+		{
+			child->Start();
 		}
 
-		if (m_VertexArray != nullptr && m_pRenderingProgram != nullptr)
-			Renderer::Submit(*m_VertexArray, *m_pRenderingProgram, glm::translate(glm::mat4(1), m_Position) * rotMat);
-
-
+		m_IsInitialized = true;
 	}
 
-
-	std::shared_ptr<Eu::BaseTexture>* gameObject::m_ptexture = nullptr;
-
-	std::shared_ptr<Eu::VertexArray>* gameObject::m_VertexArray = nullptr;
-
-	const std::shared_ptr<Eu::BaseProgram>* gameObject::m_pRenderingProgram = nullptr;
-
-	/// <SKYBOX>
-	/// SKYBOX
-	/// </SKYBOX>
-
-	SkyBox::SkyBox()
+	void GameObject::Update()
 	{
-		m_pRenderingProgram = &ResourceManager::GetInstance()->GetProgram(ShaderType::CUBETEXTURE_LOCALSPACE_SHADER);
-		AddMesh("Resources/kubus.obj");
+		//Update this gameobject component first
+		m_EntityManager.Update();
+
+		for (auto& child : m_Children)
+		{
+			child->Update();
+		}
 	}
 
-	void SkyBox::AddTexture(const std::string& path)
+	void GameObject::FixedUpdate()
 	{
-		if(m_ptexture == nullptr)
-			m_ptexture = &ResourceManager::GetInstance()->GetTexture(path, TextureTypes::CUBETEXTURE);
-		//if (m_pRenderingProgram != nullptr)
-			//(*m_pRenderingProgram)->SetUniformInt(0, "u_Texture", BaseProgram::ShaderTypes::T_PixelShader);
+		m_EntityManager.FixedUpdate();
+
+		for (auto& child : m_Children)
+		{
+			child->FixedUpdate();
+		}
 	}
 
-	void SkyBox::SetUVBounds(int wIndex, int HIndex, int colSize, int rowSize)
+	void GameObject::Render() const
 	{
+		m_EntityManager.Render();
+
+		for (auto& child : m_Children)
+		{
+			child->Render();
+		}
 
 	}
 
-	void SkyBox::SetPos(glm::vec3 position)
+	void GameObject::SetName(std::string name)
 	{
-		EU_CORE_ERROR("Translating skybox has no effect!");
+		m_GameobjectName = name;
 	}
 
-	void SkyBox::AddPos(glm::vec3 position)
+	void GameObject::SetPosition(float x, float y)
 	{
-
+		m_Transform.Translate(x, y, 0.0f);
 	}
 
-	void SkyBox::Update()
+	void GameObject::SetPosition(glm::vec2 pos)
 	{
-		
-	}
-
-	void SkyBox::Render() const
-	{
-		//Bind current texture before rendering calll
-		if (m_ptexture != nullptr)
-			(*m_ptexture)->Bind();
-
-		if (m_VertexArray != nullptr && m_pRenderingProgram != nullptr)
-			Renderer::SubmitNoDepth(*m_VertexArray, *m_pRenderingProgram, m_TRSMatrix, true);
-	}
-
-	void SkyBox::AddMesh(const std::string& path)
-	{
-		m_VertexArray = &ResourceManager::GetInstance()->GetModel(path);
+		m_Transform.Translate(pos.x, pos.y, 0.0f);
 
 	}
 
-	std::shared_ptr<Eu::BaseTexture>* SkyBox::m_ptexture = nullptr;
-
-	std::shared_ptr<Eu::VertexArray>* SkyBox::m_VertexArray = nullptr;
-
-	const std::shared_ptr<Eu::BaseProgram>* SkyBox::m_pRenderingProgram = nullptr;
-
-	}
+}

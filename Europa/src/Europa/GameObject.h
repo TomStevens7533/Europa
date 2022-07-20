@@ -1,8 +1,6 @@
 #pragma once
 #include "Eupch.h"
 #include <glm/glm.hpp>
-#include "Texture.h"
-#include "Components/BaseComponent.h"
 #include "Components/TransformComponent.h"
 #include "Components/EntityManager.h"
 
