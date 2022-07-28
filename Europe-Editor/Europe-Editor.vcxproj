@@ -134,29 +134,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="src\Minecraft\Block.h" />
-    <ClInclude Include="src\Minecraft\BlockDatabase.h" />
-    <ClInclude Include="src\Minecraft\BlockStruct.h" />
-    <ClInclude Include="src\Minecraft\Chunk.h" />
-    <ClInclude Include="src\Minecraft\ChunkMesh.h" />
-    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
-    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="src\EditorApp.cpp" />
-    <ClCompile Include="src\EditorLayer.cpp" />
-    <ClCompile Include="src\Minecraft\Block.cpp" />
-    <ClCompile Include="src\Minecraft\BlockDatabase.cpp" />
-    <ClCompile Include="src\Minecraft\Chunk.cpp" />
-    <ClCompile Include="src\Minecraft\ChunkMesh.cpp" />
-    <ClCompile Include="src\Minecraft\Chunkmanager.cpp" />
-    <ClCompile Include="src\Minecraft\WorldGeneration.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Europa\Europa.vcxproj">
       <Project>{519558B1-3D37-8387-26F2-96DB12330AD8}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\EditorApp.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

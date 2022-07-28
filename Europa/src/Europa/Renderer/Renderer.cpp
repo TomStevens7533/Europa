@@ -54,12 +54,9 @@ namespace Eu
 	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform) {
 		//Rendercommand
 		//program->Bind();
-		if (m_IsFirstFrame == true) {
-			program->Bind();
-			program->SetUniformMatrix4(m_SceneData->GetViewProjectionMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
-			m_IsFirstFrame = false;
-		}
-		//(program)->SetUniformMatrix4(transform, "u_TranslationMat", BaseProgram::ShaderTypes::T_VertexShader);
+		program->Bind();
+		program->SetUniformMatrix4(m_SceneData->GetViewProjectionMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
+		(program)->SetUniformMatrix4(transform, "u_TranslationMat", BaseProgram::ShaderTypes::T_VertexShader);
 
 		vertexArray->Bind();
 

@@ -2,7 +2,7 @@
 #include "Europa/EntryPoint.h"
 
 #include "VLD/include/vld.h"
-#include "EditorLayer.h"
+//#include "EditorLayer.h"
 
 namespace Eu {
 	class EuropaEditor : public Application
@@ -11,7 +11,7 @@ namespace Eu {
 		EuropaEditor(WindowProps& pr) : Application(pr)
 		{
 
-			PushLayer(new EuropaEditorLayer);
+			//PushLayer(new EuropaEditorLayer);
 
 
 		}

@@ -14,9 +14,8 @@ namespace Eu {
 		~ResourceManager();
 	public:
 		//funtions
-		std::shared_ptr<VertexArray>& GetModel(const std::string modelPath);
 		std::shared_ptr<BaseTexture>& GetTexture(const std::string texturePath, const TextureTypes type);
-		const std::shared_ptr<BaseProgram>& GetProgram(ShaderType type);
+		std::shared_ptr<BaseProgram> GetProgram(ShaderType type);
 	
 	private:
 		//Variables

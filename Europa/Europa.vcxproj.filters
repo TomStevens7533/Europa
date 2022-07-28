@@ -195,9 +195,6 @@
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h">
       <Filter>src\Europa\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="src\Europa\mesh\Mesh.h">
-      <Filter>src\Europa\mesh</Filter>
-    </ClInclude>
     <ClInclude Include="src\Europa\structs.h">
       <Filter>src\Europa</Filter>
     </ClInclude>
@@ -1333,6 +1330,7 @@
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Components\MeshComponent.h" />
+    <ClInclude Include="src\Europa\Components\MeshRenderComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1422,9 +1420,6 @@
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp">
       <Filter>src\Europa\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="src\Europa\mesh\Mesh.cpp">
-      <Filter>src\Europa\mesh</Filter>
-    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1456,5 +1451,6 @@
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\Europa\Components\MeshRenderComponent.cpp" />
   </ItemGroup>
 </Project>

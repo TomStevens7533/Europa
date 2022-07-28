@@ -143,6 +143,7 @@
     <ClInclude Include="src\Europa\Components\BaseComponent.h" />
     <ClInclude Include="src\Europa\Components\MeshComponent.h" />
     <ClInclude Include="src\Europa\Components\EntityManager.h" />
+    <ClInclude Include="src\Europa\Components\MeshRenderComponent.h" />
     <ClInclude Include="src\Europa\Components\TransformComponent.h" />
     <ClInclude Include="src\Europa\Core.h" />
     <ClInclude Include="src\Europa\Core\TimeStep.h" />
@@ -180,7 +181,6 @@
     <ClInclude Include="src\Europa\camera\Camera.h" />
     <ClInclude Include="src\Europa\camera\CameraController.h" />
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h" />
-    <ClInclude Include="src\Europa\mesh\Mesh.h" />
     <ClInclude Include="src\Europa\structs.h" />
     <ClInclude Include="src\Platform\OpenGL\EuropaOpenGL.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
@@ -564,6 +564,7 @@
     <ClCompile Include="src\Europa\Application.cpp" />
     <ClCompile Include="src\Europa\Components\EntityManager.cpp" />
     <ClCompile Include="src\Europa\Components\MeshComponent.cpp" />
+    <ClCompile Include="src\Europa\Components\MeshRenderComponent.cpp" />
     <ClCompile Include="src\Europa\Components\TransformComponent.cpp" />
     <ClCompile Include="src\Europa\GameObject.cpp" />
     <ClCompile Include="src\Europa\InputManager.cpp" />
@@ -591,7 +592,6 @@
     <ClCompile Include="src\Europa\camera\CameraController.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp" />
-    <ClCompile Include="src\Europa\mesh\Mesh.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />

@@ -9,23 +9,15 @@ in vec3 v_Light;
 
 
 
-
-uniform sampler2D u_Texture;
-
-
 void main()
 {
 	vec4 tempColor;
 		
 
 
-	tempColor = texture(u_Texture, v_TexCord); 
+	
 
-
-	if(tempColor.a < 0.5f)
-		discard;
-
-	tempColor.xyz = vec3(tempColor.x * v_Light.x, tempColor.y * v_Light.y,tempColor.z);
+	tempColor = vec4(1.f, 1.f, 1.f, 1.f);
 
 
 	color = tempColor;

@@ -31,6 +31,8 @@ namespace Eu {
 			m_CameraPos -= upVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
 
 		m_Camera.SetPosition(m_CameraPos);
+
+		std::cout << m_CameraPos.x << m_CameraPos.y << m_CameraPos.z << std::endl;
 	}
 
 	void PerspectiveCameraController::SetNewPosition(glm::vec3 cameraPos)

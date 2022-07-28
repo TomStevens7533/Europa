@@ -24,6 +24,14 @@ namespace Eu {
 		return (*(newEntryPair.first));
 	}
 
+	void ScenGraph::StartScene()
+	{
+		for (SceneGraphItem& sceneItem : m_SceneGraphMap)
+		{
+			sceneItem.second->Start();
+		}
+	}
+
 	void ScenGraph::UpdateScene()
 	{
 		for (SceneGraphItem& sceneItem : m_SceneGraphMap)

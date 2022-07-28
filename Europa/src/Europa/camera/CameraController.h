@@ -32,7 +32,7 @@ namespace Eu {
 		Camera m_Camera;
 
 		bool m_IsFirstUpdate;
-		glm::vec3 m_CameraPos{ 0,150,0 };
+		glm::vec3 m_CameraPos{ 0,0,0 };
 		glm::vec2 m_OldScreenPos;
 		glm::vec2 m_ScreenPosOffset;
 		glm::vec2 m_CameraRot{0,0};

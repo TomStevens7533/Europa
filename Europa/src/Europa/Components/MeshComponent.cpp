@@ -2,6 +2,7 @@
 #include "MeshComponent.h"
 #include <iostream>
 #include <fstream>
+#include "../structs.h"
 
 Eu::MeshComponent::MeshComponent(const std::string& path)
 {
@@ -33,6 +34,13 @@ void Eu::MeshComponent::FixedUpdate()
 void Eu::MeshComponent::Render() const
 {
 
+}
+
+const std::shared_ptr<Eu::VertexArray> Eu::MeshComponent::GetVertexBuffer() const
+{
+	if (m_IsParsed)
+		return m_ChunkVertexArray;
+	return nullptr;
 }
 
 void Eu::MeshComponent::AddFaceToMesh(std::vector<Vertex_Input>& NewFaces, std::vector<int> newIndices)
@@ -91,7 +99,6 @@ void Eu::MeshComponent::OBJParser(const std::string& path)
 					auto vetexIt = std::find(m_OBJ.m_VertexBuffer.begin(), m_OBJ.m_VertexBuffer.end(), vertex);
 
 
-
 					if (vetexIt != m_OBJ.m_VertexBuffer.end()) {
 
 						m_OBJ.m_IndexBuffer.push_back(static_cast<uint32_t>(std::distance(m_OBJ.m_VertexBuffer.begin(), vetexIt)));
@@ -143,7 +150,7 @@ void Eu::MeshComponent::OBJParser(const std::string& path)
 
 		}
 		EU_CORE_TRACE("OBJ file successfully loaded in\n path: {0}\n Vertex amount : {1}", path, m_OBJ.m_VertexBuffer.size());
-		m_IsParsed = true;
+		BufferMesh();
 
 	}
 	else
@@ -152,4 +159,33 @@ void Eu::MeshComponent::OBJParser(const std::string& path)
 
 }
 
+void Eu::MeshComponent::BufferMesh()
+{
+	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
+
+	auto Vertices = m_OBJ.m_VertexBuffer;
+	auto Indices = m_OBJ.m_IndexBuffer;
+
+	Eu::BufferLayout layout = {
+		{Eu::ShaderDataType::Float3, "a_Position"},
+		{Eu::ShaderDataType::Float3, "a_Color"},
+		{Eu::ShaderDataType::Float2, "a_Uv"},
+		{Eu::ShaderDataType::Float3, "a_Normal"},
+	};
+
+	std::shared_ptr<Eu::VertexBuffer> pVertexBuffer;
+	pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), Vertices.size()));
+	pVertexBuffer->SetLayout(layout);
+	m_ChunkVertexArray->AddVertexBuffer(pVertexBuffer);
+
+	//indexbuffer
+	std::shared_ptr<Eu::IndexBuffer> pIndexBuffer;
+	pIndexBuffer.reset(Eu::IndexBuffer::Create(Indices.data(), Indices.size()));
+	m_ChunkVertexArray->AddIndexBuffer(pIndexBuffer);
+
+	m_OBJ.m_IndexBuffer.clear();
+	m_OBJ.m_VertexBuffer.clear();
+	m_IsParsed = true;
+
+}
 

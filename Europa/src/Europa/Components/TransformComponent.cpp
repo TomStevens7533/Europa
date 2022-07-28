@@ -16,17 +16,22 @@ namespace Eu {
 		m_Right{ 1, 0, 0 },
 		m_Rotation{ 0, 0, 0, 1 },
 		m_WorldRotation{ 0, 0, 0, 1 }
-	{}
+	{
+		UpdateTransforms();
+	}
 
 
 	void TransformComponent::Translate(float x, float y, float z)
 	{
 		m_Position = glm::vec3(x, y, z);
+		m_IsDirty = true;
 	}
 
 	void TransformComponent::Translate(const glm::vec3& position)
 	{
 		m_Position = position;
+		m_IsDirty = true;
+
 	}
 
 	void TransformComponent::Rotate(float x, float y, float z, bool degrees /*= true*/)
@@ -40,6 +45,8 @@ namespace Eu {
 			glm::vec3 euler = glm::vec3(x, y, z);
 			m_Rotation = glm::quat(euler);
 		}
+		m_IsDirty = true;
+
 	}
 
 	void TransformComponent::Rotate(const glm::vec3& rotation, bool degrees /*= true*/)
@@ -52,17 +59,23 @@ namespace Eu {
 		else {
 			m_Rotation = glm::quat(rotation);
 		}
+		m_IsDirty = true;
+
 	}
 
 	void TransformComponent::Scale(float x, float y, float z)
 	{
 		m_Scale = glm::vec3(x, y, z);
+		m_IsDirty = true;
+
 
 	}
 
 	void TransformComponent::Scale(float s)
 	{
 		m_Scale = glm::vec3(s, s, s);
+		m_IsDirty = true;
+
 	}
 
 	void TransformComponent::Scale(const glm::vec3& scale)

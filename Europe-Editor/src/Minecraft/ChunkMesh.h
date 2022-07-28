@@ -20,7 +20,7 @@ public:
 	bool AddFace(glm::vec3 ChunPos, glm::vec3 BlockPos, Faces dir, BlockTypes blockType);
 	void BufferMesh();
 	void Render() const;
-public:
+private:
 private: //Chunk
 	std::shared_ptr<Eu::Mesh> m_pChunkMesh;
 	std::shared_ptr<Eu::VertexArray> m_ChunkVertexArray;

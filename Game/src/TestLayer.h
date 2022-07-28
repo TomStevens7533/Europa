@@ -2,6 +2,7 @@
 #include "Europa/Profiling/TimerManager.h"
 #include "Europa/camera/CameraController.h"
 #include "Europa/Layer.h"
+#include "Europa/Scenegraph.h"
 
 class TestLayer : public Eu::Layer
 {
@@ -27,8 +28,6 @@ public:
 private:
 	Eu::TimerManager m_TimerManager;
 	Eu::ScenGraph m_LayerSceneGraph;
-
-
 
 	Eu::PerspectiveCameraController m_Camera;
 
