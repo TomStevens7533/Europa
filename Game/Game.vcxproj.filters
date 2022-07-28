@@ -2,10 +2,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\GameApp.cpp" />
+    <ClCompile Include="src\TestLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resources">
       <UniqueIdentifier>{9c40aae5-d388-4b90-972f-be1cc68bb89c}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\TestLayer.h" />
   </ItemGroup>
 </Project>

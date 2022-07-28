@@ -141,6 +141,7 @@
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
     <ClInclude Include="src\Europa\Components\BaseComponent.h" />
+    <ClInclude Include="src\Europa\Components\MeshComponent.h" />
     <ClInclude Include="src\Europa\Components\EntityManager.h" />
     <ClInclude Include="src\Europa\Components\TransformComponent.h" />
     <ClInclude Include="src\Europa\Core.h" />
@@ -562,6 +563,7 @@
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp" />
     <ClCompile Include="src\Europa\Components\EntityManager.cpp" />
+    <ClCompile Include="src\Europa\Components\MeshComponent.cpp" />
     <ClCompile Include="src\Europa\Components\TransformComponent.cpp" />
     <ClCompile Include="src\Europa\GameObject.cpp" />
     <ClCompile Include="src\Europa\InputManager.cpp" />

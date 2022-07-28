@@ -1,20 +1,19 @@
 #pragma once
+#include "BaseComponent.h"
 #include <string>
-#include <glm/glm.hpp>
-
+#include <vector>
+#include "../structs.h"
 
 namespace Eu {
-	
-
-
-
-
-	class Mesh
+	class MeshComponent : public BaseComponent
 	{
 	public:
-		Mesh(const std::string& path);
-		Mesh() = default; //Create Empty mesh object
-		~Mesh();
+		MeshComponent(const std::string& path);
+		~MeshComponent();
+		void Start() override;
+		void Update() override;
+		void FixedUpdate() override;
+		void Render() const override;
 
 		inline std::vector<Vertex_Input>& GetVertexBuffer() { return m_OBJ.m_VertexBuffer; }
 		inline std::vector<uint32_t>& GetIndexBuffer() { return m_OBJ.m_IndexBuffer; }
@@ -22,14 +21,10 @@ namespace Eu {
 		void AddFaceToMesh(std::vector<Vertex_Input>& NewFaces, std::vector<int> newIndices);
 		void Clear();
 
-	private:
-
-
-	private:
+	protected:
 		void OBJParser(const std::string& path);
+	private:
 		OBJ m_OBJ;
+		bool m_IsParsed{ false };
 	};
-
-}
-
-
+};

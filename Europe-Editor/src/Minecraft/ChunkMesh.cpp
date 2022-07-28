@@ -39,6 +39,7 @@ ChunkMesh::ChunkMesh(const BlockInfromation* blockInfo)
 
 	if (m_pRenderingProgram == nullptr) //default to 2D texture program
 		m_pRenderingProgram = &Eu::ResourceManager::GetInstance()->GetProgram(Eu::ShaderType::TEXTURE2D_WORLDSPACE_SHADER);
+
 	m_pChunkMesh = std::make_shared<Eu::Mesh>();
 }
 

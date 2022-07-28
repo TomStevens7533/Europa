@@ -16,4 +16,9 @@ namespace Eu {
 		}
 	};
 
+	struct OBJ {
+		std::vector<Vertex_Input> m_VertexBuffer;
+		std::vector<uint32_t> m_IndexBuffer;
+	};
+
 }
