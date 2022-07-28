@@ -13,10 +13,10 @@ namespace Eu {
 
 	}
 
-	SceneGraphItem& ScenGraph::AddItemToSceneGraph(BaseGameObject* newSceneObject)
+	SceneGraphItem& ScenGraph::AddItemToSceneGraph(GameObject* newSceneObject)
 	{
 
-		std::shared_ptr<BaseGameObject>pnewSceneEntry;
+		std::shared_ptr<GameObject>pnewSceneEntry;
 		pnewSceneEntry.reset(newSceneObject);
 
 		auto newEntryPair = m_SceneGraphMap.insert({ m_IndexSize, pnewSceneEntry });

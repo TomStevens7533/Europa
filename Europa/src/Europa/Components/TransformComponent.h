@@ -29,8 +29,8 @@ namespace Eu {
 		const glm::vec3& GetWorldPosition() const { return m_WorldPosition; }
 		const glm::vec3& GetScale() const { return m_Scale; }
 		const glm::vec3& GetWorldScale() const { return m_WorldScale; }
-		const glm::vec4& GetRotation() const { return m_Rotation; }
-		const glm::vec4& GetWorldRotation() const { return m_WorldRotation; }
+		const glm::quat& GetRotation() const { return m_Rotation; }
+		const glm::quat& GetWorldRotation() const { return m_WorldRotation; }
 		const glm::mat4& GetWorld() const { return m_World; }
 
 		const glm::vec3& GetForward() const { return m_Forward; }
@@ -49,7 +49,6 @@ namespace Eu {
 	protected:
 
 		void UpdateTransforms();
-		bool CheckConstraints() const;
 
 		bool CheckIfDirty();
 		bool m_IsDirty{};

@@ -18,10 +18,6 @@ namespace Eu {
 		m_WorldRotation{ 0, 0, 0, 1 }
 	{}
 
-	TransformComponent::TransformComponent()
-	{
-
-	}
 
 	void TransformComponent::Translate(float x, float y, float z)
 	{
@@ -134,10 +130,5 @@ namespace Eu {
 
 	}
 
-
-	bool TransformComponent::CheckConstraints() const
-	{
-
-	}
 
 }

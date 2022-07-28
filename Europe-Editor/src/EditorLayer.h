@@ -31,7 +31,6 @@ namespace Eu {
 		ChunkManager* m_ChunkManager;
 		Eu::TimerManager m_TimerManager;
 
-		std::shared_ptr<Eu::SkyBox> m_pSkyBox;
 
 		std::shared_ptr<Eu::BaseTexture>* m_ptexture;
 		std::shared_ptr<Eu::BaseTexture>* m_pCrosshairTexture;

@@ -16,8 +16,6 @@ namespace Eu {
 		m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
 
 
-		m_pSkyBox = std::make_shared<Eu::SkyBox>();
-		m_pSkyBox->AddTexture("Resources/skybox/skybox");
 	}
 
 	void EuropaEditorLayer::OnAttach()
@@ -53,7 +51,6 @@ namespace Eu {
 
 		//m_Chunk->Render();
 		m_ChunkManager->Render();
-		m_pSkyBox->Render();
 		//m_pScene->RenderScene();
 		Eu::Renderer::EndScene();
 		m_TimerManager.StopTimer(NrmlRendertimer);
