@@ -1,5 +1,9 @@
 #include "TransformComponent.h"
 #include "glm/gtx/rotate_vector.hpp"
+#include <corecrt_math_defines.h>
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/matrix_decompose.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 namespace Eu {
 	TransformComponent::TransformComponent() :
@@ -13,6 +17,63 @@ namespace Eu {
 		m_Rotation{ 0, 0, 0, 1 },
 		m_WorldRotation{ 0, 0, 0, 1 }
 	{}
+
+	TransformComponent::TransformComponent()
+	{
+
+	}
+
+	void TransformComponent::Translate(float x, float y, float z)
+	{
+		m_Position = glm::vec3(x, y, z);
+	}
+
+	void TransformComponent::Translate(const glm::vec3& position)
+	{
+		m_Position = position;
+	}
+
+	void TransformComponent::Rotate(float x, float y, float z, bool degrees /*= true*/)
+	{
+		if (degrees) {
+			glm::vec3 euler = glm::vec3(x,y, z);
+			m_Rotation = glm::quat(glm::radians(euler));
+			return;
+		}
+		else {
+			glm::vec3 euler = glm::vec3(x, y, z);
+			m_Rotation = glm::quat(euler);
+		}
+	}
+
+	void TransformComponent::Rotate(const glm::vec3& rotation, bool degrees /*= true*/)
+	{
+		if(degrees) {
+			glm::vec3 euler = glm::vec3(rotation.x / 180.f * M_PI, rotation.y / 180.f * M_PI, rotation.z / 180.f * M_PI);
+			m_Rotation = glm::quat(euler);
+			return;
+		}
+		else {
+			m_Rotation = glm::quat(rotation);
+		}
+	}
+
+	void TransformComponent::Scale(float x, float y, float z)
+	{
+		m_Scale = glm::vec3(x, y, z);
+
+	}
+
+	void TransformComponent::Scale(float s)
+	{
+		m_Scale = glm::vec3(s, s, s);
+	}
+
+	void TransformComponent::Scale(const glm::vec3& scale)
+	{
+		m_Scale = scale;
+
+	}
 
 	bool TransformComponent::CheckIfDirty()
 	{
@@ -33,46 +94,50 @@ namespace Eu {
 			UpdateTransforms();
 	}
 
+	void TransformComponent::FixedUpdate()
+	{
+
+	}
+
+	void TransformComponent::Render() const
+	{
+
+	}
+
 	void TransformComponent::UpdateTransforms()
 	{
 		//Calculate World Matrix
 		//**********************
-		auto rot = glm::rotate(glm::mat4(1.f), m_Rotation.x, glm::vec3(1, 0, 0));
-		rot = glm::rotate(rot, m_Rotation.y, glm::vec3(0, 1, 0));
-		rot = glm::rotate(rot, m_Rotation.z, glm::vec3(0, 0, 1));
-		//
-		//auto world = XMMatrixScaling(m_Scale.x, m_Scale.y, m_Scale.z) *
-		//	XMMatrixRotationQuaternion(rot) *
-		//	XMMatrixTranslation(m_Position.x, m_Position.y, m_Position.z);
+		//rot
+		auto rot = glm::mat4_cast(m_Rotation);
+		//trans
+		auto trans = glm::translate(glm::mat4(1), m_Position);
+		//Scale
+		auto scale = glm::scale(glm::mat4(1), m_Scale);
+		m_World = trans * rot * scale;
+	
+		//decompose 
+		glm::vec3 skew;
+		glm::quat decompRot;
+		glm::vec4 perspective;
+		glm::decompose(m_World, m_WorldScale, decompRot, m_WorldPosition, skew, perspective);
 
-		//if (const auto pParent = m_pGameObject->GetParent())
-		//{
-		//	const auto parentWorld = XMLoadFloat4x4(&pParent->GetTransform()->m_World);
-		//	world *= parentWorld;
-		//}
+		//convert conjugate to worldrot
+		m_WorldRotation = glm::conjugate(decompRot);
+		
+		
+		m_Forward = glm::vec4(0, 0, 1, 0) * rot;
+		m_Right = glm::vec4(1, 0, 0, 0) * rot;
+		m_Up = glm::cross(m_Forward, m_Right);
 
-		//XMStoreFloat4x4(&m_World, world);
+		m_IsDirty = false;
 
-		////Get World Transform
-		//XMVECTOR pos, scale;
-		//if (XMMatrixDecompose(&scale, &rot, &pos, world))
-		//{
-		//	XMStoreFloat3(&m_WorldPosition, pos);
-		//	XMStoreFloat3(&m_WorldScale, scale);
-		//	XMStoreFloat4(&m_WorldRotation, rot);
-		//}
-
-		//const auto rotMat = XMMatrixRotationQuaternion(rot);
-		//const auto forward = XMVector3TransformCoord(XMVectorSet(0, 0, 1, 0), rotMat);
-		//const auto right = XMVector3TransformCoord(XMVectorSet(1, 0, 0, 0), rotMat);
-		//const auto up = XMVector3Cross(forward, right);
-
-		//XMStoreFloat3(&m_Forward, forward);
-		//XMStoreFloat3(&m_Right, right);
-		//XMStoreFloat3(&m_Up, up);
-
-		//m_IsTransformChanged = TransformChanged::NONE;
 	}
 
+
+	bool TransformComponent::CheckConstraints() const
+	{
+
+	}
 
 }

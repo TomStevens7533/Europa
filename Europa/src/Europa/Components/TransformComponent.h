@@ -1,13 +1,14 @@
 #pragma once
 #include <glm/glm.hpp>
 #include "BaseComponent.h"
+#include "glm/gtc/quaternion.hpp"
+
 namespace Eu {
 
 	class TransformComponent : public BaseComponent
 	{
 	public:
 		TransformComponent();
-		~TransformComponent();
 		TransformComponent(const TransformComponent& other) = delete;
 		TransformComponent(TransformComponent&& other) noexcept = delete;
 		TransformComponent& operator=(const TransformComponent& other) = delete;
@@ -58,7 +59,8 @@ namespace Eu {
 		glm::vec3 m_Position{}, m_WorldPosition{};
 		glm::vec3 m_Scale{}, m_WorldScale{};
 		glm::vec3 m_Forward{}, m_Up{}, m_Right{};
-		glm::vec4 m_Rotation{}, m_WorldRotation{};
+		glm::quat m_Rotation{};
+		glm::quat m_WorldRotation{};
 		glm::mat4 m_World{};
 		bool m_IsTransformChanged{};
 		bool m_IsIntialized{false};
