@@ -137,6 +137,10 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseMaterial.h" />
+    <ClInclude Include="InternalMaterial.h" />
+    <ClInclude Include="MaterialManager.h" />
+    <ClInclude Include="OpenGLMaterial.h" />
     <ClInclude Include="src\Eupch.h" />
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
@@ -561,6 +565,10 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseMaterial.cpp" />
+    <ClCompile Include="InternalMaterial.cpp" />
+    <ClCompile Include="MaterialManager.cpp" />
+    <ClCompile Include="OpenGLMaterial.cpp" />
     <ClCompile Include="src\Europa\Application.cpp" />
     <ClCompile Include="src\Europa\Components\EntityManager.cpp" />
     <ClCompile Include="src\Europa\Components\MeshComponent.cpp" />

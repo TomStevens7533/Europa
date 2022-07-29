@@ -28,7 +28,7 @@ namespace Eu {
 
 
 		void AttachVertexShader(const std::string& path);
-		void AttachPixelShader(const std::string& path);
+		void AttachPixelShader(const std::string& path); 
 
 		virtual void Bind() const = 0;
 		virtual void UnBind() const = 0;

@@ -67,6 +67,9 @@
     <Filter Include="vendor\stb_image">
       <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Europa\Materials">
+      <UniqueIdentifier>{936ea136-aa53-4c3a-99b7-ed60397219a2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Eupch.h">
@@ -1329,8 +1332,24 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Europa\Components\MeshComponent.h" />
-    <ClInclude Include="src\Europa\Components\MeshRenderComponent.h" />
+    <ClInclude Include="src\Europa\Components\MeshComponent.h">
+      <Filter>src\Europa\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Components\MeshRenderComponent.h">
+      <Filter>src\Europa\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialManager.h">
+      <Filter>src\Europa\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseMaterial.h">
+      <Filter>src\Europa\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="InternalMaterial.h">
+      <Filter>src\Europa\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="OpenGLMaterial.h">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1450,7 +1469,23 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Europa\Components\MeshComponent.cpp" />
-    <ClCompile Include="src\Europa\Components\MeshRenderComponent.cpp" />
+    <ClCompile Include="src\Europa\Components\MeshComponent.cpp">
+      <Filter>src\Europa\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Components\MeshRenderComponent.cpp">
+      <Filter>src\Europa\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialManager.cpp">
+      <Filter>src\Europa\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseMaterial.cpp">
+      <Filter>src\Europa\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="InternalMaterial.cpp">
+      <Filter>src\Europa\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="OpenGLMaterial.cpp">
+      <Filter>src\Platform\OpenGL</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

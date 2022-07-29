@@ -3,6 +3,9 @@
 #include "Europa/Components/MeshComponent.h"
 #include "Europa/Components/MeshRenderComponent.h"
 #include "Europa/Renderer/Renderer.h"
+#include "../MaterialManager.h"
+#include "../BaseMaterial/PosTexCol3D.h"
+#include <memory>
 using namespace Eu;
 TestLayer::TestLayer() : m_Camera{60.f}
 {
@@ -17,6 +20,7 @@ void TestLayer::OnAttach()
 	auto meshRenderComponent = std::make_shared<MeshRenderComponent>();
 	carGo->AddComponent<MeshRenderComponent>(meshRenderComponent);
 
+	MaterialManager::GetInstance()->CreateMaterial<PosTexCol3D>();
 	m_LayerSceneGraph.AddItemToSceneGraph(carGo);
 	m_LayerSceneGraph.StartScene();
 }
