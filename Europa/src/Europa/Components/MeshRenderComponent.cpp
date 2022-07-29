@@ -23,6 +23,7 @@ void Eu::MeshRenderComponent::Start()
 
 void Eu::MeshRenderComponent::Update()
 {
+	m_pMaterial->UpdateMaterialVariables();
 }
 
 void Eu::MeshRenderComponent::FixedUpdate()

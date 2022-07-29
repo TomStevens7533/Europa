@@ -14,7 +14,7 @@ namespace Eu {
 		~ResourceManager();
 	public:
 		//funtions
-		std::shared_ptr<BaseTexture>& GetTexture(const std::string texturePath, const TextureTypes type);
+		std::shared_ptr<BaseTexture> GetTexture(const std::string texturePath, const TextureTypes type);
 		std::shared_ptr<BaseProgram> GetProgram(ShaderType type);
 	
 	private:

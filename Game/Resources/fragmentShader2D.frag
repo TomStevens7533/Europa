@@ -7,17 +7,18 @@ in vec3 v_Color;
 in vec3 v_Light;
 
 
+uniform sampler2D u_Texture;
 
 
 void main()
 {
 	vec4 tempColor;
 		
-
+	tempColor = texture(u_Texture, v_TexCord); 
 
 	
 
-	tempColor = vec4(1.f, 1.f, 1.f, 1.f);
+	tempColor.a =  1.f;
 
 
 	color = tempColor;

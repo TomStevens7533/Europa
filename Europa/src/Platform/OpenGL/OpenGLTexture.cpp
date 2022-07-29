@@ -105,7 +105,6 @@ namespace Eu {
 	{
 		glActiveTexture(GL_TEXTURE0);
 
-		//opengl uses units so we can access multiple textures at once for more complex rendering tasks
 		glBindTexture(GL_TEXTURE_2D, m_RenderID);
 	}
 

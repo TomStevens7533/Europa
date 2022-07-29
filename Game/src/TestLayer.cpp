@@ -25,7 +25,6 @@ void TestLayer::OnAttach()
 
 	m_LayerSceneGraph.StartScene();
 	go = carGo;
-	go->GetTransform().Scale(2.f);
 
 }
 

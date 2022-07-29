@@ -21,12 +21,11 @@ namespace Eu {
 
 	ResourceManager::~ResourceManager()
 	{
-		//EU_CORE_INFO("RESOURCE MANAGER DELETED!");
 	}
 
 
 
-	std::shared_ptr<BaseTexture>& ResourceManager::GetTexture(const std::string texturePath, const TextureTypes type)
+	std::shared_ptr<BaseTexture> ResourceManager::GetTexture(const std::string texturePath, const TextureTypes type)
 	{
 		size_t count = m_TextureMap.count(texturePath);
 
