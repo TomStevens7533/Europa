@@ -78,7 +78,7 @@ namespace Eu
 	{
 
 		// Get a program object.
-		m_RenderID = glCreateProgram();
+		m_RenderID = glCreateProgram(); 
 
 	}
 

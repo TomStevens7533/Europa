@@ -19,10 +19,12 @@ void TestLayer::OnAttach()
 	carGo->AddComponent<MeshComponent>(meshComponent);
 	auto meshRenderComponent = std::make_shared<MeshRenderComponent>();
 	carGo->AddComponent<MeshRenderComponent>(meshRenderComponent);
-
-	MaterialManager::GetInstance()->CreateMaterial<PosTexCol3D>();
+	auto posMat = MaterialManager::GetInstance()->CreateMaterial<PosTexCol3D>();
 	m_LayerSceneGraph.AddItemToSceneGraph(carGo);
+	meshRenderComponent->SetMaterial(posMat);
+
 	m_LayerSceneGraph.StartScene();
+	go = carGo;
 }
 
 void TestLayer::OnDetach()
@@ -33,6 +35,10 @@ void TestLayer::OnDetach()
 void TestLayer::OnUpdate(Eu::TimeStep deltaTime)
 {
 	m_Camera.OnUpdate(deltaTime);
+	m_Rotation += glm::vec3{ 1,0,0 };
+	go->GetTransform().Rotate(m_Rotation, true);
+
+
 	//Renderer::EnableWireFrame();
 	RenderCommand::SetClearColor({ 0.f, 0.3f, 0.8f, 1.f });
 	RenderCommand::Clear();

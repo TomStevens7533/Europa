@@ -39,7 +39,6 @@ namespace Eu {
 		if (degrees) {
 			glm::vec3 euler = glm::vec3(x,y, z);
 			m_Rotation = glm::quat(glm::radians(euler));
-			return;
 		}
 		else {
 			glm::vec3 euler = glm::vec3(x, y, z);
@@ -54,7 +53,6 @@ namespace Eu {
 		if(degrees) {
 			glm::vec3 euler = glm::vec3(rotation.x / 180.f * M_PI, rotation.y / 180.f * M_PI, rotation.z / 180.f * M_PI);
 			m_Rotation = glm::quat(euler);
-			return;
 		}
 		else {
 			m_Rotation = glm::quat(rotation);
@@ -122,8 +120,8 @@ namespace Eu {
 		//trans
 		auto trans = glm::translate(glm::mat4(1), m_Position);
 		//Scale
-		auto scale = glm::scale(glm::mat4(1), m_Scale);
-		m_World = trans * rot * scale;
+		//auto scale = glm::scale(glm::mat4(1), m_Scale);
+		m_World = trans * rot ;
 	
 		//decompose 
 		glm::vec3 skew;

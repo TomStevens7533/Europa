@@ -10,13 +10,18 @@ namespace Eu {
 	class OpenGLMaterial : public InternalMaterial
 	{
 	public:
+		OpenGLMaterial();
+		~OpenGLMaterial()
+		{
+			std::cout << "death\n";
+		}
 		void AttachVertexShader(const std::string& path);
 		void AttachPixelShader(const std::string& path);
 	
 
 
-		void Bind() const override;
-		void UnBind() const override;
+		void Bind()  override;
+		void UnBind()  override;
 
 		void SetUniformMatrix4(const glm::mat4& mat4, const char* name) ;
 		void SetUniformInt(const int index, const char* name) const ;
@@ -29,10 +34,9 @@ namespace Eu {
 	private:
 		void LinkProgram();
 	private:
-		OpenGLIndexShader m_IndexShader;
-		OpenGLVertexShader m_VertexShader;
 		uint32_t m_RenderID;
 		std::vector<std::shared_ptr<BaseShader>> m_ShaderMap;
+		bool m_IsBound{ false };
 	};
 
 }

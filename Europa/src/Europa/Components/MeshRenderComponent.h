@@ -3,6 +3,7 @@
 #include <memory>
 
 namespace Eu {
+	class BaseMaterial;
 	class MeshComponent;
 	class BaseProgram;
 	class MeshRenderComponent : public BaseComponent
@@ -17,9 +18,11 @@ namespace Eu {
 		void FixedUpdate() override;
 		void Render() const override;
 
+		void SetMaterial(std::shared_ptr<Eu::BaseMaterial> mat);
+
 	private:
 		MeshComponent* m_pMeshComp;
-		std::shared_ptr<Eu::BaseProgram> m_pModelProgram{};
+		std::shared_ptr<Eu::BaseMaterial> m_pMaterial{};
 	};
 
 }

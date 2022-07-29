@@ -4,15 +4,28 @@
 #include "glm/gtc/type_ptr.inl"
 
 using namespace Eu;
-void Eu::OpenGLMaterial::Bind() const
+
+OpenGLMaterial::OpenGLMaterial()
 {
-	glUseProgram(m_RenderID);
+	m_RenderID = glCreateProgram();
 
 }
 
-void Eu::OpenGLMaterial::UnBind() const
+void Eu::OpenGLMaterial::Bind() 
 {
-	glUseProgram(0);
+	if (m_IsBound == false) {
+		glUseProgram(m_RenderID);
+		m_IsBound = true;
+	}
+
+}
+
+void Eu::OpenGLMaterial::UnBind() 
+{
+	if (m_IsBound == true) {
+		glUseProgram(0);
+		m_IsBound = false;
+	}
 }
 
 void Eu::OpenGLMaterial::SetUniformMatrix4(const glm::mat4& mat4, const char* name)
@@ -91,6 +104,7 @@ void OpenGLMaterial::LinkProgram()
 		glDetachShader(m_RenderID, key->GetShaderID());
 }
 
+
 void Eu::OpenGLMaterial::AttachVertexShader(const std::string& path)
 {
 	m_ShaderMap.push_back(std::make_shared<OpenGLVertexShader>(path));
@@ -99,6 +113,7 @@ void Eu::OpenGLMaterial::AttachVertexShader(const std::string& path)
 void Eu::OpenGLMaterial::AttachPixelShader(const std::string& path)
 {
 	m_ShaderMap.push_back(std::make_shared<OpenGLIndexShader>(path));
+	LinkProgram();
 
 }
 

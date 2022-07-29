@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include "RenderCommand.h"
 #include "Renderer2D.h"
+#include "../BaseMaterial.h"
 
 
 
@@ -51,12 +52,12 @@ namespace Eu
 		RenderCommand::DisablewireFrame();
 	}
 
-	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform) {
+	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseMaterial> program, const glm::mat4& transform) {
 		//Rendercommand
 		//program->Bind();
 		program->Bind();
-		program->SetUniformMatrix4(m_SceneData->GetViewProjectionMatrix(), "u_ViewProj", BaseProgram::ShaderTypes::T_VertexShader);
-		(program)->SetUniformMatrix4(transform, "u_TranslationMat", BaseProgram::ShaderTypes::T_VertexShader);
+		program->SetUniformMatrix4 (m_SceneData->GetViewProjectionMatrix(), "u_ViewProj");
+		(program)->SetUniformMatrix4(transform, "u_TranslationMat");
 
 		vertexArray->Bind();
 

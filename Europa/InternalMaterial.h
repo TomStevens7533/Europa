@@ -1,14 +1,15 @@
 #pragma once
 #include <string>
 #include "glm/ext/matrix_float4x4.hpp"
+#include <memory>
 
 namespace Eu {
 	class InternalMaterial
 	{
 	public:
-		static InternalMaterial* GetInternalMaterial();
-		virtual void Bind() const = 0;
-		virtual void UnBind() const = 0;
+		static std::unique_ptr<InternalMaterial> GetInternalMaterial();
+		virtual void Bind()  = 0;
+		virtual void UnBind()  = 0;
 
 		 virtual void AttachVertexShader(const std::string& path) = 0;
 		 virtual void AttachPixelShader(const std::string& path)= 0;

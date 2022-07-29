@@ -28,7 +28,8 @@ public:
 private:
 	Eu::TimerManager m_TimerManager;
 	Eu::ScenGraph m_LayerSceneGraph;
-
+	Eu::GameObject* go;
+	glm::vec3 m_Rotation{};
 	Eu::PerspectiveCameraController m_Camera;
 
 };

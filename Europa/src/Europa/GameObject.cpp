@@ -106,6 +106,7 @@ namespace Eu {
 	void GameObject::Update()
 	{
 		//Update this gameobject component first
+		m_Transform.Update();
 		m_EntityManager.Update();
 
 		for (auto& child : m_Children)
@@ -116,6 +117,7 @@ namespace Eu {
 
 	void GameObject::FixedUpdate()
 	{
+		m_Transform.FixedUpdate();
 		m_EntityManager.FixedUpdate();
 
 		for (auto& child : m_Children)

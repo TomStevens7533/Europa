@@ -1,7 +1,8 @@
 #include "InternalMaterial.h"
 #include "Europa/Renderer/Renderer.h"
+#include "OpenGLMaterial.h"
 using namespace Eu;
-InternalMaterial* InternalMaterial::GetInternalMaterial()
+std::unique_ptr<InternalMaterial> InternalMaterial::GetInternalMaterial()
 {
 	switch (Renderer::GetAPI())
 	{
@@ -9,7 +10,7 @@ InternalMaterial* InternalMaterial::GetInternalMaterial()
 		return nullptr;
 
 	case RendererAPI::API::OpenGL:
-		return nullptr;
+		return std::make_unique<OpenGLMaterial>();
 	}
 	EU_CORE_ASSERT(false, "Unknown RendererAPI");
 	return nullptr;

@@ -7,7 +7,7 @@
 
 namespace Eu
 {
-
+	class BaseMaterial;
 	class Renderer
 	{
 
@@ -22,7 +22,7 @@ namespace Eu
 		static void EnableWireFrame();
 		static void DisableWireFrame();
 
-		static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f));
+		static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseMaterial> program, const glm::mat4& transform = glm::mat4(1.0f));
 		static void SubmitNoDepth(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f), bool isBackground = false);
 	
 	
