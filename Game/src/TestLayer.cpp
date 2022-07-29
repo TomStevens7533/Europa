@@ -25,6 +25,8 @@ void TestLayer::OnAttach()
 
 	m_LayerSceneGraph.StartScene();
 	go = carGo;
+	go->GetTransform().Scale(2.f);
+
 }
 
 void TestLayer::OnDetach()
@@ -35,8 +37,13 @@ void TestLayer::OnDetach()
 void TestLayer::OnUpdate(Eu::TimeStep deltaTime)
 {
 	m_Camera.OnUpdate(deltaTime);
-	m_Rotation += glm::vec3{ 1,0,0 };
-	go->GetTransform().Rotate(m_Rotation, true);
+	m_Rotation += glm::vec3{ 0.0001,0.0002,0 };
+	m_Translation += glm::vec3{ 0.1,0.02,0 };
+	go->GetTransform().Translate(m_Translation);
+	go->GetTransform().Rotate(m_Rotation);
+	
+
+
 
 
 	//Renderer::EnableWireFrame();

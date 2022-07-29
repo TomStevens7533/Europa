@@ -29,7 +29,9 @@ private:
 	Eu::TimerManager m_TimerManager;
 	Eu::ScenGraph m_LayerSceneGraph;
 	Eu::GameObject* go;
-	glm::vec3 m_Rotation{};
+	glm::vec3 m_Rotation{1,0,0};
+	glm::vec3 m_Translation{ 1,0,0 };
+
 	Eu::PerspectiveCameraController m_Camera;
 
 };
