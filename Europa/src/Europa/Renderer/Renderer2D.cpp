@@ -40,7 +40,8 @@ namespace Eu {
 			quadIndexBuffer.reset(IndexBuffer::Create(squareIndices, sizeof(squareIndices) / sizeof(uint32_t)));
 			s_2DData->QuadVertexArray->AddIndexBuffer(quadIndexBuffer);
 
-			s_2DData->QuadProgram = ResourceManager::GetInstance()->GetProgram(ShaderType::TEXTURE2D_UILOCALSPACE_SHADER);
+
+			//REDO MATERIAL FOR 2D
 		}
 		else
 			EU_CORE_ERROR("2D renderer already initialized");
@@ -53,21 +54,20 @@ namespace Eu {
 	{
 
 
-		s_2DData->QuadProgram->Bind();
-		s_2DData->QuadProgram->SetUniformInt(0, "u_Texture", Eu::BaseProgram::ShaderTypes::T_PixelShader);
+	
 
 
 		//s_2DData->QuadProgram->SetUniformMatrix4(glm::mat4(1) * sceneCamera.GetProjectionMatrix(), "u_Proj", BaseProgram::ShaderTypes::T_VertexShader);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const glm::vec4& color) {
-		//Set Color
-		s_2DData->QuadProgram->SetUniformVec4(color, "u_Color", BaseProgram::ShaderTypes::T_VertexShader);
-		s_2DData->QuadProgram->SetUniformMatrix4(
-			glm::translate(glm::mat4(1.f), position) * glm::scale(glm::mat4(1.f), {size.x, size.y , 1.f}) /* * ROTATION*/,
-			"u_TransForm", BaseProgram::ShaderTypes::T_VertexShader);
-		s_2DData->QuadVertexArray->Bind();
-		RenderCommand::DrawIndexed(s_2DData->QuadVertexArray);
+		////Set Color
+		//s_2DData->QuadProgram->SetUniformVec4(color, "u_Color", BaseProgram::ShaderTypes::T_VertexShader);
+		//s_2DData->QuadProgram->SetUniformMatrix4(
+		//	glm::translate(glm::mat4(1.f), position) * glm::scale(glm::mat4(1.f), {size.x, size.y , 1.f}) /* * ROTATION*/,
+		//	"u_TransForm", BaseProgram::ShaderTypes::T_VertexShader);
+		//s_2DData->QuadVertexArray->Bind();
+		//RenderCommand::DrawIndexed(s_2DData->QuadVertexArray);
 	}
 
 	void Renderer2D::DrawQuad(const glm::vec3& position, const glm::vec2& size, const std::shared_ptr<BaseTexture>& Texture, const glm::vec4& color)

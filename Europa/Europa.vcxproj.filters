@@ -153,9 +153,6 @@
     <ClInclude Include="src\Europa\Renderer\GraphicsContext.h">
       <Filter>src\Europa\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="src\Europa\Renderer\Program.h">
-      <Filter>src\Europa\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="src\Europa\Renderer\RenderCommand.h">
       <Filter>src\Europa\Renderer</Filter>
     </ClInclude>
@@ -1392,9 +1389,6 @@
       <Filter>src\Europa\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Renderer\Framebuffer.cpp">
-      <Filter>src\Europa\Renderer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Europa\Renderer\Program.cpp">
       <Filter>src\Europa\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Renderer\RenderCommand.cpp">

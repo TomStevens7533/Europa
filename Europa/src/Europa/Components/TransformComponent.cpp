@@ -122,7 +122,7 @@ namespace Eu {
 		auto trans = glm::translate(glm::mat4(1), m_Position);
 		//Scale
 		auto scale = glm::scale(glm::mat4(1), m_Scale);
-		m_World = rot * trans * scale;
+		m_World = trans * rot  * scale;
 	
 		//decompose 
 		glm::vec3 skew;

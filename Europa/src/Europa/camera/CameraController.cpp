@@ -32,7 +32,6 @@ namespace Eu {
 
 		m_Camera.SetPosition(m_CameraPos);
 
-		std::cout << m_CameraPos.x << m_CameraPos.y << m_CameraPos.z << std::endl;
 	}
 
 	void PerspectiveCameraController::SetNewPosition(glm::vec3 cameraPos)
@@ -80,7 +79,7 @@ namespace Eu {
 			m_ScreenPosOffset.x *= sensitivity;
 
 			
-			// make sure that when pitch is out of bounds, screen doesn't get flipped
+			//  screen doesn't get flipped
 			if (m_CameraRot.x >= 88.5f)
 				m_CameraRot.x = 88.5f;
 			if (m_CameraRot.x <= -88.5f)

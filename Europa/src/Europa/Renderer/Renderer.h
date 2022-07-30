@@ -1,7 +1,6 @@
 #pragma once
 #include "Buffer.h"
 #include "RenderCommand.h"
-#include "Program.h"
 #include <glm/glm.hpp>
 #include "Europa/Camera/Camera.h"
 
@@ -23,7 +22,6 @@ namespace Eu
 		static void DisableWireFrame();
 
 		static void Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseMaterial> program, const glm::mat4& transform = glm::mat4(1.0f));
-		static void SubmitNoDepth(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform = glm::mat4(1.0f), bool isBackground = false);
 	
 	
 	public:
