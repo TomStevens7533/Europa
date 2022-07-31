@@ -7,5 +7,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\EditorApp.cpp" />
+    <ClCompile Include="Components\ChunkMeshComponent.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Components\ChunkMeshComponent.h" />
   </ItemGroup>
 </Project>

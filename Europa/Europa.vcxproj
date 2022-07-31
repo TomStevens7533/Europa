@@ -145,8 +145,8 @@
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
     <ClInclude Include="src\Europa\Components\BaseComponent.h" />
-    <ClInclude Include="src\Europa\Components\MeshComponent.h" />
     <ClInclude Include="src\Europa\Components\EntityManager.h" />
+    <ClInclude Include="src\Europa\Components\MeshComponent.h" />
     <ClInclude Include="src\Europa\Components\MeshRenderComponent.h" />
     <ClInclude Include="src\Europa\Components\TransformComponent.h" />
     <ClInclude Include="src\Europa\Core.h" />
@@ -184,6 +184,7 @@
     <ClInclude Include="src\Europa\camera\Camera.h" />
     <ClInclude Include="src\Europa\camera\CameraController.h" />
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h" />
+    <ClInclude Include="src\Europa\mesh\Mesh.h" />
     <ClInclude Include="src\Europa\structs.h" />
     <ClInclude Include="src\Platform\OpenGL\EuropaOpenGL.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
@@ -561,6 +562,7 @@
     <ClInclude Include="vendor\glm\glm\vec3.hpp" />
     <ClInclude Include="vendor\glm\glm\vec4.hpp" />
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp" />
+    <ClInclude Include="vendor\rapidjson\rapidjson.h" />
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
@@ -598,6 +600,7 @@
     <ClCompile Include="src\Europa\camera\CameraController.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp" />
+    <ClCompile Include="src\Europa\mesh\Mesh.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />

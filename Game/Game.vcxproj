@@ -128,6 +128,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseMaterial\PosTexCol3D.h" />
+    <ClInclude Include="src\TestLayer.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="BaseMaterial\PosTexCol3D.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
     <ClCompile Include="src\TestLayer.cpp" />
@@ -136,10 +140,6 @@
     <ProjectReference Include="..\Europa\Europa.vcxproj">
       <Project>{519558B1-3D37-8387-26F2-96DB12330AD8}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="BaseMaterial\PosTexCol3D.h" />
-    <ClInclude Include="src\TestLayer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

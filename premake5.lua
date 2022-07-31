@@ -21,6 +21,7 @@ IncludeDir["imgui"] = "Europa/vendor/imgui"
 IncludeDir["glm"] = "Europa/vendor/glm"
 IncludeDir["stb_image"] = "Europa/vendor/stb_image"
 IncludeDir["vld"] = "Europa/vendor/VLD"
+IncludeDir["rapidjson"] = "Europa/vendor/rapidjson"
 
 include "Europa/vendor/GLFW"
 include "Europa/vendor/Glad"
@@ -46,7 +47,8 @@ project "Europa"
 		"%{prj.name}/vendor/stb_image/**.h",
 		"%{prj.name}/vendor/VLD/**.h",
 		"%{prj.name}/vendor/glm/**.hpp",
-		"%{prj.name}/vendor/glm/**.inl"
+		"%{prj.name}/vendor/glm/**.inl",
+		"%{prj.name}/vendor/rapidjson/rapidjson.h",
 		
 	}
 	defines

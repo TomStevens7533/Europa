@@ -3,7 +3,7 @@
 
 
 PosTexCol3D::PosTexCol3D() :
-	BaseMaterial("Resources/vertexShader2D.vert", "Resources/fragmentShader2D.frag")
+	Eu::BaseMaterial("Resources/vertexShader2D.vert", "Resources/fragmentShader2D.frag")
 {
 
 }

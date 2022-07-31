@@ -2,10 +2,12 @@
 #include <array>
 #include "Europa/mesh/Mesh.h"
 #include <Europa/Renderer/VertexArray.h>
-#include "Europa/Renderer/Program.h"
 #include "BlockStruct.h"
 
 class BlockInfromation;
+namespace Eu { 
+	class MeshComponent;
+}
 
 
 class ChunkMesh
@@ -22,7 +24,7 @@ public:
 	void Render() const;
 private:
 private: //Chunk
-	std::shared_ptr<Eu::Mesh> m_pChunkMesh;
+	Eu::MeshComponent* m_pChunkMesh;
 	std::shared_ptr<Eu::VertexArray> m_ChunkVertexArray;
 
 	const std::shared_ptr<Eu::BaseProgram>* m_pRenderingProgram = nullptr;

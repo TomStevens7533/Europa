@@ -64,11 +64,11 @@
     <Filter Include="vendor\glm\glm\gtx">
       <UniqueIdentifier>{B3A6A76B-9F8A-68C1-08EB-6214F4ED5243}</UniqueIdentifier>
     </Filter>
+    <Filter Include="vendor\rapidjson">
+      <UniqueIdentifier>{2C7902A9-1872-21FB-41A4-06802DFC0007}</UniqueIdentifier>
+    </Filter>
     <Filter Include="vendor\stb_image">
       <UniqueIdentifier>{0DA0BA59-F998-D9AB-22CB-BE300E23B9B7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="src\Europa\Materials">
-      <UniqueIdentifier>{936ea136-aa53-4c3a-99b7-ed60397219a2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +85,12 @@
       <Filter>src\Europa\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Components\EntityManager.h">
+      <Filter>src\Europa\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Components\MeshComponent.h">
+      <Filter>src\Europa\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Components\MeshRenderComponent.h">
       <Filter>src\Europa\Components</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\Components\TransformComponent.h">
@@ -194,6 +200,9 @@
     </ClInclude>
     <ClInclude Include="src\Europa\imgui\ImGuiLayer.h">
       <Filter>src\Europa\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\mesh\Mesh.h">
+      <Filter>src\Europa\mesh</Filter>
     </ClInclude>
     <ClInclude Include="src\Europa\structs.h">
       <Filter>src\Europa</Filter>
@@ -1326,33 +1335,28 @@
     <ClInclude Include="vendor\glm\glm\vector_relational.hpp">
       <Filter>vendor\glm\glm</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\rapidjson\rapidjson.h">
+      <Filter>vendor\rapidjson</Filter>
+    </ClInclude>
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Europa\Components\MeshComponent.h">
-      <Filter>src\Europa\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Europa\Components\MeshRenderComponent.h">
-      <Filter>src\Europa\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="MaterialManager.h">
-      <Filter>src\Europa\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="BaseMaterial.h">
-      <Filter>src\Europa\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="InternalMaterial.h">
-      <Filter>src\Europa\Materials</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenGLMaterial.h">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClInclude>
+    <ClInclude Include="OpenGLMaterial.h" />
+    <ClInclude Include="BaseMaterial.h" />
+    <ClInclude Include="InternalMaterial.h" />
+    <ClInclude Include="MaterialManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
       <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Components\EntityManager.cpp">
+      <Filter>src\Europa\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Components\MeshComponent.cpp">
+      <Filter>src\Europa\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Components\MeshRenderComponent.cpp">
       <Filter>src\Europa\Components</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\Components\TransformComponent.cpp">
@@ -1433,6 +1437,9 @@
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp">
       <Filter>src\Europa\imgui</Filter>
     </ClCompile>
+    <ClCompile Include="src\Europa\mesh\Mesh.cpp">
+      <Filter>src\Europa\mesh</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1463,23 +1470,9 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Europa\Components\MeshComponent.cpp">
-      <Filter>src\Europa\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Europa\Components\MeshRenderComponent.cpp">
-      <Filter>src\Europa\Components</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialManager.cpp">
-      <Filter>src\Europa\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="BaseMaterial.cpp">
-      <Filter>src\Europa\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="InternalMaterial.cpp">
-      <Filter>src\Europa\Materials</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenGLMaterial.cpp">
-      <Filter>src\Platform\OpenGL</Filter>
-    </ClCompile>
+    <ClCompile Include="BaseMaterial.cpp" />
+    <ClCompile Include="InternalMaterial.cpp" />
+    <ClCompile Include="MaterialManager.cpp" />
+    <ClCompile Include="OpenGLMaterial.cpp" />
   </ItemGroup>
 </Project>

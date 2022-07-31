@@ -174,13 +174,13 @@ void Eu::MeshComponent::BufferMesh()
 	};
 
 	std::shared_ptr<Eu::VertexBuffer> pVertexBuffer;
-	pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), Vertices.size()));
+	pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), static_cast<uint32_t>(Vertices.size())));
 	pVertexBuffer->SetLayout(layout);
 	m_ChunkVertexArray->AddVertexBuffer(pVertexBuffer);
 
 	//indexbuffer
 	std::shared_ptr<Eu::IndexBuffer> pIndexBuffer;
-	pIndexBuffer.reset(Eu::IndexBuffer::Create(Indices.data(), Indices.size()));
+	pIndexBuffer.reset(Eu::IndexBuffer::Create(Indices.data(), static_cast<uint32_t>(Indices.size())));
 	m_ChunkVertexArray->AddIndexBuffer(pIndexBuffer);
 
 	m_OBJ.m_IndexBuffer.clear();

@@ -16,6 +16,7 @@ namespace Eu {
 	{
 	public:
 		MeshComponent(const std::string& path);
+		MeshComponent() {};
 		~MeshComponent();
 		void Start() override;
 		void Update() override;

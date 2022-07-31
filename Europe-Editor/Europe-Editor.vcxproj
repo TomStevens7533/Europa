@@ -134,12 +134,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\ChunkMeshComponent.cpp" />
+    <ClCompile Include="src\EditorApp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Europa\Europa.vcxproj">
       <Project>{519558B1-3D37-8387-26F2-96DB12330AD8}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\EditorApp.cpp" />
+    <ClInclude Include="Components\ChunkMeshComponent.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
