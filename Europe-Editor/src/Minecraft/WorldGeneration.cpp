@@ -38,7 +38,7 @@ void ChunkGeneration::GenerateChunk()
 
 			for (size_t yIndex = 0; yIndex < m_YLength; yIndex++)
 			{
-				if(GetTypeAtIndex(xIndex,yIndex,zIndex) == BlockTypes::AIR)
+				if(GetTypeAtIndex(xIndex,yIndex,zIndex) == 0)
 					cubeArray[yIndex][xIndex][zIndex] = GetBlockType(xIndex, yIndex, zIndex);
 				//cubeArray[yIndex][xIndex][zIndex]->SetPos({ cubePosition.x + xIndex, cubePosition.y + yIndex, cubePosition.z + zIndex });
 			}
@@ -50,12 +50,12 @@ void ChunkGeneration::GenerateChunk()
 
 }
 
-BlockTypes ChunkGeneration::GetTypeAtIndex(int x, int y, int z) const
+uint8_t ChunkGeneration::GetTypeAtIndex(int x, int y, int z) const
 {
 	return cubeArray[y][x][z];
 }
 
-BlockTypes ChunkGeneration::GetBlockType(int x, int y, int z)
+uint8_t ChunkGeneration::GetBlockType(int x, int y, int z)
 {
 	int maxHeight = heightMap[z * 16 + x];
 
@@ -70,43 +70,43 @@ BlockTypes ChunkGeneration::GetBlockType(int x, int y, int z)
 				{
 				case 0:
 					break;
-					return BlockTypes::ROSE;
+					return 6;
 				case 1:
-					return BlockTypes::AZURE;
+					return 8;
 					break;
 				case 2:
-					return BlockTypes::TULIP;
+					return 7;
 					break;
 				default:
-					return BlockTypes::ROSE;
+					return 6;
 					break;
 				}
 			}
 			//trees
 			if (((rand() % 1000) / 10.f) <= m_TreeChance) {
 				BuildTree(x, y + 1, z);
-				return BlockTypes::OAKLOG;
+				return 3;
 			}
 		}
 
 	}
 
 	if (y > maxHeight && y > 60)
-		return BlockTypes::AIR;
+		return 0;
 	if (y > maxHeight)
-		return BlockTypes::WATER;
+		return 4;
 
 
 
 	if(y == maxHeight)
-		return BlockTypes::GRASS;
+		return 1;
 
 	int dirtDeviationLength = rand() % m_MaxDirtLength;
 	if (y >= maxHeight - dirtDeviationLength)
-		return BlockTypes::DIRT;
+		return 9;
 	
 
-	return BlockTypes::STONE;
+	return 2;
 }
 
 void ChunkGeneration::BuildTree(int x, int y, int z)
@@ -115,11 +115,11 @@ void ChunkGeneration::BuildTree(int x, int y, int z)
 	int legth = (m_MinTreeLength - 1) + m_ExtaTreeLength  +(1 + (rand() % m_ExtaTreeLength));
 	for (size_t i = 0; i < legth; i++)
 	{
-   		AddBlock(BlockTypes::OAKLOG, x, y + i, z);
+   		AddBlock(3, x, y + i, z);
 	}
 	//Leaves
 	int leaveLength = legth;
-	AddBlock(BlockTypes::LEAVES, x, y + legth, z);
+	AddBlock(4, x, y + legth, z);
 	int currentMaxLeafHeight = (leaveLength + m_MinLeafHeight + (rand() % (m_MaxLeafHeight - m_MinLeafHeight)));
 	for (int YIndex = leaveLength; YIndex <= currentMaxLeafHeight; YIndex++)
 	{
@@ -134,12 +134,12 @@ void ChunkGeneration::BuildTree(int x, int y, int z)
 			{
 				if (IsIndexInBounds((x + xIndex), y + leaveLength - (currentMaxLeafHeight - YIndex), (z + zIndex))) {
 					//Fill inn this chunk
-					AddBlock(BlockTypes::LEAVES, (x + xIndex), y + leaveLength - (currentMaxLeafHeight - YIndex), (z + zIndex));
+					AddBlock(4, (x + xIndex), y + leaveLength - (currentMaxLeafHeight - YIndex), (z + zIndex));
 				}
 				else {
 					//fill in in neighbouring chunk 
 					m_pChunkManager->AddBlockAtPos({ m_ChunkPos.x + (x + xIndex), m_ChunkPos.y +
-						(y + leaveLength - (currentMaxLeafHeight - YIndex)) ,  m_ChunkPos.z + (z + zIndex) }, BlockTypes::LEAVES);
+						(y + leaveLength - (currentMaxLeafHeight - YIndex)) ,  m_ChunkPos.z + (z + zIndex) }, 4);
 				}
 			}
 
@@ -160,7 +160,7 @@ bool ChunkGeneration::IsIndexInBounds(int x, int y, int z) const
 	return true;
 }
 
-void ChunkGeneration::AddBlock(BlockTypes type, int x, int y, int z)
+void ChunkGeneration::AddBlock(uint8_t type, int x, int y, int z)
 {
 
 	cubeArray[y][x][z] = type;

@@ -5,27 +5,39 @@
 #include "Europa/camera/CameraController.h"
 #include <map>
 #include <utility>
-#include "Block.h"
+#include <memory>
+#include "Europa/Components/BaseComponent.h"
 
 
-class ChunkManager
+class ChunkComponent;
+class ChunkManager final : public Eu::BaseComponent
 {
 public:
 	ChunkManager(Eu::PerspectiveCameraController& CameraController);
 	~ChunkManager();
-	void Update(Eu::TimeStep ts, Eu::PerspectiveCameraController& CameraController);
-	bool IsBlockSolidInChunk(std::pair<int, int> chunkInex, int xIndex, int yIndex, int zIndex) const ;
+
+
+
+	bool IsBlockSolidInChunk(std::pair<int, int> chunkInex, int xIndex, int yIndex, int zIndex) const;
 	void Render();
+
+	void Render() const override {};
+	void Start() override;
+	void Update() override;
+
+	void FixedUpdate() override {};
 	bool DeleteBlockAtPos(glm::vec3 posToLook);
-	bool AddBlockAtPos(glm::vec3 posToLook, BlockTypes type);
+	bool AddBlockAtPos(glm::vec3 posToLook, uint8_t type);
 
 private:
 	void UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraController);
 	void ReloadNeighbouringChunks(std::pair<int, int> chunkIndex);
-private:
-	std::map<std::pair<int, int>, Chunk*> m_ChunkVec;
-	BlockInfromation BlockInfo;
 
+
+
+private:
+	std::map<std::pair<int, int>, std::shared_ptr<ChunkComponent>> m_ChunkVec;
+	Eu::PerspectiveCameraController* m_pCamera;
 
 	int m_Xdiff = 16;
 	int m_Zdiff = 16;

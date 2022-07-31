@@ -9,10 +9,10 @@ public:
 	ChunkGeneration(const glm::vec3& chunkPos, int xSize, int YSize, int Zsize, ChunkManager* pMAnager);
 	
 	void GenerateChunk();
-	BlockTypes GetTypeAtIndex(int x, int y, int z) const;
-	void AddBlock(BlockTypes type, int x, int y, int z);
+	uint8_t GetTypeAtIndex(int x, int y, int z) const;
+	void AddBlock(uint8_t type, int x, int y, int z);
 private:
-	BlockTypes GetBlockType(int x, int y, int z);
+	uint8_t GetBlockType(int x, int y, int z);
 	void BuildTree(int x, int y, int z);
 	bool IsIndexInBounds(int x, int y, int z) const;
 private:
@@ -36,6 +36,6 @@ private:
 
 	ChunkManager* m_pChunkManager;
 	glm::vec3 m_ChunkPos;
-	BlockTypes cubeArray[256][16][16]{BlockTypes::AIR};
+	uint8_t cubeArray[256][16][16]{0};
 
 };

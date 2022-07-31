@@ -7,7 +7,7 @@ namespace Eu {
 	public:
 		static std::shared_ptr<MaterialManager> GetInstance();
 		template<class T>
-		std::shared_ptr<T> CreateMaterial()
+		inline std::shared_ptr<T> CreateMaterial() noexcept
 		{
 			std::shared_ptr<T> currMat = std::make_shared<T>();
 			for (auto element : m_MaterialVec)

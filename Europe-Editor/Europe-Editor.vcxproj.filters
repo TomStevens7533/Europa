@@ -8,8 +8,21 @@
   <ItemGroup>
     <ClCompile Include="src\EditorApp.cpp" />
     <ClCompile Include="Components\ChunkMeshComponent.cpp" />
+    <ClCompile Include="src\BlockJsonParser.cpp" />
+    <ClCompile Include="src\Minecraft\Chunkmanager.cpp" />
+    <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="Components\ChunkComponent.cpp" />
+    <ClCompile Include="src\Minecraft\WorldGeneration.cpp" />
+    <ClCompile Include="Components\ChunkMaterial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components\ChunkMeshComponent.h" />
+    <ClInclude Include="src\BlockJsonParser.h" />
+    <ClInclude Include="src\Minecraft\BlockStruct.h" />
+    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
+    <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="Components\ChunkComponent.h" />
+    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
+    <ClInclude Include="Components\ChunkMaterial.h" />
   </ItemGroup>
 </Project>

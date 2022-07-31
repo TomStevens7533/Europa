@@ -21,6 +21,8 @@ namespace Eu {
 		{ //only support one type of each component in a gameobject no multiple for now
 			//return false if map already contains component of that 
 			auto insertPair = m_ComponentSet.insert(component);
+
+			component->Start();
 			return insertPair.second;
 		}
 

@@ -10,12 +10,14 @@
 namespace Eu {
 	EuropaEditorLayer::EuropaEditorLayer()
 	{
-		m_ChunkManager = new ChunkManager(m_Camera);
+		m_ChunkManager = std::make_shared<ChunkManager>(m_Camera);
 
-		m_ptexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/TextureAtlas.png", Eu::TextureTypes::TEXTURE2D);
+		//m_ptexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/TextureAtlas.png", Eu::TextureTypes::TEXTURE2D);
 		m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
 
-
+		auto go = new Eu::GameObject();
+		go->AddComponent<ChunkManager>(m_ChunkManager);
+		m_LayerSceneGraph.AddItemToSceneGraph(go);
 	}
 
 	void EuropaEditorLayer::OnAttach()
@@ -28,42 +30,36 @@ namespace Eu {
 
 	void EuropaEditorLayer::OnDetach()
 	{
-		delete m_ChunkManager;
 	}
 
 	void EuropaEditorLayer::OnUpdate(TimeStep deltaTime)
 	{
 		m_pFramebuffer->Bind();
 
-		auto updateTimer = m_TimerManager.AddTimer("Entire OnUpdate");
+		//auto updateTimer = m_TimerManager.AddTimer("Entire OnUpdate");
 		m_Camera.OnUpdate(deltaTime);
-		m_ChunkManager->Update(deltaTime, m_Camera);
 
 
-		auto NrmlRendertimer = m_TimerManager.AddTimer("3D Render");
+		//auto NrmlRendertimer = m_TimerManager.AddTimer("3D Render");
 
 		RenderCommand::SetClearColor({ 0.f, 0.3f, 0.8f, 1.f });
 		RenderCommand::Clear();
 
 
 		Renderer::BeginScene(m_Camera.GetCamera());
-		(*m_ptexture)->Bind();
 
 		//m_Chunk->Render();
-		m_ChunkManager->Render();
+		m_LayerSceneGraph.UpdateScene();
+		m_LayerSceneGraph.RenderScene();
 		//m_pScene->RenderScene();
 		Eu::Renderer::EndScene();
-		m_TimerManager.StopTimer(NrmlRendertimer);
+		//m_TimerManager.StopTimer(NrmlRendertimer);
 
 
-		auto UIRendertimer = m_TimerManager.AddTimer("UIRENDER");
+		//auto UIRendertimer = m_TimerManager.AddTimer("UIRENDER");
 
 
-		Renderer2D::BeginUIScene(m_Camera.GetCamera());
-		Renderer2D::DrawQuad({ 0.f, 0.f, 0.f }, { 0.2f, 0.2f }, *m_pCrosshairTexture, { 0.8f, 0.f, 0.2f, 1.f });
-		Renderer2D::EndUIScene();
-
-		m_TimerManager.StopAllTimers();
+		//m_TimerManager.StopAllTimers();
 		m_pFramebuffer->UnBind();
 	}
 
@@ -85,7 +81,7 @@ namespace Eu {
 			else if (mouseEvent->GetMouseButton() == EU_MOUSE_BUTTON_2) {
 				for (Eu::Ray lookRay(m_Camera.GetCamerPos(), m_Camera.GetForwardVector(), 10.f); lookRay.GetCurrentPercent() >= -1.f; lookRay.StepBack(-0.025f))
 				{
-					if (m_ChunkManager->AddBlockAtPos(lookRay.GetCurrentPos(), BlockTypes::DIRT))
+					if (m_ChunkManager->AddBlockAtPos(lookRay.GetCurrentPos(), 5))
 						break;
 				}
 			}
@@ -180,7 +176,7 @@ namespace Eu {
 			m_ViewportSize = { viewPortSize.x, viewPortSize.y }; //assign new viewport size;
 			m_pFramebuffer->Resize(static_cast<uint32_t>(m_ViewportSize.x), static_cast<uint32_t>(m_ViewportSize.y)); //resize framebuffer
 		}
-		EU_CORE_WARN("Viewport Size: {0}, {1}", viewPortSize.x, viewPortSize.y);
+		//EU_CORE_WARN("Viewport Size: {0}, {1}", viewPortSize.x, viewPortSize.y);
 		uint32_t textureID = m_pFramebuffer->GetColorAttachment();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
 		ImGui::End();

@@ -32,7 +32,11 @@ void Eu::MeshRenderComponent::FixedUpdate()
 
 void Eu::MeshRenderComponent::Render() const
 {
-	Renderer::Submit(m_pMeshComp->GetVertexBuffer(), m_pMaterial, GetAttachedGameObject()->GetTransform().GetWorld());
+	auto comp = (m_pMeshComp->GetVertexBuffer());
+	if (comp != nullptr) {
+		Renderer::Submit(m_pMeshComp->GetVertexBuffer(), m_pMaterial, GetAttachedGameObject()->GetTransform().GetWorld());
+
+	}
 }
 
 void MeshRenderComponent::SetMaterial(std::shared_ptr<Eu::BaseMaterial> mat)

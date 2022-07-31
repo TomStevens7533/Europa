@@ -27,11 +27,12 @@ namespace Eu {
 
 		void AddFaceToMesh(std::vector<Vertex_Input>& NewFaces, std::vector<int> newIndices);
 		void Clear();
+		void BufferMesh();
+
 
 	protected:
 		void OBJParser(const std::string& path);
 	private:
-		void BufferMesh();
 	private:
 		std::shared_ptr<Eu::VertexArray> m_ChunkVertexArray;
 		OBJ m_OBJ;

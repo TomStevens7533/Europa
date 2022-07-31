@@ -2,7 +2,8 @@
 #include "Europa/EntryPoint.h"
 
 #include "VLD/include/vld.h"
-//#include "EditorLayer.h"
+#include "BlockJsonParser.h"
+#include "EditorLayer.h"
 
 namespace Eu {
 	class EuropaEditor : public Application
@@ -10,8 +11,8 @@ namespace Eu {
 	public:
 		EuropaEditor(WindowProps& pr) : Application(pr)
 		{
-
-			//PushLayer(new EuropaEditorLayer);
+			BlockJsonParser::GetInstance();
+			PushLayer(new EuropaEditorLayer);
 
 
 		}

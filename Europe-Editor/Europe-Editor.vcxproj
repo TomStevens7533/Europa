@@ -134,8 +134,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Components\ChunkComponent.cpp" />
     <ClCompile Include="Components\ChunkMeshComponent.cpp" />
+    <ClCompile Include="Components\ChunkMaterial.cpp" />
+    <ClCompile Include="src\BlockJsonParser.cpp" />
     <ClCompile Include="src\EditorApp.cpp" />
+    <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\Minecraft\Chunkmanager.cpp" />
+    <ClCompile Include="src\Minecraft\WorldGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Europa\Europa.vcxproj">
@@ -143,7 +149,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Components\ChunkComponent.h" />
     <ClInclude Include="Components\ChunkMeshComponent.h" />
+    <ClInclude Include="Components\ChunkMaterial.h" />
+    <ClInclude Include="src\BlockJsonParser.h" />
+    <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\Minecraft\BlockStruct.h" />
+    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
+    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

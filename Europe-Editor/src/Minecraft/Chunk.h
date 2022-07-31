@@ -34,7 +34,7 @@ private:
 	int chunkY = 256;
 
 	BlockInfromation* BlockInfo = nullptr;
-	ChunkMesh* m_ChunkMesh = nullptr;
+	ChunkMesh* m_pChunkMesh = nullptr;
 	ChunkGeneration m_ChunkGeneration;
 	const ChunkManager* m_pChunkManager;
 	std::pair<int, int> m_ChunkIndex;

@@ -29,7 +29,7 @@ namespace Eu {
 			return m_EntityManager.GetComponent<TComponent>().get();
 		}
 		template<class TComponent>
-		void RemoveComponent() {
+		bool RemoveComponent() {
 			return m_EntityManager.RemoveComponent<TComponent>();
 		}
 		void SetPosition(float x, float y);

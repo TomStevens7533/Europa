@@ -1,6 +1,7 @@
 #include "Europa/Layer.h"
 #include "Europa/Profiling/TimerManager.h"
 #include "Minecraft/Chunkmanager.h"
+#include "Europa/Scenegraph.h"
 
 
 namespace Eu {
@@ -27,8 +28,9 @@ namespace Eu {
 
 	private:
 		std::shared_ptr<Eu::FrameBuffer> m_pFramebuffer;
+		Eu::ScenGraph m_LayerSceneGraph;
 
-		ChunkManager* m_ChunkManager;
+		std::shared_ptr<ChunkManager> m_ChunkManager;
 		Eu::TimerManager m_TimerManager;
 
 

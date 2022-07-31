@@ -1,34 +1,31 @@
 #include "Chunkmanager.h"
 #include "glm/gtx/fast_square_root.hpp"
+#include "../../Components/ChunkComponent.h"
+#include "Europa/GameObject.h"
 
-ChunkManager::ChunkManager(Eu::PerspectiveCameraController& CameraController)
+ChunkManager::ChunkManager(Eu::PerspectiveCameraController& CameraController) : m_pCamera{&CameraController}
 {
-	UpdateLoadedChunks(CameraController);
 }
 
 ChunkManager::~ChunkManager()
 {
-	for (auto& chunkPair : m_ChunkVec)
-	{
-		delete (chunkPair.second);
-	}
 }
 
-void ChunkManager::Update(Eu::TimeStep ts, Eu::PerspectiveCameraController& CameraController)
-{
 
+void ChunkManager::Update()
+{
 	//update chunks when crossing chunk border
-	glm::vec3 CameraPos = CameraController.GetCamerPos();
+	glm::vec3 CameraPos = m_pCamera->GetCamerPos();
 	int xQuadrant = (CameraPos.x / m_Xdiff);
 	int yQuadrant = (CameraPos.z / m_Zdiff);
 
-	if ((xQuadrant != m_XCameraQuadrant || yQuadrant != m_YCameraQuadrant))  {
-		//UpdateLoadedChunks(CameraController);
+	if ((xQuadrant != m_XCameraQuadrant || yQuadrant != m_YCameraQuadrant)) {
+		UpdateLoadedChunks(*m_pCamera);
 		m_XCameraQuadrant = xQuadrant;
 		m_YCameraQuadrant = yQuadrant;
 	}
-
 }
+
 bool ChunkManager::IsBlockSolidInChunk(std::pair<int, int> chunkInex, int xIndex, int yIndex, int zIndex) const
 {
 	auto elementIt = m_ChunkVec.find(chunkInex);
@@ -47,6 +44,7 @@ void ChunkManager::Render()
 			(chunkPair.second)->Render();
 	} 
 }
+
 
 bool ChunkManager::DeleteBlockAtPos(glm::vec3 posToLook)
 {
@@ -68,7 +66,7 @@ bool ChunkManager::DeleteBlockAtPos(glm::vec3 posToLook)
 
 }
 
-bool ChunkManager::AddBlockAtPos(glm::vec3 posToLook, BlockTypes type)
+bool ChunkManager::AddBlockAtPos(glm::vec3 posToLook, uint8_t type)
 {
 	float xIndex = (posToLook.x / m_Xdiff);
 	float yIndex = (posToLook.z / m_Zdiff);
@@ -85,7 +83,10 @@ bool ChunkManager::AddBlockAtPos(glm::vec3 posToLook, BlockTypes type)
 	else {
 		EU_CORE_INFO("CREATING Block CHUNK AT INDEX: {0}, {1}, POSITION: x:{2},y:{3}, z:{4}", indexX, indexY, indexX * m_Xdiff, 0, indexY * m_Zdiff);
 
-		Chunk* newChunk = new Chunk{ &BlockInfo,  glm::vec3{ indexX * m_Xdiff, 0, indexY * m_Zdiff}, this, {indexX,indexY}, true };
+		std::shared_ptr<ChunkComponent> newChunk = std::make_shared<ChunkComponent>( glm::vec3{indexX * m_Xdiff, 0, indexY * m_Zdiff}, this, std::make_pair(indexX,indexY), true);
+		auto carGo = std::make_shared<Eu::GameObject>();
+		carGo->AddComponent<ChunkComponent>(newChunk);
+		GetAttachedGameObject()->AddChild(carGo);
 		newChunk->Allocate();
 		newChunk->Addblock(posToLook, type);
 		m_ChunkVec.insert({ {indexX, indexY},newChunk });
@@ -110,8 +111,11 @@ void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraCon
 	{
 		if (glm::fastDistance((*it).second->GetChunkPosition(), { cameraPos.x, cameraPos.z }) > (m_ChunkLoadDistance * 2.f)) {
 			EU_CORE_TRACE("DEACTIVING CHUNK AT INDEX: {0}, {1}", (*it).first.first, (*it).first.second);
-			(*it).second->SetChunkActiveState(false);
-			(*it).second->DellaocateData();
+			std::shared_ptr<Eu::GameObject> gameojb;
+			gameojb.reset((*it).second->GetAttachedGameObject());
+			GetAttachedGameObject()->RemoveChild(gameojb);
+			//(*it).second->SetChunkActiveState(false);
+			//(*it).second->DellaocateData();
 			++it;
 		}
 		else
@@ -136,7 +140,11 @@ void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraCon
 			isLoaded = true;
 		auto chunkIt = m_ChunkVec.find({ xIndex, yIndex });
 		if (chunkIt == m_ChunkVec.end()) {
-			Chunk* newChunk = new Chunk{&BlockInfo, glm::vec3{ xIndex * m_Xdiff, 0, yIndex * m_Zdiff}, this, {xIndex,yIndex}, true };
+			std::shared_ptr<ChunkComponent> newChunk =  std::make_shared<ChunkComponent>(glm::vec3{ xIndex * m_Xdiff, 0, yIndex * m_Zdiff}, this, std::make_pair(xIndex, yIndex), true);
+			auto carGo = std::make_shared<Eu::GameObject>();
+			carGo->AddComponent<ChunkComponent>(newChunk);
+			GetAttachedGameObject()->AddChild(carGo);
+
 			m_ChunkVec.insert({ {xIndex, yIndex},newChunk });
 			EU_CORE_INFO("CREATING CHUNK AT INDEX: {0}, {1}, POSITION: x:{2},y:{3}, z:{4}", xIndex, yIndex, xIndex * m_Xdiff, 0, yIndex * m_Zdiff);
 			//reload neighbouring meshes to fill in missing meshes
@@ -183,5 +191,11 @@ void ChunkManager::ReloadNeighbouringChunks(std::pair<int, int> chunkIndex)
 
 
 	}
+}
+
+void ChunkManager::Start()
+{
+	UpdateLoadedChunks(*m_pCamera);
+
 }
 

@@ -19,6 +19,8 @@ namespace Eu {
 		void Render() const override;
 
 		void SetMaterial(std::shared_ptr<Eu::BaseMaterial> mat);
+		void Buffer();
+
 
 	private:
 		MeshComponent* m_pMeshComp;

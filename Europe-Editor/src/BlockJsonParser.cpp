@@ -5,12 +5,25 @@
 #include "Europa/Texture.h"
 
 
-const std::map< Faces, std::vector<glm::vec2>>* BlockJsonParser::GetUVOfType(uint8_t id) const
-{	
-	if (m_BlockMap.count(id) > 0) {
-		return &m_BlockMap.at(id).uvCoords;
+std::shared_ptr<BlockJsonParser> BlockJsonParser::m_BlockResources;
+
+
+std::shared_ptr<BlockJsonParser> BlockJsonParser::GetInstance()
+{
+	if (m_BlockResources == nullptr) {
+		//create singleton
+		EU_CORE_INFO("Creating Resource Manager");
+		m_BlockResources.reset(new BlockJsonParser(L"Resources/Minecraft/Block.json"));
 	}
-	return nullptr;
+	return m_BlockResources;
+}
+
+const std::vector<glm::vec2>* BlockJsonParser::GetUVOfType(uint8_t id, Faces face) const
+{	
+	EU_CORE_ASSERT((m_BlockMap.count(id) > 0), "lol");
+
+	return &m_BlockMap.at(id).uvCoords.at(face);
+	
 }
 
 bool BlockJsonParser::IsSolid(uint8_t id) const
@@ -85,8 +98,8 @@ void BlockJsonParser::ParseFile(std::wstring path)
 			int currCol = obj.FindMember("AtlasCol")->value.GetInt();
 			int currRow = obj.FindMember("AtlasRow")->value.GetInt();
 
-			float texWidth = (m_pTextureAtlas->GetWidth() / textureAtlasTotalCol) / m_pTextureAtlas->GetWidth();
-			float texHeight = (m_pTextureAtlas->GetHeigh() / textureAtlasTotalRow) / m_pTextureAtlas->GetHeigh();
+			float texWidth = static_cast<float>(m_pTextureAtlas->GetWidth() / textureAtlasTotalCol) / m_pTextureAtlas->GetWidth();
+			float texHeight = static_cast<float>(m_pTextureAtlas->GetHeigh() / textureAtlasTotalRow) / m_pTextureAtlas->GetHeigh();
 
 
 			glm::vec2 uvCoordsTopRight{ (texWidth * currCol),
@@ -147,27 +160,6 @@ void BlockJsonParser::ParseFile(std::wstring path)
 			}
 			idx++;
 		}
-
-		//int currCol = blockObj.FindMember("AtlasCol")->value.GetInt();
-		//int currRow = blockObj.FindMember("AtlasRow")->value.GetInt();
-
-		//float texWidth = (m_pTextureAtlas->GetDimension().x / textureAtlasTotalCol) / m_pTextureAtlas->GetDimension().x;
-		//float texHeight = (m_pTextureAtlas->GetDimension().y / textureAtlasTotalRow) / m_pTextureAtlas->GetDimension().y;
-
-		//info.uvCoords.reserve(4);
-
-		//XMFLOAT2 uvCoordsTopLeft{ (texWidth * currCol ),
-		//	texHeight * currRow};
-		//info.uvCoords.push_back(uvCoordsTopLeft);
-
-		//XMFLOAT2 uvCoordsTopRight{ uvCoordsTopLeft.x + texWidth, uvCoordsTopLeft.y};
-		//info.uvCoords.push_back(uvCoordsTopRight);
-
-		//XMFLOAT2 uvCoordsBotLeft{ uvCoordsTopLeft.x, uvCoordsTopLeft.y + texHeight };
-		//info.uvCoords.push_back(uvCoordsBotLeft);
-
-		//XMFLOAT2 uvCoordsBotRight{ uvCoordsTopLeft.x + texWidth, uvCoordsTopLeft.y + texHeight };
-		//info.uvCoords.push_back(uvCoordsBotRight);
 
 		m_BlockMap.insert(std::make_pair(blockID, info));
 	}
