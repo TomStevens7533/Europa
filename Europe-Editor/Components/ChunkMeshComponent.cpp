@@ -6,6 +6,7 @@
 #include "../src/BlockJsonParser.h"
 #include "../MaterialManager.h"
 #include "ChunkMaterial.h"
+#include "Europa/Renderer/Renderer.h"
 
 const std::array<float, 12> xFace1{
 	0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0,
@@ -47,13 +48,11 @@ ChunkMeshComponent::~ChunkMeshComponent()
 void ChunkMeshComponent::Start()
 {
 	m_pChunkMesh = std::make_shared<Eu::MeshComponent>();
-
+	//m_pChunkMeshRenderer = std::make_shared<Eu::MeshRenderComponent>();
 	GetAttachedGameObject()->AddComponent<Eu::MeshComponent>(m_pChunkMesh);
-	m_pChunkMeshRenderer = std::make_shared<Eu::MeshRenderComponent>();
+	//GetAttachedGameObject()->AddComponent<Eu::MeshRenderComponent>(m_pChunkMeshRenderer);
 
-	GetAttachedGameObject()->AddComponent<Eu::MeshRenderComponent>(m_pChunkMeshRenderer);
-	m_CurrMat = Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
-	m_pChunkMeshRenderer->SetMaterial(m_CurrMat);
+	m_CurrMat =  Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
 
 }
 
@@ -69,7 +68,11 @@ void ChunkMeshComponent::FixedUpdate()
 
 void ChunkMeshComponent::Render() const
 {
+	auto comp = (m_pChunkMesh->GetVertexBuffer());
+	if (comp != nullptr) {
+		Eu::Renderer::Submit(m_pChunkMesh->GetVertexBuffer(), m_CurrMat, GetAttachedGameObject()->GetTransform().GetWorld());
 
+	}
 }
 
 bool ChunkMeshComponent::AddFace(glm::vec3 ChunPos, glm::vec3 BlockPos, Faces dir, uint8_t blockType)
@@ -182,5 +185,6 @@ bool ChunkMeshComponent::AddFace(glm::vec3 ChunPos, glm::vec3 BlockPos, Faces di
 void ChunkMeshComponent::BufferMesh()
 {
 	m_pChunkMesh->BufferMesh();
+
 }
 

@@ -14,6 +14,8 @@ Eu::MeshComponent::~MeshComponent()
 	EU_CORE_INFO("DELETING MeshComponent");
 	m_OBJ.m_VertexBuffer.clear();
 	m_OBJ.m_IndexBuffer.clear();
+
+	
 }
 
 void Eu::MeshComponent::Start()
@@ -161,31 +163,35 @@ void Eu::MeshComponent::OBJParser(const std::string& path)
 
 void Eu::MeshComponent::BufferMesh()
 {
-	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
+	if (!m_IsParsed) {
+		m_ChunkVertexArray.reset(Eu::VertexArray::Create());
 
-	auto Vertices = m_OBJ.m_VertexBuffer;
-	auto Indices = m_OBJ.m_IndexBuffer;
+		auto Vertices = m_OBJ.m_VertexBuffer;
+		auto Indices = m_OBJ.m_IndexBuffer;
 
-	Eu::BufferLayout layout = {
-		{Eu::ShaderDataType::Float3, "a_Position"},
-		{Eu::ShaderDataType::Float3, "a_Color"},
-		{Eu::ShaderDataType::Float2, "a_Uv"},
-		{Eu::ShaderDataType::Float3, "a_Normal"},
-	};
+		Eu::BufferLayout layout = {
+			{Eu::ShaderDataType::Float3, "a_Position"},
+			{Eu::ShaderDataType::Float3, "a_Color"},
+			{Eu::ShaderDataType::Float2, "a_Uv"},
+			{Eu::ShaderDataType::Float3, "a_Normal"},
+		};
 
-	std::shared_ptr<Eu::VertexBuffer> pVertexBuffer;
-	pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), static_cast<uint32_t>(Vertices.size())));
-	pVertexBuffer->SetLayout(layout);
-	m_ChunkVertexArray->AddVertexBuffer(pVertexBuffer);
+		std::shared_ptr<Eu::VertexBuffer> pVertexBuffer;
+		pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), static_cast<uint32_t>(Vertices.size())));
+		pVertexBuffer->SetLayout(layout);
+		m_ChunkVertexArray->AddVertexBuffer(pVertexBuffer);
 
-	//indexbuffer
-	std::shared_ptr<Eu::IndexBuffer> pIndexBuffer;
-	pIndexBuffer.reset(Eu::IndexBuffer::Create(Indices.data(), static_cast<uint32_t>(Indices.size())));
-	m_ChunkVertexArray->AddIndexBuffer(pIndexBuffer);
+		//indexbuffer
+		std::shared_ptr<Eu::IndexBuffer> pIndexBuffer;
+		pIndexBuffer.reset(Eu::IndexBuffer::Create(Indices.data(), static_cast<uint32_t>(Indices.size())));
+		m_ChunkVertexArray->AddIndexBuffer(pIndexBuffer);
 
-	m_OBJ.m_IndexBuffer.clear();
-	m_OBJ.m_VertexBuffer.clear();
-	m_IsParsed = true;
+		//m_OBJ.m_IndexBuffer.clear();
+		//m_OBJ.m_VertexBuffer.clear();
+		m_IsParsed = true;
+		EU_CORE_INFO("BUFFF");
+	}
+	return;
 
 }
 

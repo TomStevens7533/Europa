@@ -105,6 +105,12 @@ void OpenGLMaterial::LinkProgram()
 }
 
 
+OpenGLMaterial::~OpenGLMaterial()
+{
+	EU_CORE_INFO("Deleting Material");
+
+}
+
 void Eu::OpenGLMaterial::AttachVertexShader(const std::string& path)
 {
 	m_ShaderMap.push_back(std::make_shared<OpenGLVertexShader>(path));

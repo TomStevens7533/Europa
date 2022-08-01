@@ -35,7 +35,6 @@ void Eu::MeshRenderComponent::Render() const
 	auto comp = (m_pMeshComp->GetVertexBuffer());
 	if (comp != nullptr) {
 		Renderer::Submit(m_pMeshComp->GetVertexBuffer(), m_pMaterial, GetAttachedGameObject()->GetTransform().GetWorld());
-
 	}
 }
 

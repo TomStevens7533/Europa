@@ -56,13 +56,12 @@ namespace Eu
 		//Rendercommand
 		//program->Bind();
 		program->Bind();
-		program->SetUniformMatrix4 (m_SceneData->GetViewProjectionMatrix(), "u_ViewProj");
-		(program)->SetUniformMatrix4(transform, "u_TranslationMat");
+		program->SetUniformMatrix4 (transform * m_SceneData->GetViewProjectionMatrix(), "u_ViewProj");
 
 		vertexArray->Bind();
 
 
-		RenderCommand::DrawIndexed(vertexArray);
+		RenderCommand::DrawIndexedNoDepth(vertexArray);
 	}
 	//void Renderer::SubmitNoDepth(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform, bool isBackground) {
 	//	//Rendercommand

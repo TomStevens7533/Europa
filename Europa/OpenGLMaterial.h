@@ -7,14 +7,11 @@
 #include "Platform/OpenGL/OpenGLShader.h"
 
 namespace Eu {
-	class OpenGLMaterial : public InternalMaterial
+	class OpenGLMaterial final : public InternalMaterial
 	{
 	public:
 		OpenGLMaterial();
-		~OpenGLMaterial()
-		{
-			std::cout << "death\n";
-		}
+		~OpenGLMaterial() override;
 		void AttachVertexShader(const std::string& path);
 		void AttachPixelShader(const std::string& path);
 	

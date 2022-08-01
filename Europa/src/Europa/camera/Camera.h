@@ -17,6 +17,8 @@ namespace Eu {
 		void CalculateProjectionMatrix(float fov, float aspectRatio = 1.77f);
 		void SetRotation(glm::vec2 rotationVec);
 		void SetPosition(glm::vec3 position);
+		void AddPosition(glm::vec3 position);
+
 
 	private:
 		void CalculateInverseONB();

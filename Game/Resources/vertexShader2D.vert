@@ -7,7 +7,7 @@ layout(location = 3) in vec3 a_Light;
 
 
 uniform mat4 u_ViewProj;
-uniform mat4 u_TranslationMat;
+
 
 
 out vec2 v_TexCord;
@@ -20,6 +20,6 @@ void main()
 {
 	v_TexCord = a_Uv;
 	v_Color = a_Color;
-	gl_Position = (u_ViewProj * u_TranslationMat) * (  vec4(a_Position, 1.0));
+	gl_Position = (u_ViewProj) * (  vec4(a_Position, 1.0));
 	
 }

@@ -41,7 +41,7 @@ private:
 
 	int m_Xdiff = 16;
 	int m_Zdiff = 16;
-	int m_ChunkLoadDistance = 128;
+	int m_ChunkLoadDistance = 20;
 	bool isUpdating;
 
 	int m_XCameraQuadrant;

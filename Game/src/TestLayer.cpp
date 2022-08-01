@@ -46,7 +46,7 @@ void TestLayer::OnUpdate(Eu::TimeStep deltaTime)
 
 
 	//Renderer::EnableWireFrame();
-	RenderCommand::SetClearColor({ 0.f, 0.3f, 0.8f, 1.f });
+	RenderCommand::SetClearColor({ 1.f, 1.f, 0.9f, 1.f });
 	RenderCommand::Clear();
 
 

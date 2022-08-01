@@ -64,9 +64,15 @@ namespace Eu {
 
 	void Camera::SetPosition(glm::vec3 position)
 	{
-		//std::cout << m_CameraPos.x << " " << m_CameraPos.y << " " << m_CameraPos.z << std::endl;
 		m_CameraPos = position;
 		CalculateInverseONB();
+	}
+
+	void Camera::AddPosition(glm::vec3 position)
+	{
+		m_CameraPos += position;
+		CalculateInverseONB();
+
 	}
 
 	//frustum culling

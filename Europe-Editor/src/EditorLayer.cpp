@@ -18,6 +18,7 @@ namespace Eu {
 		auto go = new Eu::GameObject();
 		go->AddComponent<ChunkManager>(m_ChunkManager);
 		m_LayerSceneGraph.AddItemToSceneGraph(go);
+		m_Camera.SetNewPosition(glm::vec3{ 0,150,0 });
 	}
 
 	void EuropaEditorLayer::OnAttach()
@@ -41,8 +42,8 @@ namespace Eu {
 
 
 		//auto NrmlRendertimer = m_TimerManager.AddTimer("3D Render");
-
-		RenderCommand::SetClearColor({ 0.f, 0.3f, 0.8f, 1.f });
+		//RenderCommand::EnableWireFrame();
+		RenderCommand::SetClearColor({ 0.f, 0.f, 0.2f, 1.f });
 		RenderCommand::Clear();
 
 

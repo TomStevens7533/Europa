@@ -17,6 +17,7 @@ std::shared_ptr<Eu::MaterialManager> MaterialManager::GetInstance()
 }
 Eu::MaterialManager::~MaterialManager()
 {
+	EU_CORE_INFO("Deleteing Material Manager");
 
 }
 

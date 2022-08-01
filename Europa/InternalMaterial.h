@@ -10,7 +10,7 @@ namespace Eu {
 		static std::unique_ptr<InternalMaterial> GetInternalMaterial();
 		virtual void Bind()  = 0;
 		virtual void UnBind()  = 0;
-
+		virtual ~InternalMaterial() {};
 		 virtual void AttachVertexShader(const std::string& path) = 0;
 		 virtual void AttachPixelShader(const std::string& path)= 0;
 

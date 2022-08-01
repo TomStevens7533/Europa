@@ -16,9 +16,6 @@ void main()
 		
 	tempColor = texture(u_Texture, v_TexCord); 
 
-	
-
-	tempColor.a =  1.f;
 
 
 	color = tempColor;

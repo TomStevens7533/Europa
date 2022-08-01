@@ -9,18 +9,18 @@ namespace Eu {
 		template<class T>
 		inline std::shared_ptr<T> CreateMaterial() noexcept
 		{
-			std::shared_ptr<T> currMat = std::make_shared<T>();
 			for (auto element : m_MaterialVec)
 			{
-				if (std::is_same<T, decltype(element)>::value)
+				if (std::dynamic_pointer_cast<T>(element)) {
 					return std::dynamic_pointer_cast<T>(element);
+				}
+			
 			}
-			if (std::dynamic_pointer_cast<BaseMaterial>(currMat))
-			{
-				m_MaterialVec.push_back(currMat);
-				return currMat;
-			}
-			return nullptr;
+			std::shared_ptr<T> currMat = std::make_shared<T>();
+			m_MaterialVec.push_back(currMat);
+			return currMat;
+			
+
 		}
 		~MaterialManager();
 	private:

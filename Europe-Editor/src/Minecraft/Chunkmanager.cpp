@@ -38,11 +38,7 @@ bool ChunkManager::IsBlockSolidInChunk(std::pair<int, int> chunkInex, int xIndex
 
 void ChunkManager::Render()
 {
-	for (auto& chunkPair : m_ChunkVec)
-	{
-		if((chunkPair.second)->GetChunkActiveState())
-			(chunkPair.second)->Render();
-	} 
+
 }
 
 
@@ -148,15 +144,14 @@ void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraCon
 			m_ChunkVec.insert({ {xIndex, yIndex},newChunk });
 			EU_CORE_INFO("CREATING CHUNK AT INDEX: {0}, {1}, POSITION: x:{2},y:{3}, z:{4}", xIndex, yIndex, xIndex * m_Xdiff, 0, yIndex * m_Zdiff);
 			//reload neighbouring meshes to fill in missing meshes
-			newChunk->Allocate();
 			newChunk->UpdateMesh();
 
 			ReloadNeighbouringChunks({ xIndex, yIndex });
 		}
 		else {
-			(*chunkIt).second->SetChunkActiveState(true);
+	/*		(*chunkIt).second->SetChunkActiveState(true);
 			(*chunkIt).second->Allocate();
-			(*chunkIt).second->UpdateMesh();
+			(*chunkIt).second->UpdateMesh();*/
 
 
 		}

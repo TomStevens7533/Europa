@@ -36,6 +36,7 @@ namespace Eu {
 
 	void PerspectiveCameraController::SetNewPosition(glm::vec3 cameraPos)
 	{
+		m_CameraPos = cameraPos;
 		m_Camera.SetPosition(cameraPos);
 	}
 

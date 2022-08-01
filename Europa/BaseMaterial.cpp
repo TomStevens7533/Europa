@@ -1,6 +1,8 @@
 #include "BaseMaterial.h"
 #include <string>
 #include "InternalMaterial.h"
+#include <iostream>
+#include "Europa/Log.h"
 #pragma once
 using namespace Eu;
 Eu::BaseMaterial::BaseMaterial(std::string vertexShader, std::string PixelShader /*= 0*/)
@@ -10,6 +12,11 @@ Eu::BaseMaterial::BaseMaterial(std::string vertexShader, std::string PixelShader
 	m_InternalMaterial->AttachPixelShader(PixelShader);
 }
 
+BaseMaterial::~BaseMaterial()
+{
+	EU_CORE_INFO("Deleting material");
+}
+
 void BaseMaterial::UnBind()
 {
 	m_InternalMaterial->UnBind();
@@ -17,6 +24,7 @@ void BaseMaterial::UnBind()
 
 void BaseMaterial::Bind()
 {
+	UpdateMaterialVariables();
 	m_InternalMaterial->Bind();
 
 }

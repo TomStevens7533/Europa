@@ -6,6 +6,7 @@ namespace Eu {
 	class BaseMaterial {
 	public:
 		BaseMaterial(std::string vertexShader, std::string PixelShader = 0);
+		~BaseMaterial();
 		virtual void UpdateMaterialVariables() = 0;
 
 		 void SetUniformMatrix4(const glm::mat4& mat4, const char* name) ;
