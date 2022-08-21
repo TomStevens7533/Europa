@@ -134,12 +134,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Components\ChunkComponent.cpp" />
-    <ClCompile Include="Components\ChunkMeshComponent.cpp" />
-    <ClCompile Include="Components\ChunkMaterial.cpp" />
+    <ClInclude Include="src\BlockJsonParser.h" />
+    <ClInclude Include="src\Components\ChunkComponent.h" />
+    <ClInclude Include="src\Components\ChunkMaterial.h" />
+    <ClInclude Include="src\Components\ChunkMeshComponent.h" />
+    <ClInclude Include="src\EditorLayer.h" />
+    <ClInclude Include="src\Minecraft\BlockStruct.h" />
+    <ClInclude Include="src\Minecraft\Chunk.h" />
+    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
+    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="src\BlockJsonParser.cpp" />
+    <ClCompile Include="src\Components\ChunkComponent.cpp" />
+    <ClCompile Include="src\Components\ChunkMaterial.cpp" />
+    <ClCompile Include="src\Components\ChunkMeshComponent.cpp" />
     <ClCompile Include="src\EditorApp.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\Minecraft\Chunk.cpp" />
     <ClCompile Include="src\Minecraft\Chunkmanager.cpp" />
     <ClCompile Include="src\Minecraft\WorldGeneration.cpp" />
   </ItemGroup>
@@ -147,16 +159,6 @@
     <ProjectReference Include="..\Europa\Europa.vcxproj">
       <Project>{519558B1-3D37-8387-26F2-96DB12330AD8}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Components\ChunkComponent.h" />
-    <ClInclude Include="Components\ChunkMeshComponent.h" />
-    <ClInclude Include="Components\ChunkMaterial.h" />
-    <ClInclude Include="src\BlockJsonParser.h" />
-    <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="src\Minecraft\BlockStruct.h" />
-    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
-    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

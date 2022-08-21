@@ -1,8 +1,8 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <utility>
-#include "../src/Minecraft/WorldGeneration.h"
 #include "Europa/Components/BaseComponent.h"
+#include "../Minecraft/WorldGeneration.h"
 
 
 

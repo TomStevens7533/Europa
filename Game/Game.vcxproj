@@ -128,11 +128,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BaseMaterial\PosTexCol3D.h" />
     <ClInclude Include="src\TestLayer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseMaterial\PosTexCol3D.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
     <ClCompile Include="src\TestLayer.cpp" />
   </ItemGroup>

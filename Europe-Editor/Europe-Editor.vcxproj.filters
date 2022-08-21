@@ -1,23 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="src\EditorApp.cpp" />
-    <ClCompile Include="Components\ChunkMeshComponent.cpp" />
-    <ClCompile Include="src\BlockJsonParser.cpp" />
-    <ClCompile Include="src\Minecraft\Chunkmanager.cpp" />
-    <ClCompile Include="src\EditorLayer.cpp" />
-    <ClCompile Include="Components\ChunkComponent.cpp" />
-    <ClCompile Include="src\Minecraft\WorldGeneration.cpp" />
-    <ClCompile Include="Components\ChunkMaterial.cpp" />
+    <Filter Include="Components">
+      <UniqueIdentifier>{6B7DD516-5735-1764-C03C-F0BFAC13B254}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Minecraft">
+      <UniqueIdentifier>{FEA1E9E8-6A0C-9E5F-B34A-4F051FF47BB4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Components\ChunkMeshComponent.h" />
     <ClInclude Include="src\BlockJsonParser.h" />
-    <ClInclude Include="src\Minecraft\BlockStruct.h" />
-    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
+    <ClInclude Include="src\Components\ChunkComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\ChunkMaterial.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Components\ChunkMeshComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
     <ClInclude Include="src\EditorLayer.h" />
-    <ClInclude Include="Components\ChunkComponent.h" />
-    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
-    <ClInclude Include="Components\ChunkMaterial.h" />
+    <ClInclude Include="src\Minecraft\BlockStruct.h">
+      <Filter>Minecraft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Minecraft\Chunk.h">
+      <Filter>Minecraft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Minecraft\Chunkmanager.h">
+      <Filter>Minecraft</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Minecraft\WorldGeneration.h">
+      <Filter>Minecraft</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\BlockJsonParser.cpp" />
+    <ClCompile Include="src\Components\ChunkComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\ChunkMaterial.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Components\ChunkMeshComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EditorApp.cpp" />
+    <ClCompile Include="src\EditorLayer.cpp" />
+    <ClCompile Include="src\Minecraft\Chunk.cpp">
+      <Filter>Minecraft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Minecraft\Chunkmanager.cpp">
+      <Filter>Minecraft</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Minecraft\WorldGeneration.cpp">
+      <Filter>Minecraft</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

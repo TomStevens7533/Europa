@@ -3,9 +3,9 @@
 #include "ChunkComponent.h"
 #include "ChunkMeshComponent.h"
 #include "Europa/GameObject.h"
-#include "../src/Minecraft/Chunkmanager.h"
-#include "../src/BlockJsonParser.h"
-#include "../src/Minecraft/WorldGeneration.h"
+#include "../Minecraft/Chunkmanager.h"
+#include "../BlockJsonParser.h"
+#include "../Minecraft/WorldGeneration.h"
 
 
 

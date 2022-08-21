@@ -1,8 +1,8 @@
 #pragma once
 #include "Europa/Components/BaseComponent.h"
 #include <glm/glm.hpp>
-#include "../src/Minecraft/BlockStruct.h"
 #include <memory>
+#include "../Minecraft/BlockStruct.h"
 namespace Eu {
 	class MeshComponent;
 	class MeshRenderComponent;

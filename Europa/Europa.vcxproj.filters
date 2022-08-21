@@ -16,6 +16,9 @@
     <Filter Include="src\Europa\Events">
       <UniqueIdentifier>{6C71BE12-D887-BCA8-21FF-47CA8D548D30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="src\Europa\Material">
+      <UniqueIdentifier>{267601F0-92D7-DEFD-1B45-25B087A515BD}</UniqueIdentifier>
+    </Filter>
     <Filter Include="src\Europa\Profiling">
       <UniqueIdentifier>{0195D57E-ED23-5F48-9642-734382B06FEE}</UniqueIdentifier>
     </Filter>
@@ -36,6 +39,9 @@
     </Filter>
     <Filter Include="src\Platform\OpenGL">
       <UniqueIdentifier>{35A49437-A105-7245-2A73-B8F796D3A804}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Platform\OpenGL\Material">
+      <UniqueIdentifier>{735EAE4C-5F19-9EF8-08D1-1643F46AE888}</UniqueIdentifier>
     </Filter>
     <Filter Include="vendor">
       <UniqueIdentifier>{B3738122-9F15-ACF8-88D0-BF4C74113349}</UniqueIdentifier>
@@ -138,6 +144,15 @@
     <ClInclude Include="src\Europa\Log.h">
       <Filter>src\Europa</Filter>
     </ClInclude>
+    <ClInclude Include="src\Europa\Material\BaseMaterial.h">
+      <Filter>src\Europa\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Material\InternalMaterial.h">
+      <Filter>src\Europa\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Europa\Material\MaterialManager.h">
+      <Filter>src\Europa\Material</Filter>
+    </ClInclude>
     <ClInclude Include="src\Europa\OnEventDo.h">
       <Filter>src\Europa</Filter>
     </ClInclude>
@@ -209,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\EuropaOpenGL.h">
       <Filter>src\Platform\OpenGL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Platform\OpenGL\Material\OpenGLMaterial.h">
+      <Filter>src\Platform\OpenGL\Material</Filter>
     </ClInclude>
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h">
       <Filter>src\Platform\OpenGL</Filter>
@@ -1341,10 +1359,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Platform\OpenGL\Material\OpenGLMaterial.h" />
-    <ClInclude Include="src\Europa\Material\BaseMaterial.h" />
-    <ClInclude Include="src\Europa\Material\InternalMaterial.h" />
-    <ClInclude Include="src\Europa\Material\MaterialManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1376,6 +1390,15 @@
     </ClCompile>
     <ClCompile Include="src\Europa\Log.cpp">
       <Filter>src\Europa</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Material\BaseMaterial.cpp">
+      <Filter>src\Europa\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Material\InternalMaterial.cpp">
+      <Filter>src\Europa\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\Material\MaterialManager.cpp">
+      <Filter>src\Europa\Material</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\OnEventDo.cpp">
       <Filter>src\Europa</Filter>
@@ -1440,6 +1463,9 @@
     <ClCompile Include="src\Europa\mesh\Mesh.cpp">
       <Filter>src\Europa\mesh</Filter>
     </ClCompile>
+    <ClCompile Include="src\Platform\OpenGL\Material\OpenGLMaterial.cpp">
+      <Filter>src\Platform\OpenGL\Material</Filter>
+    </ClCompile>
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp">
       <Filter>src\Platform\OpenGL</Filter>
     </ClCompile>
@@ -1470,9 +1496,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Platform\OpenGL\Material\OpenGLMaterial.cpp" />
-    <ClCompile Include="src\Europa\Material\BaseMaterial.cpp" />
-    <ClCompile Include="src\Europa\Material\InternalMaterial.cpp" />
-    <ClCompile Include="src\Europa\Material\MaterialManager.cpp" />
   </ItemGroup>
 </Project>

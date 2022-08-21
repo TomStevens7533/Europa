@@ -1,10 +1,12 @@
 project "ImGui"
     kind "StaticLib"
     language "C++"
-    toolset ("v142")
+    toolset ("v143")
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
+	warnings "Off"
+	
     files
     {
         "imconfig.h",

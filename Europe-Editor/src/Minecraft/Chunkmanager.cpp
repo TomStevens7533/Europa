@@ -1,7 +1,7 @@
 #include "Chunkmanager.h"
 #include "glm/gtx/fast_square_root.hpp"
-#include "../../Components/ChunkComponent.h"
 #include "Europa/GameObject.h"
+#include "../Components/ChunkComponent.h"
 
 ChunkManager::ChunkManager(Eu::PerspectiveCameraController& CameraController) : m_pCamera{&CameraController}
 {

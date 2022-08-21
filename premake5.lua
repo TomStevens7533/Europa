@@ -1,7 +1,8 @@
 workspace "Europa"
 	architecture "x64"
 	startproject "Game"
-
+	toolset ("v143")
+	
 	configurations
 	{
 		"Debug",
@@ -34,11 +35,12 @@ project "Europa"
 	cppdialect "C++17"
 	language"C++"
 	staticruntime "On"
-	toolset ("v142")
+	toolset ("v143")
 	targetdir("bin/" .. outputdir .. "/%{prj.name}")
 	objdir("bin-int/" .. outputdir .. "/%{prj.name}")
 
-
+	
+	
 	files
 	{
 		"%{prj.name}/src/**.h",
@@ -79,6 +81,7 @@ project "Europa"
 		
 		
 	}
+	
 
 	filter "system:windows"
 		staticruntime "On"
@@ -90,8 +93,6 @@ project "Europa"
 			"EU_BUILD_DLL",
 			"GLFW_INCLUDE_NONE"
 		}
-
-	
 
 	filter "configurations:Debug"
 		defines "EU_DEBUG"
@@ -113,7 +114,7 @@ project "Europe-Editor"
 	kind "ConsoleApp"
 	staticruntime "On"
 	cppdialect "C++17"
-	toolset ("v142")
+	toolset ("v143")
 
 	language "C++"
 
@@ -164,12 +165,13 @@ project "Europe-Editor"
 		optimize "On"
 
 
+
 		project "Game"
 	location "Game"
 	kind "ConsoleApp"
 	staticruntime "On"
 	cppdialect "C++17"
-	toolset ("v142")
+	toolset ("v143")
 
 	language "C++"
 
