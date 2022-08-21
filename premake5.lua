@@ -140,7 +140,7 @@ project "Europe-Editor"
 		links
 		{
 			"Europa",
-			"Europa/vendor/VLD/vld"
+			"Europa/vendor/VLD/vld.lib"
 		}
 	filter "system:windows"
 
@@ -166,7 +166,7 @@ project "Europe-Editor"
 
 
 
-		project "Game"
+project "Game"
 	location "Game"
 	kind "ConsoleApp"
 	staticruntime "On"
@@ -197,7 +197,8 @@ project "Europe-Editor"
 		links
 		{
 			"Europa",
-			"Europa/vendor/VLD/vld"
+			"Europa/vendor/VLD/vld_x64.lib",
+			"Europa/vendor/VLD/vld.lib"
 		}
 	filter "system:windows"
 

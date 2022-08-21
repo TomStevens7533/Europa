@@ -2,7 +2,6 @@
 #include "Europa/EntryPoint.h"
 #include "TestLayer.h"
 
-
 class Sandbox : public Eu::Application
 {
 public:

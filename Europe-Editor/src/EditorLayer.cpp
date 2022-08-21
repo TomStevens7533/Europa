@@ -1,6 +1,5 @@
 #include <Europa.h>
 
-#include "VLD/include/vld.h"
 #include "Europa/ResourceManager.h"
 #include "Europa/Utils.h"
 #include "EditorLayer.h"

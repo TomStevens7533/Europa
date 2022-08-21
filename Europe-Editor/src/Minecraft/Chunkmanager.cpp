@@ -108,7 +108,7 @@ void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraCon
 		if (glm::fastDistance((*it).second->GetChunkPosition(), { cameraPos.x, cameraPos.z }) > (m_ChunkLoadDistance * 2.f)) {
 			EU_CORE_TRACE("DEACTIVING CHUNK AT INDEX: {0}, {1}", (*it).first.first, (*it).first.second);
 			std::shared_ptr<Eu::GameObject> gameojb;
-			gameojb.reset((*it).second->GetAttachedGameObject());
+			gameojb.reset((*it).second->GetAttachedGameObject()); ///TODO deleted data error
 			GetAttachedGameObject()->RemoveChild(gameojb);
 			//(*it).second->SetChunkActiveState(false);
 			//(*it).second->DellaocateData();

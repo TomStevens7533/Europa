@@ -1,7 +1,9 @@
 #pragma once
 
 #ifdef EU_PLATFORM_WINDOWS
-
+#ifdef EU_DEBUG
+#include "VLD/include/vld.h"
+#endif
 
 extern	Eu::Application* Eu::CreateApplication();
 

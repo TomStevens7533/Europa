@@ -1,9 +1,10 @@
 #include <Europa.h>
 #include "Europa/EntryPoint.h"
 
-#include "VLD/include/vld.h"
+
 #include "BlockJsonParser.h"
 #include "EditorLayer.h"
+
 
 namespace Eu {
 	class EuropaEditor : public Application

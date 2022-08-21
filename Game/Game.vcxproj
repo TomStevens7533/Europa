@@ -88,7 +88,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>..\Europa\vendor\VLD\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Europa\vendor\VLD\vld_x64.lib;..\Europa\vendor\VLD\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -109,7 +109,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>..\Europa\vendor\VLD\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Europa\vendor\VLD\vld_x64.lib;..\Europa\vendor\VLD\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
@@ -124,13 +124,15 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>..\Europa\vendor\VLD\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>..\Europa\vendor\VLD\vld_x64.lib;..\Europa\vendor\VLD\vld.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\BaseMaterial\PosTexCol3D.h" />
     <ClInclude Include="src\TestLayer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\BaseMaterial\PosTexCol3D.cpp" />
     <ClCompile Include="src\GameApp.cpp" />
     <ClCompile Include="src\TestLayer.cpp" />
   </ItemGroup>
