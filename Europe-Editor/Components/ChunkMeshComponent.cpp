@@ -4,9 +4,9 @@
 #include "Europa/GameObject.h"
 #include "Europa/Components/MeshRenderComponent.h"
 #include "../src/BlockJsonParser.h"
-#include "../MaterialManager.h"
 #include "ChunkMaterial.h"
 #include "Europa/Renderer/Renderer.h"
+#include "Europa/Material/MaterialManager.h"
 
 const std::array<float, 12> xFace1{
 	0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0,

@@ -1341,10 +1341,10 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="OpenGLMaterial.h" />
-    <ClInclude Include="BaseMaterial.h" />
-    <ClInclude Include="InternalMaterial.h" />
-    <ClInclude Include="MaterialManager.h" />
+    <ClInclude Include="src\Platform\OpenGL\Material\OpenGLMaterial.h" />
+    <ClInclude Include="src\Europa\Material\BaseMaterial.h" />
+    <ClInclude Include="src\Europa\Material\InternalMaterial.h" />
+    <ClInclude Include="src\Europa\Material\MaterialManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1470,9 +1470,9 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="BaseMaterial.cpp" />
-    <ClCompile Include="InternalMaterial.cpp" />
-    <ClCompile Include="MaterialManager.cpp" />
-    <ClCompile Include="OpenGLMaterial.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\Material\OpenGLMaterial.cpp" />
+    <ClCompile Include="src\Europa\Material\BaseMaterial.cpp" />
+    <ClCompile Include="src\Europa\Material\InternalMaterial.cpp" />
+    <ClCompile Include="src\Europa\Material\MaterialManager.cpp" />
   </ItemGroup>
 </Project>

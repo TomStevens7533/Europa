@@ -137,10 +137,6 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BaseMaterial.h" />
-    <ClInclude Include="InternalMaterial.h" />
-    <ClInclude Include="MaterialManager.h" />
-    <ClInclude Include="OpenGLMaterial.h" />
     <ClInclude Include="src\Eupch.h" />
     <ClInclude Include="src\Europa.h" />
     <ClInclude Include="src\Europa\Application.h" />
@@ -163,6 +159,9 @@
     <ClInclude Include="src\Europa\Layer.h" />
     <ClInclude Include="src\Europa\LayerStack.h" />
     <ClInclude Include="src\Europa\Log.h" />
+    <ClInclude Include="src\Europa\Material\BaseMaterial.h" />
+    <ClInclude Include="src\Europa\Material\InternalMaterial.h" />
+    <ClInclude Include="src\Europa\Material\MaterialManager.h" />
     <ClInclude Include="src\Europa\OnEventDo.h" />
     <ClInclude Include="src\Europa\OnUpdate.h" />
     <ClInclude Include="src\Europa\Profiling\Timer.h" />
@@ -187,6 +186,7 @@
     <ClInclude Include="src\Europa\mesh\Mesh.h" />
     <ClInclude Include="src\Europa\structs.h" />
     <ClInclude Include="src\Platform\OpenGL\EuropaOpenGL.h" />
+    <ClInclude Include="src\Platform\OpenGL\Material\OpenGLMaterial.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLBuffer.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLContext.h" />
     <ClInclude Include="src\Platform\OpenGL\OpenGLFramebuffer.h" />
@@ -566,10 +566,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BaseMaterial.cpp" />
-    <ClCompile Include="InternalMaterial.cpp" />
-    <ClCompile Include="MaterialManager.cpp" />
-    <ClCompile Include="OpenGLMaterial.cpp" />
     <ClCompile Include="src\Europa\Application.cpp" />
     <ClCompile Include="src\Europa\Components\EntityManager.cpp" />
     <ClCompile Include="src\Europa\Components\MeshComponent.cpp" />
@@ -580,6 +576,9 @@
     <ClCompile Include="src\Europa\Layer.cpp" />
     <ClCompile Include="src\Europa\LayerStack.cpp" />
     <ClCompile Include="src\Europa\Log.cpp" />
+    <ClCompile Include="src\Europa\Material\BaseMaterial.cpp" />
+    <ClCompile Include="src\Europa\Material\InternalMaterial.cpp" />
+    <ClCompile Include="src\Europa\Material\MaterialManager.cpp" />
     <ClCompile Include="src\Europa\OnEventDo.cpp" />
     <ClCompile Include="src\Europa\OnUpdate.cpp" />
     <ClCompile Include="src\Europa\Profiling\Timer.cpp" />
@@ -601,6 +600,7 @@
     <ClCompile Include="src\Europa\imgui\ImGuiBuild.cpp" />
     <ClCompile Include="src\Europa\imgui\ImGuiLayer.cpp" />
     <ClCompile Include="src\Europa\mesh\Mesh.cpp" />
+    <ClCompile Include="src\Platform\OpenGL\Material\OpenGLMaterial.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLBuffer.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLContext.cpp" />
     <ClCompile Include="src\Platform\OpenGL\OpenGLFramebuffer.cpp" />

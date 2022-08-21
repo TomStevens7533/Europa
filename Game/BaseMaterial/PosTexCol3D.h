@@ -1,5 +1,5 @@
 #pragma once
-#include "../BaseMaterial.h"
+#include "Europa/Material/BaseMaterial.h"
 
 class PosTexCol3D : public Eu::BaseMaterial
 {

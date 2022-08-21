@@ -1,5 +1,5 @@
 #pragma once
-#include "../BaseMaterial.h"
+#include "Europa/Material/BaseMaterial.h"
 
 class ChunkMaterial : public Eu::BaseMaterial
 {

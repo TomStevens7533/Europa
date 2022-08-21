@@ -1,6 +1,6 @@
 #include "InternalMaterial.h"
 #include "Europa/Renderer/Renderer.h"
-#include "OpenGLMaterial.h"
+#include "Platform/OpenGL/Material/OpenGLMaterial.h"
 using namespace Eu;
 std::unique_ptr<InternalMaterial> InternalMaterial::GetInternalMaterial()
 {

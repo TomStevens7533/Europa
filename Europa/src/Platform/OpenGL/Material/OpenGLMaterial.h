@@ -1,10 +1,10 @@
 #pragma once
-#include "InternalMaterial.h"
 #include <string>
 #include <vector>
 #include <memory>
 #include "Europa/Renderer/Shader.h"
 #include "Platform/OpenGL/OpenGLShader.h"
+#include "Europa/Material/InternalMaterial.h"
 
 namespace Eu {
 	class OpenGLMaterial final : public InternalMaterial

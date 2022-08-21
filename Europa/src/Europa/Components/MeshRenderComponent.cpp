@@ -3,7 +3,7 @@
 #include "../GameObject.h"
 #include "../ResourceManager.h"
 #include "../Renderer/Renderer.h"
-#include "../BaseMaterial.h"
+#include "../Material/BaseMaterial.h"
 using namespace Eu;
 
 Eu::MeshRenderComponent::MeshRenderComponent()

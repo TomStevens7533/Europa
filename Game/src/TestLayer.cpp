@@ -3,9 +3,9 @@
 #include "Europa/Components/MeshComponent.h"
 #include "Europa/Components/MeshRenderComponent.h"
 #include "Europa/Renderer/Renderer.h"
-#include "../MaterialManager.h"
 #include "../BaseMaterial/PosTexCol3D.h"
 #include <memory>
+#include "Europa/Material/MaterialManager.h"
 using namespace Eu;
 TestLayer::TestLayer() : m_Camera{60.f}
 {
