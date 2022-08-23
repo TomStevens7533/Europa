@@ -24,6 +24,13 @@ namespace Eu {
 		return (*(newEntryPair.first));
 	}
 
+	Eu::SceneGraphItem& ScenGraph::AddItemToSceneGraph(std::shared_ptr<GameObject> newSceneObject)
+	{
+		auto newEntryPair = m_SceneGraphMap.insert({ m_IndexSize, newSceneObject });
+		m_IndexSize++;
+		return (*(newEntryPair.first));
+	}
+
 	void ScenGraph::StartScene()
 	{
 		for (SceneGraphItem& sceneItem : m_SceneGraphMap)

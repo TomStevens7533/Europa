@@ -11,7 +11,6 @@ namespace Eu {
 	Camera::Camera()
 	{
 		m_ViewProjMatrix = glm::mat4(1.0);
-		m_ForwardVector = { 0,0,1 };
 	}
 	const glm::mat4& Camera::GetViewProjectionMatrix() const
 	{
@@ -25,54 +24,31 @@ namespace Eu {
 
 
 
-	void Camera::CalculateView() {
-		m_ForwardVector.x = cos(glm::radians(m_CameraRot.y)) * cos(glm::radians(m_CameraRot.x));
-		m_ForwardVector.y = sin(glm::radians(m_CameraRot.x));
-		m_ForwardVector.z = sin(glm::radians(m_CameraRot.y)) * cos(glm::radians(m_CameraRot.x));
-		m_ForwardVector = glm::normalize(m_ForwardVector);
 
-		//m_View = view * rot;
-
-		m_View = glm::lookAt(m_CameraPos, m_CameraPos + m_ForwardVector, m_UpVector);
-	}
-	void Camera::CalculateModel() {
-
-		m_Model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f));
-	}
 
 	void Camera::CalculateInverseONB()
-	{	
-		CalculateView();
+	{
 		m_ViewProjMatrix = m_Proj * m_View;
-		
-	}
+
+
+}
 
 	void Camera::CalculateProjectionMatrix(float fov, float aspectRatio)
 	{
 
 		m_Proj = glm::perspective(glm::radians(fov / 2.f), aspectRatio, m_NearPlane, m_FarPlane);
-
 	}
 
 
-
-	void Camera::SetRotation(glm::vec2 rotationVec)
+	void Camera::SetViewMatrix(glm::mat4x4 view)
 	{
-		m_CameraRot = rotationVec;
+		m_View = view;
 		CalculateInverseONB();
 	}
 
-	void Camera::SetPosition(glm::vec3 position)
+	glm::mat4x4& Camera::GetONB()
 	{
-		m_CameraPos = position;
-		CalculateInverseONB();
-	}
-
-	void Camera::AddPosition(glm::vec3 position)
-	{
-		m_CameraPos += position;
-		CalculateInverseONB();
-
+		return m_ViewProjMatrix;
 	}
 
 	//frustum culling

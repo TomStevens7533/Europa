@@ -13,7 +13,7 @@ class ChunkComponent;
 class ChunkManager final : public Eu::BaseComponent
 {
 public:
-	ChunkManager(Eu::PerspectiveCameraController& CameraController);
+	ChunkManager(Eu::PerspectiveCameraControllerComponent& CameraController);
 	~ChunkManager();
 
 
@@ -30,14 +30,14 @@ public:
 	bool AddBlockAtPos(glm::vec3 posToLook, uint8_t type);
 
 private:
-	void UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraController);
+	void UpdateLoadedChunks(Eu::PerspectiveCameraControllerComponent& CameraController);
 	void ReloadNeighbouringChunks(std::pair<int, int> chunkIndex);
 
 
 
 private:
 	std::map<std::pair<int, int>, std::shared_ptr<ChunkComponent>> m_ChunkVec;
-	Eu::PerspectiveCameraController* m_pCamera;
+	Eu::PerspectiveCameraControllerComponent* m_pCamera;
 
 	int m_Xdiff = 16;
 	int m_Zdiff = 16;

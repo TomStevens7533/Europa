@@ -32,7 +32,7 @@ private:
 	glm::vec3 m_Rotation{1,0,0};
 	glm::vec3 m_Translation{ 1,0,0 };
 
-	Eu::PerspectiveCameraController m_Camera;
+	Eu::PerspectiveCameraControllerComponent m_Camera;
 
 };
 

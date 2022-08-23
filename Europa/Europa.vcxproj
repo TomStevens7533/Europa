@@ -74,7 +74,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EU_PLATFORM_WINDOWS;EU_BUILD_DLL;GLFW_INCLUDE_NONE;EU_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -93,7 +93,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EU_PLATFORM_WINDOWS;EU_BUILD_DLL;GLFW_INCLUDE_NONE;EU_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
@@ -116,7 +116,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dist|x64'">
     <ClCompile>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;EU_PLATFORM_WINDOWS;EU_BUILD_DLL;GLFW_INCLUDE_NONE;EU_DIST;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>vendor\spdlog\include;src;vendor\GLFW\include;vendor\Glad\include;vendor\imgui;vendor\glm;vendor\stb_image;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
@@ -147,6 +147,7 @@
     <ClInclude Include="src\Europa\Components\TransformComponent.h" />
     <ClInclude Include="src\Europa\Core.h" />
     <ClInclude Include="src\Europa\Core\TimeStep.h" />
+    <ClInclude Include="src\Europa\DeltaTime.h" />
     <ClInclude Include="src\Europa\EntryPoint.h" />
     <ClInclude Include="src\Europa\Events\ApplicationEvent.h" />
     <ClInclude Include="src\Europa\Events\Event.h" />
@@ -571,6 +572,7 @@
     <ClCompile Include="src\Europa\Components\MeshComponent.cpp" />
     <ClCompile Include="src\Europa\Components\MeshRenderComponent.cpp" />
     <ClCompile Include="src\Europa\Components\TransformComponent.cpp" />
+    <ClCompile Include="src\Europa\DeltaTime.cpp" />
     <ClCompile Include="src\Europa\GameObject.cpp" />
     <ClCompile Include="src\Europa\InputManager.cpp" />
     <ClCompile Include="src\Europa\Layer.cpp" />

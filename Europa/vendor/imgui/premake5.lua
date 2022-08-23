@@ -5,7 +5,7 @@ project "ImGui"
     targetdir ("bin/" .. outputdir .. "/%{prj.name}")
     objdir ("bin-int/" .. outputdir .. "/%{prj.name}")
 
-	warnings "Off"
+	warnings "off"
 	
     files
     {

@@ -34,6 +34,7 @@ namespace Eu {
 		}
 		void SetPosition(float x, float y);
 		void SetPosition(glm::vec2 pos);
+		void SetPosition(glm::vec3 pos);
 
 		GameObject() = default;
 		virtual ~GameObject();

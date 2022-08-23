@@ -9,53 +9,20 @@ namespace Eu {
 		const glm::mat4& GetViewProjectionMatrix() const;
 		const glm::mat4& GetProjectionMatrix() const;
 
-		
-		inline glm::vec3& GetForwardVec() { return m_ForwardVector; }
-		inline glm::vec3& GetRightVec() { return m_RightVector; }
-		inline glm::vec3& GetUpVector() { return m_UpVector; }
 
 		void CalculateProjectionMatrix(float fov, float aspectRatio = 1.77f);
-		void SetRotation(glm::vec2 rotationVec);
-		void SetPosition(glm::vec3 position);
-		void AddPosition(glm::vec3 position);
-
-
-	private:
+		void SetViewMatrix(glm::mat4x4 view);
+		glm::mat4x4& GetONB();
+private:
 		void CalculateInverseONB();
-		void CalculateView();
-		void CalculateModel();
-
 
 private:
-		float m_CameraZoomInSpeed{ 2.f };
-		float m_RotationSpeed{ 45.f };
-
-
-
 		float m_FarPlane = 1000.f;
 		float m_NearPlane = 0.1f;
 
-		glm::mat4 m_ViewProjMatrix;
-		glm::mat4 m_Proj;
-		glm::mat4 m_View;
-		glm::mat4 m_Model;
-
-
-		glm::vec3 m_ForwardVector{ 0, 0, -1 };
-		glm::vec3 m_RightVector{-1,0,0};
-		glm::vec3 m_UpVector{0,1,0};
-
-
-
-		//camera movement
-		glm::vec2 m_OldScreenPos;
-		glm::vec2 m_ScreenPosOffset;
-		bool m_IsFirstUpdate = false;
-		glm::vec2 m_CameraRot{ 1.f,0};
-		glm::vec3 m_CameraPos = {0,0,0};
-
-
-
+		glm::mat4 m_ViewProjMatrix{};
+		glm::mat4 m_Proj{};
+		glm::mat4 m_View{};
 
 
 		//Camera Frustum

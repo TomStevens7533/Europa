@@ -1,9 +1,10 @@
 #include "TransformComponent.h"
-#include "glm/gtx/rotate_vector.hpp"
+#include "glm/glm.hpp"
 #include <corecrt_math_defines.h>
 #define GLM_ENABLE_EXPERIMENTAL
 #include "glm/gtx/matrix_decompose.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include <glm/gtx/quaternion.hpp>
 
 namespace Eu {
 	TransformComponent::TransformComponent() :
@@ -11,7 +12,7 @@ namespace Eu {
 		m_WorldPosition{ 0, 0, 0 },
 		m_Scale{ 1, 1, 1 },
 		m_WorldScale{ 1, 1, 1 },
-		m_Forward{ 0, 0, 1 },
+		m_Forward{ 0, 0, -1 },
 		m_Up{ 0, 1, 0 },
 		m_Right{ 1, 0, 0 },
 		m_Rotation{ 0, 0, 0, 1 },
@@ -34,6 +35,12 @@ namespace Eu {
 
 	}
 
+	void TransformComponent::Translate(float x, float y)
+	{
+		m_Position = glm::vec3(x, y, m_Position.z);
+		m_IsDirty = true;
+	}
+
 	void TransformComponent::Rotate(float x, float y, float z, bool degrees /*= true*/)
 	{
 		if (degrees) {
@@ -51,7 +58,7 @@ namespace Eu {
 	void TransformComponent::Rotate(const glm::vec3& rotation, bool degrees /*= true*/)
 	{
 		if(degrees) {
-			glm::vec3 euler = glm::vec3(rotation.x *(180.f / M_PI), rotation.y / (180.f * M_PI), rotation.z / (180.f * M_PI));
+			glm::vec3 euler = glm::vec3( glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
 			m_Rotation = glm::quat(euler);
 		}
 		else {
@@ -117,7 +124,7 @@ namespace Eu {
 		//Calculate World Matrix
 		//**********************
 		//rot
-		auto rot = glm::mat4_cast(m_Rotation);
+		auto rot = glm::toMat4(m_Rotation);
 		//trans
 		auto trans = glm::translate(glm::mat4(1), m_Position);
 		//Scale
@@ -133,10 +140,9 @@ namespace Eu {
 		//convert conjugate to worldrot
 		m_WorldRotation = glm::conjugate(decompRot);
 		
-		
-		m_Forward = glm::vec4(0, 0, 1, 0) * rot;
-		m_Right = glm::vec4(1, 0, 0, 0) * rot;
-		m_Up = glm::cross(m_Forward, m_Right);
+		m_Forward = (glm::vec4(0, 0, -1, 0) * rot);
+		m_Right =   (glm::vec4(1, 0, 0, 0) * rot);
+		m_Up =   glm::normalize(glm::cross(m_Forward, m_Right));
 
 		m_IsDirty = false;
 
@@ -144,3 +150,4 @@ namespace Eu {
 
 
 }
+     

@@ -56,7 +56,9 @@ namespace Eu
 		//Rendercommand
 		//program->Bind();
 		program->Bind();
-		program->SetUniformMatrix4 (transform * m_SceneData->GetViewProjectionMatrix(), "u_ViewProj");
+		program->SetUniformMatrix4 (m_SceneData->GetViewProjectionMatrix() * transform, "u_ViewProj");
+		program->SetUniformMatrix4(transform, "u_World");
+
 
 		vertexArray->Bind();
 

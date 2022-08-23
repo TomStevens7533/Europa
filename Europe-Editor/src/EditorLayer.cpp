@@ -9,15 +9,21 @@
 namespace Eu {
 	EuropaEditorLayer::EuropaEditorLayer()
 	{
-		m_ChunkManager = std::make_shared<ChunkManager>(m_Camera);
+		//player GO
+		m_pPlayer = std::make_shared<Eu::GameObject>();
 
+		m_pPlayer->SetPosition(glm::vec3{ 0,85,0 });
+		m_pCamera = std::make_shared<Eu::PerspectiveCameraControllerComponent>();
+		m_pPlayer->AddComponent<PerspectiveCameraControllerComponent>(m_pCamera);
+		m_LayerSceneGraph.AddItemToSceneGraph(m_pPlayer);
+
+		m_ChunkManager = std::make_shared<ChunkManager>(*(m_pCamera.get()));
 		//m_ptexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/TextureAtlas.png", Eu::TextureTypes::TEXTURE2D);
-		m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
+		//m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
 
 		auto go = new Eu::GameObject();
 		go->AddComponent<ChunkManager>(m_ChunkManager);
 		m_LayerSceneGraph.AddItemToSceneGraph(go);
-		m_Camera.SetNewPosition(glm::vec3{ 0,150,0 });
 	}
 
 	void EuropaEditorLayer::OnAttach()
@@ -37,7 +43,6 @@ namespace Eu {
 		m_pFramebuffer->Bind();
 
 		//auto updateTimer = m_TimerManager.AddTimer("Entire OnUpdate");
-		m_Camera.OnUpdate(deltaTime);
 
 
 		//auto NrmlRendertimer = m_TimerManager.AddTimer("3D Render");
@@ -46,12 +51,11 @@ namespace Eu {
 		RenderCommand::Clear();
 
 
-		Renderer::BeginScene(m_Camera.GetCamera());
+		Renderer::BeginScene(m_pCamera->GetCamera());
 
 		//m_Chunk->Render();
 		m_LayerSceneGraph.UpdateScene();
 		m_LayerSceneGraph.RenderScene();
-		//m_pScene->RenderScene();
 		Eu::Renderer::EndScene();
 		//m_TimerManager.StopTimer(NrmlRendertimer);
 
@@ -69,24 +73,24 @@ namespace Eu {
 			Eu::MouseButtonPressedEvent* mouseEvent = dynamic_cast<Eu::MouseButtonPressedEvent*>(&event);
 			if (mouseEvent->GetMouseButton() == EU_MOUSE_BUTTON_1) {
 				EU_CORE_INFO("Mouse down");
-				glm::vec3 cameraPos = m_Camera.GetCamerPos();
+				glm::vec3 cameraPos = m_pPlayer->GetTransform().GetPosition();
 
 
-				for (Eu::Ray lookRay(cameraPos, m_Camera.GetForwardVector(), 10.f); lookRay.GetCurrentPercent() <= 0.75f; lookRay.Step(0.025f))
+				for (Eu::Ray lookRay(cameraPos, m_pPlayer->GetTransform().GetForward(), 10.f); lookRay.GetCurrentPercent() <= 0.75f; lookRay.Step(0.025f))
 				{
 					if (m_ChunkManager->DeleteBlockAtPos(lookRay.GetCurrentPos()))
 						break;
 				}
 			}
 			else if (mouseEvent->GetMouseButton() == EU_MOUSE_BUTTON_2) {
-				for (Eu::Ray lookRay(m_Camera.GetCamerPos(), m_Camera.GetForwardVector(), 10.f); lookRay.GetCurrentPercent() >= -1.f; lookRay.StepBack(-0.025f))
+				for (Eu::Ray lookRay(m_pPlayer->GetTransform().GetPosition(), m_pPlayer->GetTransform().GetForward(), 10.f); lookRay.GetCurrentPercent() >= -1.f; lookRay.StepBack(-0.025f))
 				{
 					if (m_ChunkManager->AddBlockAtPos(lookRay.GetCurrentPos(), 5))
 						break;
 				}
 			}
 		}
-		m_Camera.OneEvent(event);
+		m_pCamera->OneEvent(event);
 	}
 
 	void EuropaEditorLayer::OnImGuiRender()

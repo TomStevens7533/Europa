@@ -29,7 +29,7 @@ namespace Eu {
 	private:
 		std::shared_ptr<Eu::FrameBuffer> m_pFramebuffer;
 		Eu::ScenGraph m_LayerSceneGraph;
-
+		std::shared_ptr<Eu::PerspectiveCameraControllerComponent> m_pCamera;
 		std::shared_ptr<ChunkManager> m_ChunkManager;
 		Eu::TimerManager m_TimerManager;
 
@@ -37,7 +37,7 @@ namespace Eu {
 		std::shared_ptr<Eu::BaseTexture>* m_ptexture;
 		std::shared_ptr<Eu::BaseTexture>* m_pCrosshairTexture;
 
-		Eu::PerspectiveCameraController m_Camera;
+		std::shared_ptr<Eu::GameObject> m_pPlayer;
 
 		glm::vec2 m_ViewportSize;
 	};

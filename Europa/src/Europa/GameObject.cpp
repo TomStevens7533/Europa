@@ -1,6 +1,6 @@
 #include "GameObject.h"
 #include "mesh/Mesh.h"
-#include "glm/gtx/transform.hpp"
+#include "glm/glm.hpp"
 #include "Renderer/Renderer.h"
 #include "Renderer/VertexArray.h"
 #include "ResourceManager.h"
@@ -149,7 +149,13 @@ namespace Eu {
 
 	void GameObject::SetPosition(glm::vec2 pos)
 	{
-		m_Transform.Translate(pos.x, pos.y, 0.0f);
+		m_Transform.Translate(pos.x, pos.y);
+
+	}
+
+	void GameObject::SetPosition(glm::vec3 pos)
+	{
+		m_Transform.Translate(pos.x, pos.y, pos.z);
 
 	}
 

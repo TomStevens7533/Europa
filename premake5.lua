@@ -3,6 +3,8 @@ workspace "Europa"
 	startproject "Game"
 	toolset ("v143")
 	
+	warnings "High"
+	
 	configurations
 	{
 		"Debug",
@@ -15,7 +17,7 @@ outputdir = "%{cfg.buildcfg}-%{cfg.system}-%{cfg.architecture}"
 
 -- Include directories
 
-IncludeDir = {}
+IncludeDir = { }
 IncludeDir["GLFW"] = "Europa/vendor/GLFW/include"
 IncludeDir["Glad"] = "Europa/vendor/Glad/include"
 IncludeDir["imgui"] = "Europa/vendor/imgui"
@@ -81,8 +83,9 @@ project "Europa"
 		
 		
 	}
+	filter "files:%{prj.name}/vendor/glm/glm/**.hpp"
+		warnings "Off"
 	
-
 	filter "system:windows"
 		staticruntime "On"
 		systemversion "latest"

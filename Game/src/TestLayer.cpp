@@ -11,7 +11,7 @@ TestLayer::TestLayer() : m_Camera{60.f}
 {
 
 }
-
+//MEED UPDATE  BECAUSE CAMERA IS NOW COMPONENT
 void TestLayer::OnAttach()
 {
 	auto carGo = new GameObject();
@@ -35,7 +35,6 @@ void TestLayer::OnDetach()
 
 void TestLayer::OnUpdate(Eu::TimeStep deltaTime)
 {
-	m_Camera.OnUpdate(deltaTime);
 	m_Rotation += glm::vec3{ 0.0001,0.0002,0 };
 	m_Translation += glm::vec3{ 0.1,0.02,0 };
 	go->GetTransform().Translate(m_Translation);

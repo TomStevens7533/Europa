@@ -3,7 +3,7 @@
 #include "BaseMaterial.h"
 
 namespace Eu {
-	class MaterialManager {
+	class MaterialManager final {
 	public:
 		static std::shared_ptr<MaterialManager> GetInstance();
 		template<class T>

@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "Renderer/Renderer.h"
 #include "Renderer/Renderer2D.h"
+#include "DeltaTime.h"
 
 
 
@@ -75,7 +76,8 @@ namespace Eu
 	
 		while (m_Running)
 		{
-
+			auto timeInstance = Time::GetInstance();
+			timeInstance->Update();
 			//Calculate deltaTime
 			float time = static_cast<float>(glfwGetTime()); //TODO: make it so its platform indepedent Platform::GetTime();
 			TimeStep timestep = time - m_LastFrameTime;

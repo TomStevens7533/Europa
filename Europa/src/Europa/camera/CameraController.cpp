@@ -2,94 +2,142 @@
 #include "Europa/Input.h"
 #include <Europa/KeyMouseCodes.h>
 #include <glm/glm.hpp>
+#include "../GameObject.h"
+#include "../DeltaTime.h"
 
 namespace Eu {
-	PerspectiveCameraController::PerspectiveCameraController(float fov) : m_FOV{fov}
+	PerspectiveCameraControllerComponent::PerspectiveCameraControllerComponent(float fov) : m_FOV{fov}
+	{
+	}
+	void PerspectiveCameraControllerComponent::Start()
 	{
 		m_Camera.CalculateProjectionMatrix(m_FOV);
 	}
 
-	void PerspectiveCameraController::OnUpdate(TimeStep deltaTime)
+
+
+	void PerspectiveCameraControllerComponent::SetNewPosition(glm::vec3 cameraPos)
 	{
-		glm::vec3 forwardVec = m_Camera.GetForwardVec();
-		glm::vec3 rightVec = m_Camera.GetRightVec();
-		glm::vec3 upVec = m_Camera.GetUpVector();
+		GetAttachedGameObject()->SetPosition(cameraPos);
+	}
+
+	void PerspectiveCameraControllerComponent::OneEvent(Event& e)
+	{
+		EventDispatcher dispatcher(e);
+		dispatcher.Dispatch<MouseScrolledEvent>(EU_BIND_EVENT_FN(PerspectiveCameraControllerComponent::OnMouseScrolled));
+		dispatcher.Dispatch<MouseMovedEvent>(EU_BIND_EVENT_FN(PerspectiveCameraControllerComponent::OnMouseMoved));
+		dispatcher.Dispatch<WindowResizeEvent>(EU_BIND_EVENT_FN(PerspectiveCameraControllerComponent::OnWindowResized));
+
+	}
+
+
+	void PerspectiveCameraControllerComponent::Update()
+	{
+		if (m_UpdateNeeded) {
+
+
+			auto worldPos = GetAttachedGameObject()->GetTransform().GetPosition();
+			auto look = GetAttachedGameObject()->GetTransform().GetForward();
+			EU_CORE_INFO("NEW ROT: X {0}, Y {1}, Z {2}", look.x, look.y, look.z);
+
+			m_Camera.SetViewMatrix((glm::lookAt(worldPos, worldPos + look, glm::vec3{0,1,0})));
+			m_UpdateNeeded = false;
+		}
+
+
+		glm::vec3 forwardVec = GetAttachedGameObject()->GetTransform().GetForward();
+		glm::vec3 rightVec = GetAttachedGameObject()->GetTransform().GetRight();
+		glm::vec3 upVec = GetAttachedGameObject()->GetTransform().GetUp();
+
+		glm::vec3 newPos = GetAttachedGameObject()->GetTransform().GetPosition();
+		
+		auto timeInstance = Time::GetInstance();
+
 		int multiplier = 1;
 		if (Input::IsKeyPressed(EU_KEY_LEFT_ALT))
 			multiplier++;
-		if (Input::IsKeyPressed(EU_KEY_D))
-			m_CameraPos += glm::normalize(glm::cross(forwardVec, upVec)) * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
-		if (Input::IsKeyPressed(EU_KEY_A))
-			m_CameraPos -= glm::normalize(glm::cross(forwardVec, upVec)) * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
-		if (Input::IsKeyPressed(EU_KEY_W))
-			m_CameraPos += forwardVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
-		if (Input::IsKeyPressed(EU_KEY_S))
-			m_CameraPos -= forwardVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
-		if (Input::IsKeyPressed(EU_KEY_SPACE))
-			m_CameraPos += upVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
-		if (Input::IsKeyPressed(EU_KEY_C))
-			m_CameraPos -= upVec * (deltaTime.GetSeconds() * (m_CameraMovementSpeed * multiplier));
+		if (Input::IsKeyPressed(EU_KEY_D)) {
+			newPos += rightVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 
-		m_Camera.SetPosition(m_CameraPos);
+			m_UpdateNeeded = true;
+		}
+		if (Input::IsKeyPressed(EU_KEY_A)){
+			newPos -= rightVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+			
+			m_UpdateNeeded = true;
+		}
+		if (Input::IsKeyPressed(EU_KEY_W)) {
+			newPos += forwardVec * (timeInstance->GetDeltaTime() * m_CameraMovementSpeed * multiplier);
+			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 
+			m_UpdateNeeded = true;
+		}
+
+		if (Input::IsKeyPressed(EU_KEY_S)) {
+			newPos -= forwardVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+
+			m_UpdateNeeded = true;
+		}
+		if (Input::IsKeyPressed(EU_KEY_SPACE)) {
+			newPos += upVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+
+			m_UpdateNeeded = true;
+		}
+		if (Input::IsKeyPressed(EU_KEY_C)) {
+			newPos -= upVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+
+			m_UpdateNeeded = true;
+
+		}
+
+		GetAttachedGameObject()->SetPosition(newPos);
 	}
 
-	void PerspectiveCameraController::SetNewPosition(glm::vec3 cameraPos)
-	{
-		m_CameraPos = cameraPos;
-		m_Camera.SetPosition(cameraPos);
-	}
-
-	void PerspectiveCameraController::OneEvent(Event& e)
-	{
-		EventDispatcher dispatcher(e);
-		dispatcher.Dispatch<MouseScrolledEvent>(EU_BIND_EVENT_FN(PerspectiveCameraController::OnMouseScrolled));
-		dispatcher.Dispatch<MouseMovedEvent>(EU_BIND_EVENT_FN(PerspectiveCameraController::OnMouseMoved));
-		dispatcher.Dispatch<WindowResizeEvent>(EU_BIND_EVENT_FN(PerspectiveCameraController::OnWindowResized));
-
-	}
-
-	bool PerspectiveCameraController::OnMouseScrolled(MouseScrolledEvent& e)
+	bool PerspectiveCameraControllerComponent::OnMouseScrolled(MouseScrolledEvent& e)
 	{
 		m_FOV += -e.GetYOffset();
 		EU_CORE_INFO("NEW FOV: {0}", m_FOV);
-		m_Camera.CalculateProjectionMatrix(m_FOV, m_AspectRatio);
+		m_Camera.CalculateProjectionMatrix(m_FOV);
+		m_UpdateNeeded = true;
 		return true;
 	}
 
-	bool PerspectiveCameraController::OnMouseMoved(MouseMovedEvent& e)
+	bool PerspectiveCameraControllerComponent::OnMouseMoved(MouseMovedEvent& e)
 	{
-		if (Input::IsMouseButtonPressed(EU_MOUSE_BUTTON_2)) {
+		if (Input::IsMouseButtonPressed(EU_MOUSE_BUTTON_2)) { //Remove make button configurable
 			if (m_IsFirstUpdate)
 			{
 				m_OldScreenPos.x = e.GetX();
 				m_OldScreenPos.y = e.GetY();
 
 				m_IsFirstUpdate = false;
+				return true;
 			}
-
-			m_ScreenPosOffset = { e.GetX() - m_OldScreenPos.x,m_OldScreenPos.y - e.GetY() };
+			m_ScreenPosOffset = { e.GetX() - m_OldScreenPos.x, e.GetY() - m_OldScreenPos.y };
 
 			m_OldScreenPos.x = e.GetX();
 			m_OldScreenPos.y = e.GetY();
 
+			auto timeInstance = Time::GetInstance();
+			m_ScreenPosOffset = m_ScreenPosOffset *  m_sensitivity * timeInstance->GetDeltaTime();
+
+					if (m_CameraRot.x > 89.0f)
+						m_CameraRot.x = 89.0f;
+					if (m_CameraRot.x < -89.0f)
+						m_CameraRot.x = -89.0f;
+			 
+			m_CameraRot.y += m_ScreenPosOffset.x; //yaw rotate x
+			m_CameraRot.x += m_ScreenPosOffset.y; //pitch rotate y
+			m_CameraRot.z = 0;
 
 
-			float sensitivity = 0.1f;
-			m_ScreenPosOffset.y *= sensitivity;
-			m_ScreenPosOffset.x *= sensitivity;
-
-			
-			//  screen doesn't get flipped
-			if (m_CameraRot.x >= 88.5f)
-				m_CameraRot.x = 88.5f;
-			if (m_CameraRot.x <= -88.5f)
-				m_CameraRot.x = -88.5f;
-
-
-			m_CameraRot.x += m_ScreenPosOffset.y;
-			m_CameraRot.y += m_ScreenPosOffset.x;
-			m_Camera.SetRotation(m_CameraRot);
+			GetAttachedGameObject()->GetTransform().Rotate(m_CameraRot, true);
+			m_UpdateNeeded = true;
 			return true;
 
 		}
@@ -99,13 +147,12 @@ namespace Eu {
 
 	}
 
-	bool PerspectiveCameraController::OnWindowResized(WindowResizeEvent& e)
+	bool PerspectiveCameraControllerComponent::OnWindowResized(WindowResizeEvent& e)
 	{
-		m_AspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
-		m_Camera.CalculateProjectionMatrix(m_FOV, m_AspectRatio);
+		float aspectRatio = static_cast<float>(e.GetWidth()) / static_cast<float>(e.GetHeight());
+		m_Camera.CalculateProjectionMatrix(m_FOV, aspectRatio);
+		m_UpdateNeeded = true;
 		return true;
-
-
 	}
 
 

@@ -16,6 +16,8 @@ namespace Eu {
 
 
 		void Translate(float x, float y, float z);
+		void Translate(float x, float y);
+
 		void Translate(const glm::vec3& position);
 
 		void Rotate(float x, float y, float z, bool degrees = true);

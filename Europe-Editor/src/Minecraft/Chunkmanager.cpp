@@ -3,7 +3,7 @@
 #include "Europa/GameObject.h"
 #include "../Components/ChunkComponent.h"
 
-ChunkManager::ChunkManager(Eu::PerspectiveCameraController& CameraController) : m_pCamera{&CameraController}
+ChunkManager::ChunkManager(Eu::PerspectiveCameraControllerComponent& CameraController) : m_pCamera{&CameraController}
 {
 }
 
@@ -15,7 +15,7 @@ ChunkManager::~ChunkManager()
 void ChunkManager::Update()
 {
 	//update chunks when crossing chunk border
-	glm::vec3 CameraPos = m_pCamera->GetCamerPos();
+	glm::vec3 CameraPos = m_pCamera->GetAttachedGameObject()->GetTransform().GetPosition();
 	int xQuadrant = (CameraPos.x / m_Xdiff);
 	int yQuadrant = (CameraPos.z / m_Zdiff);
 
@@ -97,9 +97,9 @@ bool ChunkManager::AddBlockAtPos(glm::vec3 posToLook, uint8_t type)
 	return false;
 }
 
-void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraController& CameraController)
+void ChunkManager::UpdateLoadedChunks(Eu::PerspectiveCameraControllerComponent& CameraController)
 {
-	glm::vec3 cameraPos = CameraController.GetCamerPos();
+	glm::vec3 cameraPos = m_pCamera->GetAttachedGameObject()->GetTransform().GetPosition();
 
 	auto it = m_ChunkVec.begin();
 
