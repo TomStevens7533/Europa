@@ -38,16 +38,17 @@ namespace Eu {
 
 			auto worldPos = GetAttachedGameObject()->GetTransform().GetPosition();
 			auto look = GetAttachedGameObject()->GetTransform().GetForward();
-			EU_CORE_INFO("NEW ROT: X {0}, Y {1}, Z {2}", look.x, look.y, look.z);
+			//EU_CORE_INFO("NEW ROT: X {0}, Y {1}, Z {2}", look.x, look.y, look.z);
 
 			m_Camera.SetViewMatrix((glm::lookAt(worldPos, worldPos + look, glm::vec3{0,1,0})));
 			m_UpdateNeeded = false;
 		}
 
-
+		glm::vec3 upVec = glm::vec3(0.0f, 1.0f, 0.0f);
 		glm::vec3 forwardVec = GetAttachedGameObject()->GetTransform().GetForward();
-		glm::vec3 rightVec = GetAttachedGameObject()->GetTransform().GetRight();
-		glm::vec3 upVec = GetAttachedGameObject()->GetTransform().GetUp();
+		glm::vec3 rightVec = glm::normalize(glm::cross(upVec, forwardVec));
+
+		upVec = glm::cross(forwardVec, rightVec);
 
 		glm::vec3 newPos = GetAttachedGameObject()->GetTransform().GetPosition();
 		
@@ -57,39 +58,38 @@ namespace Eu {
 		if (Input::IsKeyPressed(EU_KEY_LEFT_ALT))
 			multiplier++;
 		if (Input::IsKeyPressed(EU_KEY_D)) {
-			newPos += rightVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
-			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
-
+			newPos -= rightVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			//EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 			m_UpdateNeeded = true;
 		}
 		if (Input::IsKeyPressed(EU_KEY_A)){
-			newPos -= rightVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
-			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+			newPos += rightVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			//EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 			
 			m_UpdateNeeded = true;
 		}
 		if (Input::IsKeyPressed(EU_KEY_W)) {
-			newPos += forwardVec * (timeInstance->GetDeltaTime() * m_CameraMovementSpeed * multiplier);
-			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+			newPos += forwardVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
+			//EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 
 			m_UpdateNeeded = true;
 		}
 
 		if (Input::IsKeyPressed(EU_KEY_S)) {
 			newPos -= forwardVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
-			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+			//EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 
 			m_UpdateNeeded = true;
 		}
 		if (Input::IsKeyPressed(EU_KEY_SPACE)) {
 			newPos += upVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
-			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+			//EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 
 			m_UpdateNeeded = true;
 		}
 		if (Input::IsKeyPressed(EU_KEY_C)) {
 			newPos -= upVec * (timeInstance->GetDeltaTime() * (m_CameraMovementSpeed * multiplier));
-			EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
+			//EU_CORE_INFO("NEW POS: X {0}, Y {1}, Z {2}", newPos.x, newPos.y, newPos.z);
 
 			m_UpdateNeeded = true;
 
@@ -124,17 +124,20 @@ namespace Eu {
 			m_OldScreenPos.y = e.GetY();
 
 			auto timeInstance = Time::GetInstance();
-			m_ScreenPosOffset = m_ScreenPosOffset *  m_sensitivity * timeInstance->GetDeltaTime();
+			m_ScreenPosOffset = m_ScreenPosOffset *  (m_sensitivity * timeInstance->GetDeltaTime());
 
-					if (m_CameraRot.x > 89.0f)
-						m_CameraRot.x = 89.0f;
-					if (m_CameraRot.x < -89.0f)
-						m_CameraRot.x = -89.0f;
 			 
 			m_CameraRot.y += m_ScreenPosOffset.x; //yaw rotate x
 			m_CameraRot.x += m_ScreenPosOffset.y; //pitch rotate y
 			m_CameraRot.z = 0;
 
+
+			EU_CORE_INFO("ROTATION x {0}, y{1}", m_CameraRot.x, m_CameraRot.y);
+
+			if (m_CameraRot.x > 89.0f)
+				m_CameraRot.x = 89.0f;
+			if (m_CameraRot.x < -89.0f)
+				m_CameraRot.x = -89.0f;
 
 			GetAttachedGameObject()->GetTransform().Rotate(m_CameraRot, true);
 			m_UpdateNeeded = true;

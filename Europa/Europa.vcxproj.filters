@@ -108,6 +108,9 @@
     <ClInclude Include="src\Europa\Core\TimeStep.h">
       <Filter>src\Europa\Core</Filter>
     </ClInclude>
+    <ClInclude Include="src\Europa\DeltaTime.h">
+      <Filter>src\Europa</Filter>
+    </ClInclude>
     <ClInclude Include="src\Europa\EntryPoint.h">
       <Filter>src\Europa</Filter>
     </ClInclude>
@@ -1359,7 +1362,6 @@
     <ClInclude Include="vendor\stb_image\stb_image.h">
       <Filter>vendor\stb_image</Filter>
     </ClInclude>
-    <ClInclude Include="src\Europa\DeltaTime.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Europa\Application.cpp">
@@ -1376,6 +1378,9 @@
     </ClCompile>
     <ClCompile Include="src\Europa\Components\TransformComponent.cpp">
       <Filter>src\Europa\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Europa\DeltaTime.cpp">
+      <Filter>src\Europa</Filter>
     </ClCompile>
     <ClCompile Include="src\Europa\GameObject.cpp">
       <Filter>src\Europa</Filter>
@@ -1497,6 +1502,5 @@
     <ClCompile Include="vendor\stb_image\stb_image.cpp">
       <Filter>vendor\stb_image</Filter>
     </ClCompile>
-    <ClCompile Include="src\Europa\DeltaTime.cpp" />
   </ItemGroup>
 </Project>

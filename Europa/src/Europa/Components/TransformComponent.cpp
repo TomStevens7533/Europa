@@ -140,9 +140,9 @@ namespace Eu {
 		//convert conjugate to worldrot
 		m_WorldRotation = glm::conjugate(decompRot);
 		
-		m_Forward = (glm::vec4(0, 0, -1, 0) * rot);
-		m_Right =   (glm::vec4(1, 0, 0, 0) * rot);
-		m_Up =   glm::normalize(glm::cross(m_Forward, m_Right));
+		m_Forward = glm::normalize(glm::vec4(0, 0, 1, 0) * rot);
+		m_Right =	glm::normalize(glm::vec4(1, 0, 0, 0) * rot);
+		m_Up =		glm::normalize(glm::cross(m_Forward, m_Right));
 
 		m_IsDirty = false;
 

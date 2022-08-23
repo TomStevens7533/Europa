@@ -42,7 +42,7 @@ namespace Eu {
 
 
 
-		float m_sensitivity = 1.2f;
+		float m_sensitivity = 3.f;
 		//variables
 		float m_CameraMovementSpeed{ 5.5f };
 		float m_RotationSpeed{ 45.f };
