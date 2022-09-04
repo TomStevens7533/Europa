@@ -26,21 +26,34 @@ namespace Eu {
 
 
 
+	void Camera::rotate(float angleRadians, const glm::vec3& axis)
+	{
+		glm::quat q = glm::angleAxis(angleRadians, axis);
+		Rotate(q);
+	}
+
 	void Camera::CalculateInverseONB()
 	{
+	
 		m_ViewProjMatrix = m_Proj * m_View;
 
 
 }
 
+	void Camera::Rotate(const glm::quat& rotation)
+	{
+		m_CameraQuaternion = rotation * m_CameraQuaternion;
+	}
+
 	void Camera::CalculateProjectionMatrix(float fov, float aspectRatio)
 	{
 
 		m_Proj = glm::perspective(glm::radians(fov / 2.f), aspectRatio, m_NearPlane, m_FarPlane);
+		CalculateInverseONB();
 	}
 
 
-	void Camera::SetViewMatrix(glm::mat4x4 view)
+	void Camera::CalcViewMatrix(glm::mat4x4 view)
 	{
 		m_View = view;
 		CalculateInverseONB();
@@ -49,6 +62,36 @@ namespace Eu {
 	glm::mat4x4& Camera::GetONB()
 	{
 		return m_ViewProjMatrix;
+	}
+
+	glm::vec3 Camera::getForward() const
+	{
+		return glm::conjugate(m_CameraQuaternion) * glm::vec3(0.0f, 0.0f, -1.0f);
+	}
+
+	glm::vec3 Camera::getLeft() const
+	{
+		return glm::conjugate(m_CameraQuaternion) * glm::vec3(-1.0, 0.0f, 0.0f);
+	}
+
+	glm::vec3 Camera::getUp() const
+	{
+		return glm::conjugate(m_CameraQuaternion) * glm::vec3(0.0f, 1.0f, 0.0f);
+	}
+
+	void Camera::moveForward(float movement)
+	{
+		m_Position += getForward() * movement;
+	}
+
+	void Camera::moveLeft(float movement)
+	{
+		m_Position += getLeft() * movement;
+	}
+
+	void Camera::moveUp(float movement)
+	{
+		m_Position += getUp() * movement;
 	}
 
 	//frustum culling

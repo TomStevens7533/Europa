@@ -33,16 +33,7 @@ namespace Eu {
 
 	void PerspectiveCameraControllerComponent::Update()
 	{
-		if (m_UpdateNeeded) {
 
-
-			auto worldPos = GetAttachedGameObject()->GetTransform().GetPosition();
-			auto look = GetAttachedGameObject()->GetTransform().GetForward();
-			//EU_CORE_INFO("NEW ROT: X {0}, Y {1}, Z {2}", look.x, look.y, look.z);
-
-			m_Camera.SetViewMatrix((glm::lookAt(worldPos, worldPos + look, glm::vec3{0,1,0})));
-			m_UpdateNeeded = false;
-		}
 
 		glm::vec3 upVec = glm::vec3(0.0f, 1.0f, 0.0f);
 		glm::vec3 forwardVec = GetAttachedGameObject()->GetTransform().GetForward();
@@ -94,8 +85,64 @@ namespace Eu {
 			m_UpdateNeeded = true;
 
 		}
-
 		GetAttachedGameObject()->SetPosition(newPos);
+
+		//Rotation
+		if (Input::IsMouseButtonPressed(EU_MOUSE_BUTTON_2)) { //Remove make button configurable
+			int x = Input::GetMouseX();
+			int y = Input::GetMouseY();
+
+			if (m_IsFirstUpdate)
+			{
+				m_OldScreenPos.x = x;
+				m_OldScreenPos.y = y;
+
+				m_IsFirstUpdate = false;
+				return;
+			}
+			m_ScreenPosOffset = { x - m_OldScreenPos.x, y - m_OldScreenPos.y };
+
+			m_OldScreenPos.x = x;
+			m_OldScreenPos.y = y;
+
+			auto timeInstance = Time::GetInstance();
+			m_ScreenPosOffset = m_ScreenPosOffset * (m_sensitivity * timeInstance->GetDeltaTime());
+
+
+			m_CameraRot.y += m_ScreenPosOffset.x; //yaw rotate x
+			m_CameraRot.x += m_ScreenPosOffset.y; //pitch rotate y
+			m_CameraRot.z = 0;
+
+
+			EU_CORE_INFO("ROTATION x {0}, y{1}", m_CameraRot.x, m_CameraRot.y);
+
+			if (m_CameraRot.x > 89.0f)
+				m_CameraRot.x = 89.0f;
+			if (m_CameraRot.x < -89.0f)
+				m_CameraRot.x = -89.0f;
+			m_Camera.rotate(m_CameraRot.x, glm::vec3{ 1,0,0 });
+			m_Camera.rotate(m_CameraRot.y, glm::vec3{ 0,1,0 });
+
+			m_UpdateNeeded = true;
+			return;
+
+		}
+		int x = Input::GetMouseX();
+		int y = Input::GetMouseY();
+		m_OldScreenPos.x = x;
+		m_OldScreenPos.y = y;
+
+
+		if (m_UpdateNeeded) {
+
+			auto worldPos = GetAttachedGameObject()->GetTransform().GetPosition();
+			auto look = GetAttachedGameObject()->GetTransform().GetForward();
+			//EU_CORE_INFO("NEW ROT: X {0}, Y {1}, Z {2}", look.x, look.y, look.z);
+
+			m_Camera.CalcViewMatrix((glm::lookAt(worldPos, worldPos + look, glm::vec3{ 0,1,0 })));
+			m_UpdateNeeded = false;
+		}
+
 	}
 
 	bool PerspectiveCameraControllerComponent::OnMouseScrolled(MouseScrolledEvent& e)
@@ -109,43 +156,6 @@ namespace Eu {
 
 	bool PerspectiveCameraControllerComponent::OnMouseMoved(MouseMovedEvent& e)
 	{
-		if (Input::IsMouseButtonPressed(EU_MOUSE_BUTTON_2)) { //Remove make button configurable
-			if (m_IsFirstUpdate)
-			{
-				m_OldScreenPos.x = e.GetX();
-				m_OldScreenPos.y = e.GetY();
-
-				m_IsFirstUpdate = false;
-				return true;
-			}
-			m_ScreenPosOffset = { e.GetX() - m_OldScreenPos.x, e.GetY() - m_OldScreenPos.y };
-
-			m_OldScreenPos.x = e.GetX();
-			m_OldScreenPos.y = e.GetY();
-
-			auto timeInstance = Time::GetInstance();
-			m_ScreenPosOffset = m_ScreenPosOffset *  (m_sensitivity * timeInstance->GetDeltaTime());
-
-			 
-			m_CameraRot.y += m_ScreenPosOffset.x; //yaw rotate x
-			m_CameraRot.x += m_ScreenPosOffset.y; //pitch rotate y
-			m_CameraRot.z = 0;
-
-
-			EU_CORE_INFO("ROTATION x {0}, y{1}", m_CameraRot.x, m_CameraRot.y);
-
-			if (m_CameraRot.x > 89.0f)
-				m_CameraRot.x = 89.0f;
-			if (m_CameraRot.x < -89.0f)
-				m_CameraRot.x = -89.0f;
-
-			GetAttachedGameObject()->GetTransform().Rotate(m_CameraRot, true);
-			m_UpdateNeeded = true;
-			return true;
-
-		}
-		m_OldScreenPos.x = e.GetX();
-		m_OldScreenPos.y = e.GetY();
 		return true;
 
 	}

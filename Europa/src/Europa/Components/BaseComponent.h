@@ -1,5 +1,6 @@
 #pragma once
 #include <limits.h>
+#include <memory>
 namespace Eu {
 	class GameObject;
 	class BaseComponent
@@ -12,12 +13,12 @@ namespace Eu {
 		virtual void FixedUpdate() = 0;
 		virtual void Render() const = 0;
 
-		GameObject* GetAttachedGameObject() const { return m_pParent; }
-		void SetAttachedGo(GameObject* parentGO) { m_pParent = parentGO; }
+		std::shared_ptr<GameObject> GetAttachedGameObject() const { return m_pParent.lock(); }
+		void SetAttachedGo(std::weak_ptr<GameObject> parentGO) { m_pParent = parentGO; }
 
 
 	protected:
-		GameObject* m_pParent = nullptr;
+		std::weak_ptr<GameObject> m_pParent{};
 	};
 
 

@@ -21,7 +21,7 @@ namespace Eu {
 		//m_ptexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/TextureAtlas.png", Eu::TextureTypes::TEXTURE2D);
 		//m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
 
-		auto go = new Eu::GameObject();
+		auto go = std::make_shared<Eu::GameObject>();
 		go->AddComponent<ChunkManager>(m_ChunkManager);
 		m_LayerSceneGraph.AddItemToSceneGraph(go);
 	}

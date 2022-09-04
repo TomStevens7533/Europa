@@ -5,7 +5,7 @@
 #include "Components/EntityManager.h"
 
 namespace Eu {
-	class GameObject final
+	class GameObject : public std::enable_shared_from_this<GameObject>
 	{
 	public:
 		void Start();
@@ -17,7 +17,7 @@ namespace Eu {
 
 		template<class TComponent>
 		bool AddComponent(std::shared_ptr<BaseComponent> component) {
-			component->SetAttachedGo(this);
+			component->SetAttachedGo(shared_from_this());
 			return m_EntityManager.AddComponent<TComponent>(component);
 		}
 		template<class TComponent>

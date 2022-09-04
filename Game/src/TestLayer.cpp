@@ -14,7 +14,7 @@ TestLayer::TestLayer() : m_Camera{60.f}
 //MEED UPDATE  BECAUSE CAMERA IS NOW COMPONENT
 void TestLayer::OnAttach()
 {
-	auto carGo = new GameObject();
+	auto carGo = std::make_shared<GameObject>();
 	auto meshComponent = std::make_shared<MeshComponent>("Resources/vehicle.obj");
 	carGo->AddComponent<MeshComponent>(meshComponent);
 	auto meshRenderComponent = std::make_shared<MeshRenderComponent>();

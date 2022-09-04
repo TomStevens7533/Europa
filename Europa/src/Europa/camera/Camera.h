@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include "glm/gtx/quaternion.hpp"
 
 namespace Eu {
 	class Camera final
@@ -8,18 +9,32 @@ namespace Eu {
 		Camera();
 		const glm::mat4& GetViewProjectionMatrix() const;
 		const glm::mat4& GetProjectionMatrix() const;
-
+		void rotate(float angleRadians, const glm::vec3& axis);
 
 		void CalculateProjectionMatrix(float fov, float aspectRatio = 1.77f);
-		void SetViewMatrix(glm::mat4x4 view);
+		void CalcViewMatrix(glm::mat4x4 view);
 		glm::mat4x4& GetONB();
+
+		glm::vec3 getForward() const;
+
+		glm::vec3 getLeft() const;
+
+		glm::vec3 getUp() const;
+
+		void moveForward(float movement);
+
+		void moveLeft(float movement);
+
+		void moveUp(float movement);
 private:
 		void CalculateInverseONB();
-
+		void Rotate(const glm::quat& rotation);
 private:
 		float m_FarPlane = 1000.f;
 		float m_NearPlane = 0.1f;
 
+		glm::vec3 m_Position{};
+		glm::quat m_CameraQuaternion{};
 		glm::mat4 m_ViewProjMatrix{};
 		glm::mat4 m_Proj{};
 		glm::mat4 m_View{};

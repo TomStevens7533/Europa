@@ -44,8 +44,8 @@ namespace Eu {
 	void TransformComponent::Rotate(float x, float y, float z, bool degrees /*= true*/)
 	{
 		if (degrees) {
-			glm::vec3 euler = glm::vec3(x * (180.f / M_PI),y * (180.f / M_PI), z * (180.f / M_PI));
-			m_Rotation = glm::quat(glm::radians(euler));
+			glm::vec3 euler = glm::vec3(glm::radians(x), glm::radians(y), glm::radians(z));
+			m_Rotation = glm::quat(euler);
 		}
 		else {
 			glm::vec3 euler = glm::vec3(x, y, z);
@@ -58,7 +58,9 @@ namespace Eu {
 	void TransformComponent::Rotate(const glm::vec3& rotation, bool degrees /*= true*/)
 	{
 		if(degrees) {
-			glm::vec3 euler = glm::vec3( glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
+			//glm::vec3 euler = glm::vec3( glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
+			glm::vec3 euler = glm::vec3(glm::radians(rotation.x), glm::radians(rotation.y), glm::radians(rotation.z));
+
 			m_Rotation = glm::quat(euler);
 		}
 		else {

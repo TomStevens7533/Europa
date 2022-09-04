@@ -3,6 +3,7 @@
 #include "Europa/camera/CameraController.h"
 #include "Europa/Layer.h"
 #include "Europa/Scenegraph.h"
+#include <memory>
 
 class TestLayer : public Eu::Layer
 {
@@ -28,7 +29,7 @@ public:
 private:
 	Eu::TimerManager m_TimerManager;
 	Eu::ScenGraph m_LayerSceneGraph;
-	Eu::GameObject* go;
+	std::shared_ptr<Eu::GameObject> go;
 	glm::vec3 m_Rotation{1,0,0};
 	glm::vec3 m_Translation{ 1,0,0 };
 
