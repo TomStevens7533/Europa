@@ -9,10 +9,10 @@ namespace Eu {
 		Camera();
 		const glm::mat4& GetViewProjectionMatrix() const;
 		const glm::mat4& GetProjectionMatrix() const;
-		void rotate(float angleRadians, const glm::vec3& axis);
+		glm::quat RotateDegrees(float angleRadians, const glm::vec3& axis);
 
 		void CalculateProjectionMatrix(float fov, float aspectRatio = 1.77f);
-		void CalcViewMatrix(glm::mat4x4 view);
+		void CalcViewMatrix(glm::mat4x4 view, glm::vec3 pos);
 		glm::mat4x4& GetONB();
 
 		glm::vec3 getForward() const;
@@ -21,6 +21,10 @@ namespace Eu {
 
 		glm::vec3 getUp() const;
 
+		void RotateYaw(float angleRadians);
+		void RotatePitch(float angleRadians);
+		void RotateRoll(float angleRadians);
+
 		void moveForward(float movement);
 
 		void moveLeft(float movement);
@@ -28,13 +32,18 @@ namespace Eu {
 		void moveUp(float movement);
 private:
 		void CalculateInverseONB();
-		void Rotate(const glm::quat& rotation);
 private:
 		float m_FarPlane = 1000.f;
 		float m_NearPlane = 0.1f;
 
 		glm::vec3 m_Position{};
 		glm::quat m_CameraQuaternion{};
+
+		glm::quat m_CameraQuaternionYaw{};
+		glm::quat m_CameraQuaternionPitch{};
+
+		glm::quat m_CameraQuaternionRoll{};
+
 		glm::mat4 m_ViewProjMatrix{};
 		glm::mat4 m_Proj{};
 		glm::mat4 m_View{};

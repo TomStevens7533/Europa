@@ -36,8 +36,9 @@ namespace Eu {
 
 
 		glm::vec3 upVec = glm::vec3(0.0f, 1.0f, 0.0f);
-		glm::vec3 forwardVec = GetAttachedGameObject()->GetTransform().GetForward();
-		glm::vec3 rightVec = glm::normalize(glm::cross(upVec, forwardVec));
+		glm::vec3 forwardVec = m_Camera.getForward();
+		glm::vec3 rightVec = m_Camera.getLeft();
+
 
 		upVec = glm::cross(forwardVec, rightVec);
 
@@ -114,17 +115,16 @@ namespace Eu {
 			m_CameraRot.z = 0;
 
 
-			EU_CORE_INFO("ROTATION x {0}, y{1}", m_CameraRot.x, m_CameraRot.y);
 
 			if (m_CameraRot.x > 89.0f)
 				m_CameraRot.x = 89.0f;
 			if (m_CameraRot.x < -89.0f)
 				m_CameraRot.x = -89.0f;
-			m_Camera.rotate(m_CameraRot.x, glm::vec3{ 1,0,0 });
-			m_Camera.rotate(m_CameraRot.y, glm::vec3{ 0,1,0 });
+
+			m_Camera.RotateYaw(m_ScreenPosOffset.x);
+			m_Camera.RotatePitch(m_ScreenPosOffset.y);
 
 			m_UpdateNeeded = true;
-			return;
 
 		}
 		int x = Input::GetMouseX();
@@ -139,7 +139,7 @@ namespace Eu {
 			auto look = GetAttachedGameObject()->GetTransform().GetForward();
 			//EU_CORE_INFO("NEW ROT: X {0}, Y {1}, Z {2}", look.x, look.y, look.z);
 
-			m_Camera.CalcViewMatrix((glm::lookAt(worldPos, worldPos + look, glm::vec3{ 0,1,0 })));
+			m_Camera.CalcViewMatrix((glm::lookAt(worldPos, worldPos + look, glm::vec3{ 0,1,0 })), worldPos);
 			m_UpdateNeeded = false;
 		}
 

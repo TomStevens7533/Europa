@@ -5,12 +5,20 @@
 #include "glm/gtc/matrix_transform.hpp"
 
 #include <Europa/KeyMouseCodes.h>
+#include "glm/gtx/quaternion.hpp"
+#include "../Log.h"
 
 
 namespace Eu {
 	Camera::Camera()
 	{
 		m_ViewProjMatrix = glm::mat4(1.0);
+		m_CameraQuaternionPitch = glm::qua<float, glm::defaultp>(static_cast<float>(1), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0));
+		m_CameraQuaternionYaw = glm::qua<float, glm::defaultp>(static_cast<float>(1), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0));
+		m_CameraQuaternionRoll = glm::qua<float, glm::defaultp>(static_cast<float>(1), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0));
+		
+		m_CameraQuaternion= glm::qua<float, glm::defaultp>(static_cast<float>(1), static_cast<float>(0), static_cast<float>(0), static_cast<float>(0));
+
 	}
 	const glm::mat4& Camera::GetViewProjectionMatrix() const
 	{
@@ -26,10 +34,11 @@ namespace Eu {
 
 
 
-	void Camera::rotate(float angleRadians, const glm::vec3& axis)
+	glm::quat Camera::RotateDegrees(float angleRadians, const glm::vec3& axis)
 	{
-		glm::quat q = glm::angleAxis(angleRadians, axis);
-		Rotate(q);
+		float radians = glm::radians(angleRadians);
+		glm::quat q = glm::angleAxis(radians, axis);
+		return q;
 	}
 
 	void Camera::CalculateInverseONB()
@@ -38,13 +47,7 @@ namespace Eu {
 		m_ViewProjMatrix = m_Proj * m_View;
 
 
-}
-
-	void Camera::Rotate(const glm::quat& rotation)
-	{
-		m_CameraQuaternion = rotation * m_CameraQuaternion;
 	}
-
 	void Camera::CalculateProjectionMatrix(float fov, float aspectRatio)
 	{
 
@@ -53,9 +56,12 @@ namespace Eu {
 	}
 
 
-	void Camera::CalcViewMatrix(glm::mat4x4 view)
+	void Camera::CalcViewMatrix(glm::mat4x4 view, glm::vec3 pos)
 	{
-		m_View = view;
+		EU_CORE_INFO("NEW VIEW");
+		m_CameraQuaternion = m_CameraQuaternionPitch * m_CameraQuaternionYaw * m_CameraQuaternionRoll;
+		m_View = glm::mat4_cast(m_CameraQuaternion);
+		m_View = glm::translate(m_View, -pos);
 		CalculateInverseONB();
 	}
 
@@ -77,6 +83,24 @@ namespace Eu {
 	glm::vec3 Camera::getUp() const
 	{
 		return glm::conjugate(m_CameraQuaternion) * glm::vec3(0.0f, 1.0f, 0.0f);
+	}
+
+	void Camera::RotateYaw(float angleRadians)
+	{
+		float radians = glm::radians(angleRadians);
+		m_CameraQuaternionYaw *=  RotateDegrees(radians, glm::vec3(0.0f, 1.0f, 0.0f));
+	}
+
+	void Camera::RotatePitch(float angleRadians)
+	{
+		float radians = glm::radians(angleRadians);
+		m_CameraQuaternionPitch *= RotateDegrees(radians, glm::vec3(1.0f, 0.0f, 0.0f));
+	}
+
+	void Camera::RotateRoll(float angleRadians)
+	{
+		float radians = glm::radians(angleRadians);
+		m_CameraQuaternionRoll *= RotateDegrees(radians, glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 
 	void Camera::moveForward(float movement)

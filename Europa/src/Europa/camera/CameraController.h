@@ -22,6 +22,8 @@ namespace Eu {
 		void FixedUpdate() override {};
 		void Render() const override {};
 
+	
+
 		Camera& GetCamera() { return m_Camera; }
 
 	private:
@@ -42,10 +44,10 @@ namespace Eu {
 
 
 
-		float m_sensitivity = 3.f;
+		float m_sensitivity = 120.f;
 		//variables
 		float m_CameraMovementSpeed{ 5.5f };
-		float m_RotationSpeed{ 45.f };
+		float m_RotationSpeed{ 90.f };
 
 	};
 }
