@@ -189,7 +189,7 @@ void Eu::MeshComponent::BufferMesh()
 		//m_OBJ.m_IndexBuffer.clear();
 		//m_OBJ.m_VertexBuffer.clear();
 		m_IsParsed = true;
-		EU_CORE_INFO("BUFFF");
+		//EU_CORE_INFO("BUFFF");
 	}
 	return;
 

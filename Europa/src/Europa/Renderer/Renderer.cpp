@@ -5,6 +5,7 @@
 #include "RenderCommand.h"
 #include "Renderer2D.h"
 #include "../Material/BaseMaterial.h"
+#include <Platform/OpenGL/EuropaOpenGL.h>
 
 
 
@@ -55,6 +56,10 @@ namespace Eu
 	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseMaterial> program, const glm::mat4& transform) {
 		//Rendercommand
 		//program->Bind();
+#ifdef _DEBUG
+		glCheckError();
+#endif // _DEBUG
+
 		program->Bind();
 		program->SetUniformMatrix4 (m_SceneData->GetViewProjectionMatrix() * transform, "u_ViewProj");
 		program->SetUniformMatrix4(transform, "u_World");

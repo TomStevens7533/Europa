@@ -3,6 +3,7 @@
 #include <utility>
 #include "Europa/Components/BaseComponent.h"
 #include "../Minecraft/WorldGeneration.h"
+#include <atomic>
 
 
 
@@ -13,7 +14,7 @@ class ChunkComponent final : public Eu::BaseComponent
 {
 public:
 
-	ChunkComponent(glm::vec3 ChunkPosition, ChunkManager* pchunkManager, std::pair<int, int>chunkIndex, bool setActive);
+	ChunkComponent(glm::vec3 ChunkPosition, ChunkManager* pchunkManager, bool setActive);
 	~ChunkComponent();
 
 	bool IsBlockSolidInChunk(int yIndex, int xIndex, int zIndex) const;
@@ -25,6 +26,8 @@ public:
 	bool HasNeighbours(int xIndex, int yIndex, int zIndex);
 	void UpdateMesh();
 	bool IsBlockSolid(uint8_t blockType) const;
+	bool IsBlockSolid(int x, int y, int z) const;
+
 	void DellaocateData();
 	void Allocate();
 
@@ -33,6 +36,8 @@ public:
 	void FixedUpdate() override;
 	void Render() const;
 
+	void SetDirty() { m_NeedUpdate = true; };
+	bool GetDirtyFlag() { return m_NeedUpdate; }
 
 private:
 	int chunkX = 16;
@@ -40,9 +45,9 @@ private:
 	int chunkY = 256;
 
 	std::shared_ptr<ChunkMeshComponent> m_pChunkMesh = nullptr;
+	std::atomic<bool> m_NeedUpdate = false;
 	ChunkGeneration m_ChunkGeneration;
 	const ChunkManager* m_pChunkManager;
-	std::pair<int, int> m_ChunkIndex;
 	glm::vec3 m_ChunkPosition;
 	bool m_ChunkActive;
 };

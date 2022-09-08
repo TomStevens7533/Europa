@@ -26,6 +26,12 @@ const std::vector<glm::vec2>* BlockJsonParser::GetUVOfType(uint8_t id, Faces fac
 	
 }
 
+
+const std::map< Faces, std::vector<glm::vec2>>* BlockJsonParser::GetAllUVOfType(uint8_t id) const
+{
+	return &(m_BlockMap.at(id).uvCoords);
+}
+
 bool BlockJsonParser::IsSolid(uint8_t id) const
 {
 

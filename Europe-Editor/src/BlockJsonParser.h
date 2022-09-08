@@ -36,6 +36,8 @@ public:
 	static std::shared_ptr<BlockJsonParser> GetInstance();
 	BlockJsonParser(std::wstring path) { ParseFile(path); }
 	const std::vector<glm::vec2>* GetUVOfType(uint8_t id, Faces face) const;
+	const std::map< Faces, std::vector<glm::vec2>>* GetAllUVOfType(uint8_t id) const;
+
 	bool IsSolid(uint8_t id) const;
 	bool IsCube(uint8_t id) const;
 	std::string GetName(uint8_t id);

@@ -7,8 +7,20 @@
 #include <utility>
 #include <memory>
 #include "Europa/Components/BaseComponent.h"
+#include "../BlockJsonParser.h"
+#include <thread>
 
-
+#define ChunkSizeX 16
+#define ChunkSizeY 256
+#define ChunkSizeZ 16
+#define ChunkMaxHeightGeneration 150
+#define ChunkBaseTerrainHeight 30
+#define ChunkWaterHeight 40
+struct ChunkPosistion {
+	int x;
+	int y;
+	int z;
+};
 class ChunkComponent;
 class ChunkManager final : public Eu::BaseComponent
 {
@@ -29,23 +41,39 @@ public:
 	bool DeleteBlockAtPos(glm::vec3 posToLook);
 	bool AddBlockAtPos(glm::vec3 posToLook, uint8_t type);
 
+
+	std::pair<int, int> GetChunkIdx(glm::vec3 pos) const;
+	ChunkPosistion WorldToLocalChunkPos(glm::vec3 position) const;
+	std::pair<int, int> WorldToChunkIndex(glm::vec3 position) const;
 private:
-	void UpdateLoadedChunks(Eu::PerspectiveCameraControllerComponent& CameraController);
 	void ReloadNeighbouringChunks(std::pair<int, int> chunkIndex);
-
+	void UpdateChunksAroundPos();
 
 
 private:
+
+
 	std::map<std::pair<int, int>, std::shared_ptr<ChunkComponent>> m_ChunkVec;
+	std::map<std::pair<int, int>, std::shared_ptr<ChunkComponent>> m_TempChunkMap;
+	std::thread m_UpdateChunkThread;
 	Eu::PerspectiveCameraControllerComponent* m_pCamera;
 
-	int m_Xdiff = 16;
-	int m_Zdiff = 16;
-	int m_ChunkLoadDistance = 10;
-	bool isUpdating;
+	//m_LevelJsonParser.ParseFile();
+	unsigned int m_Seed{};
+	int m_ChunkDistance = 2;
+	DirectX::XMFLOAT3 m_OriginPos;
+	std::atomic<float> m_OriginXPos;
+	std::atomic<float> m_OriginYPos;
+	std::atomic<float> m_OriginZPos;
 
-	int m_XCameraQuadrant;
-	int m_YCameraQuadrant;
+	std::atomic<bool> m_IsShutdown = false;
+	std::atomic<bool> m_IsCycleCreateDone = false;
+	std::atomic<bool> m_IsCycleUpdateDone = true;
 
+	//Mult
+	std::mutex m_MutexUpdate;
+
+
+	std::condition_variable cond;
 
 };

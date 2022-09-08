@@ -7,6 +7,7 @@
 #include "Europa/Renderer/Renderer.h"
 #include "Europa/Material/MaterialManager.h"
 #include "../BlockJsonParser.h"
+#include "Europa/Log.h"
 
 const std::array<float, 12> xFace1{
 	0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0,
@@ -70,18 +71,18 @@ void ChunkMeshComponent::Render() const
 {
 	auto comp = (m_pChunkMesh->GetVertexBuffer());
 	if (comp != nullptr) {
+		//EU_CORE_INFO("RENDER POS: {0}, {1}", GetAttachedGameObject()->GetTransform().GetWorldPosition().x, GetAttachedGameObject()->GetTransform().GetWorldPosition().z);
 		Eu::Renderer::Submit(m_pChunkMesh->GetVertexBuffer(), m_CurrMat, GetAttachedGameObject()->GetTransform().GetWorld());
 
 	}
 }
 
-bool ChunkMeshComponent::AddFace(glm::vec3 ChunPos, glm::vec3 BlockPos, Faces dir, uint8_t blockType)
+bool ChunkMeshComponent::AddFace(glm::vec3 BlockPos, Faces dir, uint8_t blockType)
 {
 	const std::array<float, 12>* blockFace;
 
 	std::vector<Eu::Vertex_Input> m_vertices;
 	std::vector<int> m_Indices;
-
 
 	bool isCube = BlockJsonParser::GetInstance()->IsCube(blockType);
 	float LightLevel = 1.f;
@@ -120,22 +121,22 @@ bool ChunkMeshComponent::AddFace(glm::vec3 ChunPos, glm::vec3 BlockPos, Faces di
 		}
 
 
-		glm::vec3 Vertex1Pos = glm::vec3{ (*blockFace)[0] + ChunPos.x + BlockPos.x, (*blockFace)[1] + (ChunPos.y + BlockPos.y), (*blockFace)[2] + ChunPos.z + BlockPos.z };
+		glm::vec3 Vertex1Pos = glm::vec3{ (*blockFace)[0] + BlockPos.x, (*blockFace)[1] + ( BlockPos.y), (*blockFace)[2] + BlockPos.z };
 		m_vertices.push_back(Eu::Vertex_Input{ Vertex1Pos,
 			glm::vec3{ 1,1,1 }, (*uvInformation)[0], glm::vec3{LightLevel,LightLevel,LightLevel}});
 		//std::cout << Vertex1Pos.x << "  " << Vertex1Pos.y << " " << Vertex1Pos.z << std::endl;
 
 
-		glm::vec3 Vertex2Pos = glm::vec3{ (*blockFace)[3] + ChunPos.x + BlockPos.x, (*blockFace)[4] + (ChunPos.y + BlockPos.y), (*blockFace)[5] + ChunPos.z + BlockPos.z };
+		glm::vec3 Vertex2Pos = glm::vec3{ (*blockFace)[3]  + BlockPos.x, (*blockFace)[4] + ( BlockPos.y), (*blockFace)[5] + BlockPos.z };
 		m_vertices.push_back(Eu::Vertex_Input{ Vertex2Pos,
 			glm::vec3{ 1,1,1 },  (*uvInformation)[1], glm::vec3{ LightLevel,LightLevel,LightLevel} });
 
 
-		glm::vec3 Vertex3Pos = glm::vec3{ (*blockFace)[6] + ChunPos.x + BlockPos.x, (*blockFace)[7] + (ChunPos.y + BlockPos.y), (*blockFace)[8] + ChunPos.z + BlockPos.z };
+		glm::vec3 Vertex3Pos = glm::vec3{ (*blockFace)[6] + BlockPos.x, (*blockFace)[7] +  BlockPos.y, (*blockFace)[8] + BlockPos.z };
 		m_vertices.push_back(Eu::Vertex_Input{ Vertex3Pos,
 			glm::vec3{ 1,1,1 }, (*uvInformation)[2], glm::vec3{ LightLevel,LightLevel,LightLevel } });
 
-		glm::vec3 Vertex4Pos = glm::vec3{ (*blockFace)[9] + ChunPos.x + BlockPos.x, (*blockFace)[10] + (ChunPos.y + BlockPos.y), (*blockFace)[11] + ChunPos.z + BlockPos.z };
+		glm::vec3 Vertex4Pos = glm::vec3{ (*blockFace)[9]+ BlockPos.x, (*blockFace)[10] + (BlockPos.y), (*blockFace)[11] + + BlockPos.z };
 		m_vertices.push_back(Eu::Vertex_Input{ Vertex4Pos,
 			glm::vec3{ 1,1,1 }, (*uvInformation)[3], glm::vec3{ LightLevel ,LightLevel,LightLevel } });
 
@@ -152,22 +153,22 @@ bool ChunkMeshComponent::AddFace(glm::vec3 ChunPos, glm::vec3 BlockPos, Faces di
 		blockFace = &xFace2;
 		for (size_t i = 0; i < 2; i++)
 		{
-			glm::vec3 Vertex1Pos = glm::vec3{ (*blockFace)[0] + ChunPos.x + BlockPos.x, (*blockFace)[1] + (ChunPos.y + BlockPos.y), (*blockFace)[2] + ChunPos.z + BlockPos.z };
+			glm::vec3 Vertex1Pos = glm::vec3{ (*blockFace)[0] + BlockPos.x, (*blockFace)[1] + ( BlockPos.y), (*blockFace)[2] + BlockPos.z };
 			m_vertices.push_back(Eu::Vertex_Input{ Vertex1Pos,
 				glm::vec3{ 1,1,1 }, (*uvInformation)[0], glm::vec3{ LightLevel,LightLevel,LightLevel } });
 			//std::cout << Vertex1Pos.x << "  " << Vertex1Pos.y << " " << Vertex1Pos.z << std::endl;
 
 
-			glm::vec3 Vertex2Pos = glm::vec3{ (*blockFace)[3] + ChunPos.x + BlockPos.x, (*blockFace)[4] + (ChunPos.y + BlockPos.y), (*blockFace)[5] + ChunPos.z + BlockPos.z };
+			glm::vec3 Vertex2Pos = glm::vec3{ (*blockFace)[3] + BlockPos.x, (*blockFace)[4] + ( BlockPos.y), (*blockFace)[5] + BlockPos.z };
 			m_vertices.push_back(Eu::Vertex_Input{ Vertex2Pos,
 				glm::vec3{ 1,1,1 }, (*uvInformation)[1], glm::vec3{ LightLevel,LightLevel,LightLevel} });
 
 
-			glm::vec3 Vertex3Pos = glm::vec3{ (*blockFace)[6] + ChunPos.x + BlockPos.x, (*blockFace)[7] + (ChunPos.y + BlockPos.y), (*blockFace)[8] + ChunPos.z + BlockPos.z };
+			glm::vec3 Vertex3Pos = glm::vec3{ (*blockFace)[6] + BlockPos.x, (*blockFace)[7] + ( BlockPos.y), (*blockFace)[8] + BlockPos.z };
 			m_vertices.push_back(Eu::Vertex_Input{ Vertex3Pos,
 				glm::vec3{ 1,1,1 },(*uvInformation)[2], glm::vec3{ LightLevel,LightLevel,LightLevel } });
 
-			glm::vec3 Vertex4Pos = glm::vec3{ (*blockFace)[9] + ChunPos.x + BlockPos.x, (*blockFace)[10] + (ChunPos.y + BlockPos.y), (*blockFace)[11] + ChunPos.z + BlockPos.z };
+			glm::vec3 Vertex4Pos = glm::vec3{ (*blockFace)[9]  + BlockPos.x, (*blockFace)[10] + ( BlockPos.y), (*blockFace)[11]  + BlockPos.z };
 			m_vertices.push_back(Eu::Vertex_Input{ Vertex4Pos,
 				glm::vec3{ 1,1,1 },(*uvInformation)[3], glm::vec3{ LightLevel ,LightLevel,LightLevel } });
 

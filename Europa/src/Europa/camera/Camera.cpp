@@ -58,7 +58,6 @@ namespace Eu {
 
 	void Camera::CalcViewMatrix(glm::mat4x4 view, glm::vec3 pos)
 	{
-		EU_CORE_INFO("NEW VIEW");
 		m_CameraQuaternion = m_CameraQuaternionPitch * m_CameraQuaternionYaw * m_CameraQuaternionRoll;
 		m_View = glm::mat4_cast(m_CameraQuaternion);
 		m_View = glm::translate(m_View, -pos);

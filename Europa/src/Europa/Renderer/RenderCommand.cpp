@@ -11,6 +11,7 @@ namespace Eu {
 	{
 		RenderCommand::EnableDepthTest();
 		s_RenderAPI->SetBlending();
+		s_RenderAPI->EnableWireFrame();
 	}
 
 	void RenderCommand::SetClearColor(const glm::vec4& color)
