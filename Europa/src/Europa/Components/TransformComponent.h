@@ -23,6 +23,10 @@ namespace Eu {
 		void Rotate(float x, float y, float z, bool degrees = true);
 		void Rotate(const glm::vec3& rotation, bool degrees = true);
 
+
+		void AddLocalRotate(float x, float y, float z, bool degrees = true);
+		void AddLocalRotate(const glm::vec3& rotation, bool degrees = true);
+
 		void Scale(float x, float y, float z);
 		void Scale(float s);
 		void Scale(const  glm::vec3& scale);

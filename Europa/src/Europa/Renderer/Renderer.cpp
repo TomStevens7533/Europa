@@ -55,20 +55,19 @@ namespace Eu
 
 	void Renderer::Submit(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseMaterial> program, const glm::mat4& transform) {
 		//Rendercommand
-		//program->Bind();
 #ifdef _DEBUG
 		glCheckError();
 #endif // _DEBUG
 
 		program->Bind();
-		program->SetUniformMatrix4 (m_SceneData->GetViewProjectionMatrix() * transform, "u_ViewProj");
+		program->SetUniformMatrix4 (m_SceneData->GetViewProjectionMatrix(), "u_ViewProj");
 		program->SetUniformMatrix4(transform, "u_World");
 
 
 		vertexArray->Bind();
 
 
-		RenderCommand::DrawIndexedNoDepth(vertexArray);
+		RenderCommand::DrawIndexed(vertexArray);
 	}
 	//void Renderer::SubmitNoDepth(const std::shared_ptr<VertexArray>& vertexArray, const std::shared_ptr<BaseProgram>& program, const glm::mat4& transform, bool isBackground) {
 	//	//Rendercommand

@@ -70,6 +70,16 @@ namespace Eu {
 
 	}
 
+	void TransformComponent::AddLocalRotate(float x, float y, float z, bool degrees /*= true*/)
+	{
+
+	}
+
+	void TransformComponent::AddLocalRotate(const glm::vec3& rotation, bool degrees /*= true*/)
+	{
+
+	}
+
 	void TransformComponent::Scale(float x, float y, float z)
 	{
 		m_Scale = glm::vec3(x, y, z);

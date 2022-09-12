@@ -12,6 +12,11 @@ Eu::BaseMaterial::BaseMaterial(std::string vertexShader, std::string PixelShader
 	m_InternalMaterial->AttachPixelShader(PixelShader);
 }
 
+void BaseMaterial::SetUniform(const char* name) const
+{
+	m_InternalMaterial->SetUniform(name);
+}
+
 BaseMaterial::~BaseMaterial()
 {
 	EU_CORE_INFO("Deleting material");

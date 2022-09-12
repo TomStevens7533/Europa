@@ -26,12 +26,6 @@
     <ClInclude Include="src\Minecraft\Chunk.h">
       <Filter>Minecraft</Filter>
     </ClInclude>
-    <ClInclude Include="src\Minecraft\Chunkmanager.h">
-      <Filter>Minecraft</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Minecraft\WorldGeneration.h">
-      <Filter>Minecraft</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BlockJsonParser.cpp" />
@@ -47,12 +41,6 @@
     <ClCompile Include="src\EditorApp.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Minecraft\Chunk.cpp">
-      <Filter>Minecraft</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Minecraft\Chunkmanager.cpp">
-      <Filter>Minecraft</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Minecraft\WorldGeneration.cpp">
       <Filter>Minecraft</Filter>
     </ClCompile>
   </ItemGroup>

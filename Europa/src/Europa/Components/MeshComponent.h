@@ -3,15 +3,12 @@
 #include <string>
 #include <vector>
 #include "../Renderer/VertexArray.h"
+#include "../structs.h"
 
 
 namespace Eu {
 
 
-	struct OBJ {
-		std::vector<Vertex_Input> m_VertexBuffer;
-		std::vector<uint32_t> m_IndexBuffer;
-	};
 	class MeshComponent : public BaseComponent
 	{
 	public:

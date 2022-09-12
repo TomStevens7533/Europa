@@ -1,7 +1,8 @@
 #include "Europa/Layer.h"
 #include "Europa/Profiling/TimerManager.h"
-#include "Minecraft/Chunkmanager.h"
 #include "Europa/Scenegraph.h"
+
+class ChunkComponent;
 
 
 namespace Eu {
@@ -30,7 +31,7 @@ namespace Eu {
 		std::shared_ptr<Eu::FrameBuffer> m_pFramebuffer;
 		Eu::ScenGraph m_LayerSceneGraph;
 		std::shared_ptr<Eu::PerspectiveCameraControllerComponent> m_pCamera;
-		std::shared_ptr<ChunkManager> m_ChunkManager;
+		std::shared_ptr<ChunkComponent> m_ChunkComp;
 		Eu::TimerManager m_TimerManager;
 
 
@@ -38,6 +39,9 @@ namespace Eu {
 		std::shared_ptr<Eu::BaseTexture>* m_pCrosshairTexture;
 
 		std::shared_ptr<Eu::GameObject> m_pPlayer;
+		std::shared_ptr<Eu::GameObject> m_pChunk;
+		float angle{ 0 };
+
 
 		glm::vec2 m_ViewportSize;
 	};

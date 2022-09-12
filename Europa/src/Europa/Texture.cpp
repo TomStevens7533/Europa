@@ -71,5 +71,24 @@ namespace Eu {
 
 		
 	}
+
+	std::shared_ptr<Eu::TextureArray> TextureArray::Create(const std::vector<std::string>& pathVec)
+	{
+		switch (Renderer::GetAPI())
+		{
+		case RendererAPI::API::None:
+			EU_CORE_ASSERT(false, "RendererAPI::None is not supported");
+			return nullptr;
+			break;
+
+		case RendererAPI::API::OpenGL:
+			return  std::make_shared<OpenGLTextureArray>(pathVec);
+			break;
+
+		}
+		EU_CORE_ASSERT(false, "Unknown RendererAPI");
+		return nullptr;
+	}
+
 }
 

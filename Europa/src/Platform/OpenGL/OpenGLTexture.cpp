@@ -179,4 +179,56 @@ namespace Eu {
 		//glTextureSubImage2D(m_RenderID, 0, 0, 0, m_Width, m_Height, m_DataFormat, GL_UNSIGNED_BYTE, data);
 	}
 
+
+
+
+	OpenGLTextureArray::OpenGLTextureArray(const std::vector<std::string>& pathVec)
+	{
+		glGenTextures(1, &m_RenderID);
+		glBindTexture(GL_TEXTURE_2D_ARRAY, m_RenderID);
+		// Allocate the storage.
+		int width, height, nrChannels;
+		for (size_t i = 0; i < pathVec.size(); i++)
+		{
+			stbi_uc* data; //Pixel data
+			data = stbi_load(pathVec[i].c_str(), &width, &height, &nrChannels, 0);
+			glTexImage3D(GL_TEXTURE_2D_ARRAY,
+				0,                 // mipmap level
+				GL_RGBA8,          // gpu texel format
+				width,             // width
+				height,            // height
+				i,				   // depth
+				0,                 // border
+				GL_RGBA,		   // cpu pixel format
+				GL_UNSIGNED_BYTE,  // cpu pixel coord type
+				data);             // pixel data
+
+			stbi_image_free(data);
+		}
+		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+		// Set the preferences:
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	}
+
+	OpenGLTextureArray::~OpenGLTextureArray()
+	{
+
+	}
+
+	void OpenGLTextureArray::Bind(uint32_t unitIndex) const
+	{
+		glBindTexture(GL_TEXTURE_2D_ARRAY, m_RenderID);
+
+	}
+
+	void OpenGLTextureArray::SetData(void* data, uint32_t size)
+	{
+
+	}
+
+
+
 }

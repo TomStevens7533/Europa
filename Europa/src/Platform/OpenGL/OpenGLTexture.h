@@ -60,5 +60,26 @@ namespace Eu {
 		std::string m_Path;
 	};
 
+	class OpenGLTextureArray final : public TextureArray
+	{
+	public:
+		OpenGLTextureArray(const std::vector<std::string>& pathVec);
+		virtual ~OpenGLTextureArray();
+
+		uint32_t GetWidth() const override { return m_Width; };
+		uint32_t GetHeigh() const override { return m_Height; };
+		void Bind(uint32_t unitIndex) const override;
+
+		void SetData(void* data, uint32_t size) override;
+
+
+		//opengl expects unsinged integers
+		uint32_t m_Width;
+		uint32_t m_Height;
+		uint32_t m_Channels;
+
+		uint32_t m_RenderID;
+
+	};
 
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <glm/glm.hpp>
+#include <vector>
 
 namespace Eu {
 	struct Vertex_Input
@@ -14,6 +15,10 @@ namespace Eu {
 				return true;
 			else return false;
 		}
+	};
+	struct OBJ {
+		std::vector<Vertex_Input> m_VertexBuffer;
+		std::vector<uint32_t> m_IndexBuffer;
 	};
 
 }

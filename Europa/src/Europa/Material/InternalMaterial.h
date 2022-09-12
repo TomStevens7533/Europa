@@ -18,6 +18,8 @@ namespace Eu {
 		 virtual void SetUniformInt(const int index, const char* name) const = 0;
 		 virtual void SetUniformVec2(const glm::vec2 index, const char* name) const = 0;
 		 virtual void SetUniformVec4(const glm::vec4& vec4Uniform, const char* name) const = 0;
+		 virtual void SetUniform(const char* name) const = 0;
+
 	};
 
 

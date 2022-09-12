@@ -3,6 +3,7 @@
 #include "Europa/ResourceManager.h"
 #include "Europa/Utils.h"
 #include "EditorLayer.h"
+#include "Components/ChunkComponent.h"
 
 
 
@@ -12,17 +13,19 @@ namespace Eu {
 		//player GO
 		m_pPlayer = std::make_shared<Eu::GameObject>();
 
-		m_pPlayer->SetPosition(glm::vec3{ 0,85,0 });
+		m_pPlayer->SetPosition(glm::vec3{ 0,0,0 });
 		m_pCamera = std::make_shared<Eu::PerspectiveCameraControllerComponent>();
 		m_pPlayer->AddComponent<PerspectiveCameraControllerComponent>(m_pCamera);
 		m_LayerSceneGraph.AddItemToSceneGraph(m_pPlayer);
 
-		m_ChunkManager = std::make_shared<ChunkManager>(*(m_pCamera.get()));
+		//m_ChunkManager = std::make_shared<ChunkManager>(*(m_pCamera.get()));
 		//m_ptexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/TextureAtlas.png", Eu::TextureTypes::TEXTURE2D);
 		//m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
-
+		m_ChunkComp = std::make_shared<ChunkComponent>(4,16,4);
 		auto go = std::make_shared<Eu::GameObject>();
-		go->AddComponent<ChunkManager>(m_ChunkManager);
+		go->SetPosition(glm::vec3{ 0,0,0 });
+		go->AddComponent<ChunkComponent>(m_ChunkComp);
+		m_pChunk = go;
 		m_LayerSceneGraph.AddItemToSceneGraph(go);
 	}
 
@@ -41,7 +44,10 @@ namespace Eu {
 	void EuropaEditorLayer::OnUpdate(TimeStep deltaTime)
 	{
 		m_pFramebuffer->Bind();
+		//m_pChunk->GetTransform().Translate(glm::vec3{angle, 0,0});
+		//m_pChunk->GetTransform().Rotate(glm::vec3{ angle, 0,0 });
 
+		angle += 0.001f;
 		//auto updateTimer = m_TimerManager.AddTimer("Entire OnUpdate");
 
 
@@ -77,16 +83,16 @@ namespace Eu {
 
 
 				for (Eu::Ray lookRay(cameraPos, m_pPlayer->GetTransform().GetForward(), 10.f); lookRay.GetCurrentPercent() <= 0.75f; lookRay.Step(0.025f))
-				{
+				{/*
 					if (m_ChunkManager->DeleteBlockAtPos(lookRay.GetCurrentPos()))
-						break;
+						break;*/
 				}
 			}
 			else if (mouseEvent->GetMouseButton() == EU_MOUSE_BUTTON_2) {
 				for (Eu::Ray lookRay(m_pPlayer->GetTransform().GetPosition(), m_pPlayer->GetTransform().GetForward(), 10.f); lookRay.GetCurrentPercent() >= -1.f; lookRay.StepBack(-0.025f))
-				{
+				{/*
 					if (m_ChunkManager->AddBlockAtPos(lookRay.GetCurrentPos(), 5))
-						break;
+						break;*/
 				}
 			}
 		}

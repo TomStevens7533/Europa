@@ -24,6 +24,8 @@ namespace Eu {
 		void SetUniformInt(const int index, const char* name) const ;
 		void SetUniformVec2(const glm::vec2 index, const char* name) const ;
 		void SetUniformVec4(const glm::vec4& vec4Uniform, const char* name) const;
+		void SetUniform(const char* name) const;
+
 
 
 

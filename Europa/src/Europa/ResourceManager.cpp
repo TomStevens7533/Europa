@@ -66,6 +66,37 @@ namespace Eu {
 	
 		
 
+	std::shared_ptr<Eu::BaseTexture> ResourceManager::GetTexture(const std::vector<std::string> texturePath, const TextureTypes type)
+	{
+		size_t count = m_TextureMap.count(texturePath.at(0));
+
+
+		if (count == 0) {
+			//Texture not in resource map
+			std::shared_ptr<BaseTexture> pTexture;
+			switch (type)
+			{
+			case TextureTypes::TEXTUREARRAY:
+				pTexture = (TextureArray::Create(texturePath));
+				break;
+			default:
+				break;
+			}
+
+			//insert return pair with iterator and if it succeeded
+			auto itPair = m_TextureMap.insert(std::pair{ texturePath.at(0), pTexture });
+			return (*itPair.first).second;
+
+
+		}
+		else {
+			auto it = m_TextureMap.find(texturePath.at(0));
+			return (*it).second;
+
+			//make templated
+		}
 	}
+
+}
 
 

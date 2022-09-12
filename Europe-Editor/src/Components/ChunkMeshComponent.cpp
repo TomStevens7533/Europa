@@ -39,6 +39,7 @@ const std::array<float, 12> bottomFace{ 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1 };
 
 ChunkMeshComponent::ChunkMeshComponent()
 {
+	m_CurrMat = Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
 
 }
 
@@ -48,12 +49,7 @@ ChunkMeshComponent::~ChunkMeshComponent()
 
 void ChunkMeshComponent::Start()
 {
-	m_pChunkMesh = std::make_shared<Eu::MeshComponent>();
-	//m_pChunkMeshRenderer = std::make_shared<Eu::MeshRenderComponent>();
-	GetAttachedGameObject()->AddComponent<Eu::MeshComponent>(m_pChunkMesh);
-	//GetAttachedGameObject()->AddComponent<Eu::MeshRenderComponent>(m_pChunkMeshRenderer);
 
-	m_CurrMat =  Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
 
 }
 
@@ -69,15 +65,15 @@ void ChunkMeshComponent::FixedUpdate()
 
 void ChunkMeshComponent::Render() const
 {
-	auto comp = (m_pChunkMesh->GetVertexBuffer());
-	if (comp != nullptr) {
+	
+	if (m_IsBuffered) {
 		//EU_CORE_INFO("RENDER POS: {0}, {1}", GetAttachedGameObject()->GetTransform().GetWorldPosition().x, GetAttachedGameObject()->GetTransform().GetWorldPosition().z);
-		Eu::Renderer::Submit(m_pChunkMesh->GetVertexBuffer(), m_CurrMat, GetAttachedGameObject()->GetTransform().GetWorld());
+		Eu::Renderer::Submit(m_ChunkVertexArray, m_CurrMat, GetAttachedGameObject()->GetTransform().GetWorld());
 
 	}
 }
 
-bool ChunkMeshComponent::AddFace(glm::vec3 BlockPos, Faces dir, uint8_t blockType)
+void ChunkMeshComponent::AddFace(glm::vec3 BlockPos, Faces dir, uint8_t blockType)
 {
 	const std::array<float, 12>* blockFace;
 
@@ -142,12 +138,6 @@ bool ChunkMeshComponent::AddFace(glm::vec3 BlockPos, Faces dir, uint8_t blockTyp
 
 		m_Indices = { m_VertextIndexIndex, m_VertextIndexIndex + 1, m_VertextIndexIndex + 2, m_VertextIndexIndex + 2, m_VertextIndexIndex + 3, m_VertextIndexIndex };
 		m_VertextIndexIndex += 4;
-
-
-
-		m_pChunkMesh->AddFaceToMesh(m_vertices, m_Indices);
-
-		return false;
 	}
 	else {
 		blockFace = &xFace2;
@@ -178,14 +168,65 @@ bool ChunkMeshComponent::AddFace(glm::vec3 BlockPos, Faces dir, uint8_t blockTyp
 			m_VertextIndexIndex + 4, m_VertextIndexIndex + 5, m_VertextIndexIndex + 6, m_VertextIndexIndex + 6, m_VertextIndexIndex + 7, m_VertextIndexIndex + 4 };
 
 		m_VertextIndexIndex += 8;
-		m_pChunkMesh->AddFaceToMesh(m_vertices, m_Indices);
-		return true;
 	}
+
+	m_ChunkMeshData.m_VertexBuffer.insert(m_ChunkMeshData.m_VertexBuffer.end(), m_vertices.begin(), m_vertices.end());
+	m_ChunkMeshData.m_IndexBuffer.insert(m_ChunkMeshData.m_IndexBuffer.end(), m_Indices.begin(), m_Indices.end());
+}
+
+void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 normal, int normalll, int width, int height)
+{
+	//TODO: scale uv coordinates with with and height
+
+	std::vector<int> indicesVec;
+	std::vector<Eu::Vertex_Input> vertices;
+
+	auto uvInformation = BlockJsonParser::GetInstance()->GetUVOfType(1, Faces::FRONT);
+
+	for (size_t i = 0; i < vertex.size(); i++)
+	{
+		glm::vec2 uvCoords = (*uvInformation)[i];
+		vertices.push_back(Eu::Vertex_Input{ vertex[i],
+			glm::vec3{ 1,1,1 }, { uvCoords.x * width, uvCoords.y * height}, glm::vec3{0.6f,0.6f,0.6f} });
+	}
+
+	indicesVec = { m_VertextIndexIndex, m_VertextIndexIndex + 2 + normalll, m_VertextIndexIndex + 2 - normalll, m_VertextIndexIndex + 3, m_VertextIndexIndex + 1 - normalll, m_VertextIndexIndex + 1 + normalll };
+	m_VertextIndexIndex += 4;
+
+
+	m_ChunkMeshData.m_IndexBuffer.insert(m_ChunkMeshData.m_IndexBuffer.end(), indicesVec.begin(), indicesVec.end());
+	m_ChunkMeshData.m_VertexBuffer.insert(m_ChunkMeshData.m_VertexBuffer.end(), vertices.begin(), vertices.end());
+
+
 }
 
 void ChunkMeshComponent::BufferMesh()
 {
-	m_pChunkMesh->BufferMesh();
+	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
+
+	auto Vertices = m_ChunkMeshData.m_VertexBuffer;
+	auto Indices = m_ChunkMeshData.m_IndexBuffer;
+
+	Eu::BufferLayout layout = {
+		{Eu::ShaderDataType::Float3, "a_Position"},
+		{Eu::ShaderDataType::Float3, "a_Color"},
+		{Eu::ShaderDataType::Float2, "a_Uv"},
+		{Eu::ShaderDataType::Float3, "a_Normal"},
+	};
+
+	std::shared_ptr<Eu::VertexBuffer> pVertexBuffer;
+	pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), static_cast<uint32_t>(Vertices.size())));
+	pVertexBuffer->SetLayout(layout);
+	m_ChunkVertexArray->AddVertexBuffer(pVertexBuffer);
+
+	//indexbuffer
+	std::shared_ptr<Eu::IndexBuffer> pIndexBuffer;
+	pIndexBuffer.reset(Eu::IndexBuffer::Create(Indices.data(), static_cast<uint32_t>(Indices.size())));
+	m_ChunkVertexArray->AddIndexBuffer(pIndexBuffer);
+	m_IsBuffered = true;
+	//m_OBJ.m_IndexBuffer.clear();
+	//m_OBJ.m_VertexBuffer.clear();
+	//EU_CORE_INFO("BUFFF");
 
 }
 

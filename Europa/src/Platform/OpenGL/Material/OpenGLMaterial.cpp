@@ -64,6 +64,14 @@ void Eu::OpenGLMaterial::SetUniformVec4(const glm::vec4& vec4Uniform, const char
 	glUniform4f(loc, vec4Uniform.x, vec4Uniform.y, vec4Uniform.z, vec4Uniform.w);
 }
 
+void OpenGLMaterial::SetUniform(const char* name) const
+{
+	GLuint sampler_loc = glGetUniformLocation(m_RenderID, name);
+	if (sampler_loc == -1) {
+		EU_CORE_ASSERT(false, "vec4 uniform not found at loc: ", sampler_loc);
+	}
+}
+
 void OpenGLMaterial::LinkProgram()
 {
 	// Attach our shaders to our program

@@ -14,6 +14,8 @@ namespace Eu {
 	public:
 		//funtions
 		std::shared_ptr<BaseTexture> GetTexture(const std::string texturePath, const TextureTypes type);
+		std::shared_ptr<BaseTexture> GetTexture(const std::vector<std::string> texturePath, const TextureTypes type);
+
 	
 	private:
 		//Variables

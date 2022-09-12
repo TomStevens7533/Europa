@@ -141,8 +141,6 @@
     <ClInclude Include="src\EditorLayer.h" />
     <ClInclude Include="src\Minecraft\BlockStruct.h" />
     <ClInclude Include="src\Minecraft\Chunk.h" />
-    <ClInclude Include="src\Minecraft\Chunkmanager.h" />
-    <ClInclude Include="src\Minecraft\WorldGeneration.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BlockJsonParser.cpp" />
@@ -152,8 +150,6 @@
     <ClCompile Include="src\EditorApp.cpp" />
     <ClCompile Include="src\EditorLayer.cpp" />
     <ClCompile Include="src\Minecraft\Chunk.cpp" />
-    <ClCompile Include="src\Minecraft\Chunkmanager.cpp" />
-    <ClCompile Include="src\Minecraft\WorldGeneration.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Europa\Europa.vcxproj">

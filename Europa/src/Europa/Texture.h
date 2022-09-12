@@ -7,7 +7,8 @@ namespace Eu {
 	enum class TextureTypes
 	{
 		TEXTURE2D,
-		CUBETEXTURE
+		CUBETEXTURE,
+		TEXTUREARRAY
 	};
 
 	class BaseTexture {
@@ -47,6 +48,18 @@ namespace Eu {
 
 		virtual uint32_t GetWidth() const = 0;
 		virtual uint32_t GetHeigh() const = 0;
+
+		virtual void Bind(uint32_t unitIndex = 0) const = 0;
+		virtual void SetData(void* data, uint32_t size) = 0; //upload given pointer to gpu
+
+	};
+	class TextureArray : public BaseTexture {
+	public:
+		static std::shared_ptr<TextureArray> Create(const std::vector<std::string>& pathVec);
+
+		virtual uint32_t GetWidth() const = 0;
+		virtual uint32_t GetHeigh() const = 0;
+
 
 		virtual void Bind(uint32_t unitIndex = 0) const = 0;
 		virtual void SetData(void* data, uint32_t size) = 0; //upload given pointer to gpu
