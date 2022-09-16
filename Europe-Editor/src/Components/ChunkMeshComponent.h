@@ -24,7 +24,7 @@ public:
 	void Render() const override;
 	void AddFace(glm::vec3 BlockPos, Faces dir, uint8_t blockType);
 
-	void AddVertices(std::vector<glm::vec3> vertex, glm::vec3 normal, int normalll, int width, int height);
+	void AddVertices(std::vector<glm::vec3> vertex, glm::vec3 normal, int normalll, int width, int height, uint8_t texturedID);
 
 	void BufferMesh();
 	void ResetMesh() { m_IsBuffered = false; }

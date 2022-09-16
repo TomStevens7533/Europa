@@ -2,6 +2,7 @@
 #include "OpenGLMaterial.h"
 #include <glad/glad.h>
 #include "glm/gtc/type_ptr.inl"
+#include "Europa/Texture.h"
 
 using namespace Eu;
 
@@ -62,6 +63,13 @@ void Eu::OpenGLMaterial::SetUniformVec4(const glm::vec4& vec4Uniform, const char
 		EU_CORE_ASSERT(false, "vec4 uniform not found at loc: ", loc);
 	}
 	glUniform4f(loc, vec4Uniform.x, vec4Uniform.y, vec4Uniform.z, vec4Uniform.w);
+}
+
+void OpenGLMaterial::SetUniformTexture(const Eu::BaseTexture* tex, const char* name, uint32_t unitIndex) const
+{
+	tex->Bind(unitIndex);
+	GLuint sampler_loc = glGetUniformLocation(m_RenderID, name);
+	glUniform1i(sampler_loc, unitIndex);
 }
 
 void OpenGLMaterial::SetUniform(const char* name) const

@@ -22,10 +22,8 @@ namespace Eu {
 
 
 		virtual void SetData(void* data, uint32_t size) = 0; //upload given pointer to gpu
-		//Elite::RGBColor Sample(const Elite::FVector2& uv, uint8_t& transparancy) const;
 
 	private:
-		//SDL_Surface* m_pSDLsurface;
 	};
 
 	class Texture2D : public BaseTexture {

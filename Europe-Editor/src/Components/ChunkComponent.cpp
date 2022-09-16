@@ -4,11 +4,16 @@
 #include "ChunkMeshComponent.h"
 #include "Europa/GameObject.h"
 #include "../BlockJsonParser.h"
+#include "Europa/ResourceManager.h"
 
 
 ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, int scale /*= 1*/) : m_Scale{scale} 
 , m_XSize{xSize}, m_YSize{ySize}, m_ZSize{zSize}, m_AxisSize{ xSize, ySize, xSize }
 {
+	
+
+
+
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{0};
 
 
@@ -19,7 +24,12 @@ ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, int scale /*= 1*
 
 				// Assign values to the
 				// memory blocks created
-				* (m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 1;
+				//* (m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = ((i % 2 == 0) ? 0 : 1);
+				if(rand() % 2 == 0)
+					*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 1;
+				else
+					*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 2;
+
 			}
 		}
 	}
@@ -98,7 +108,7 @@ void ChunkComponent::CreateMesh()
 				//Generate mesh based on mask information;
 				for (size_t j = 0; j < axis2Limit; ++j)
 				{
-					for (size_t i = 0; i < axis1Limit; ++i)
+					for (size_t i = 0; i < axis1Limit;)
 					{
 						if (maskVector[n].normal != 0) //If not transparant
 						{
@@ -107,7 +117,7 @@ void ChunkComponent::CreateMesh()
 							chunkIterator[Axis2] = j;
 
 							int width;
-							for (width = 1; (i + width) < axis1Limit && (CompareMask(maskVector[n + width], currentMask)); ++width)
+							for (width = 1; (((i + width) < axis1Limit) && (CompareMask(maskVector[n + width], currentMask))); ++width)
 							{
 								//Merge mask together
 							}
@@ -166,38 +176,41 @@ void ChunkComponent::CreateMesh()
 		}
 
 
-
-		//for (int i = 0; i < m_AxisSize.x; i++) {
-		//	for (int j = 0; j < m_AxisSize.y; j++) {
-		//		for (int k = 0; k < m_AxisSize.z; k++) {
-
-		//			// Assign values to the
-		//			// memory blocks created
-		//			m_pChunkMesh->AddFace(glm::vec3(i, j, k), Faces::TOP, 1);
-		//			m_pChunkMesh->AddFace(glm::vec3(i, j, k), Faces::BACK, 1);
-		//			m_pChunkMesh->AddFace(glm::vec3(i, j, k), Faces::FRONT, 1);
-		//			m_pChunkMesh->AddFace(glm::vec3(i, j, k), Faces::LEFT, 1);
-		//			m_pChunkMesh->AddFace(glm::vec3(i, j, k), Faces::RIGHT, 1);
-		//			m_pChunkMesh->AddFace(glm::vec3(i, j, k), Faces::BOT, 1);
-
-		//		}
-		//	}
-		//}
-
 		m_pChunkMesh->BufferMesh();
 	}
 }
 void ChunkComponent::CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 v1, glm::ivec3 v2, glm::ivec3 v3, glm::ivec3 v4, int widht, int height)
 {
-	const auto normal = glm::ivec3(axisMask * mask.normal);
+	const auto normal = glm::vec3(axisMask * mask.normal);
 	std::vector<glm::vec3> maskVertices;
 	maskVertices.push_back(v1);
 	maskVertices.push_back(v2);
 	maskVertices.push_back(v3);
 	maskVertices.push_back(v4);
-	m_pChunkMesh->AddVertices(maskVertices, normal, mask.normal, widht, height);
+	m_pChunkMesh->AddVertices(maskVertices, normal, mask.normal, widht, height, GetTextureIndex(mask.id, normal));
 	EU_CORE_INFO("CREATE QUAD");
 
+}
+
+int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
+{
+	switch (block)
+	{
+	case 1: //grass
+		if (normal == glm::vec3{ 0,1,0 })
+			return 2;
+		if (normal == glm::vec3{ 0,-1,0 })
+			return 0;
+		else
+			return 1;
+
+		break;
+	case 2:
+		return 3;
+		break;
+	default:
+		break;
+	}
 }
 
 void ChunkComponent::Start()

@@ -188,29 +188,70 @@ namespace Eu {
 		glBindTexture(GL_TEXTURE_2D_ARRAY, m_RenderID);
 		// Allocate the storage.
 		int width, height, nrChannels;
+#ifdef DEBUG
+		int previousWidth{}, previousHeight{};
+
+#endif // DEBUG
+
+
+		std::vector<stbi_uc> pixelData{};
+		EU_CORE_ASSERT(pathVec.size() > 0, "NO PATHS ADDED");
 		for (size_t i = 0; i < pathVec.size(); i++)
 		{
 			stbi_uc* data; //Pixel data
 			data = stbi_load(pathVec[i].c_str(), &width, &height, &nrChannels, 0);
-			glTexImage3D(GL_TEXTURE_2D_ARRAY,
-				0,                 // mipmap level
-				GL_RGBA8,          // gpu texel format
-				width,             // width
-				height,            // height
-				i,				   // depth
-				0,                 // border
-				GL_RGBA,		   // cpu pixel format
-				GL_UNSIGNED_BYTE,  // cpu pixel coord type
-				data);             // pixel data
+			for (int channel = 0; channel < nrChannels; ++channel) {
+				for (int y = 0; y < height; ++y) {
+					for (int x = 0; x < width; ++x) {
 
+						pixelData.push_back(data[x + (y * width) + (channel * width * height)]);
+
+
+						//free
+
+
+					}
+				}
+			}
+
+
+#ifdef DEBUG
+			if (previousWidth != 0) {
+				EU_CORE_ASSERT(width != previousWidth, "TEXTURE ARRAY WIDTH NOT EQUAL");
+				}
+			if (previousHeight != 0) {
+				EU_CORE_ASSERT(width != previousWidth, "TEXTURE ARRAY HEIGHT NOT EQUAL");
+			}
+			previousWidth = width;
+			previousHeight = height;
+
+#endif // DEBUG
 			stbi_image_free(data);
+
 		}
-		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+		glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, width, height, pathVec.size());
+
+
+		glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, 0, 0, 0, width, height, pathVec.size(), GL_RGBA, GL_UNSIGNED_BYTE, pixelData.data());
+
+		//glTexImage3D(GL_TEXTURE_2D_ARRAY,
+		//	0,                 // mipmap level
+		//	GL_RGBA8,          // gpu texel format
+		//	width,             // width
+		//	height,            // height
+		//	1,					// depth
+		//	0,                 // border
+		//	GL_RGBA,		   // cpu pixel format
+		//	GL_UNSIGNED_BYTE,  // cpu pixel coord type
+		//	pixelData.data());             // pixel data
+
 		// Set the preferences:
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameterf(GL_TEXTURE_2D_ARRAY, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glGenerateMipmap(GL_TEXTURE_2D_ARRAY);
+
 	}
 
 	OpenGLTextureArray::~OpenGLTextureArray()
@@ -220,6 +261,7 @@ namespace Eu {
 
 	void OpenGLTextureArray::Bind(uint32_t unitIndex) const
 	{
+		glActiveTexture(GL_TEXTURE0 + unitIndex);
 		glBindTexture(GL_TEXTURE_2D_ARRAY, m_RenderID);
 
 	}

@@ -10,6 +10,7 @@ protected:
 private:
 	void UpdateMaterialVariables() override;
 private:
-	std::shared_ptr<Eu::BaseTexture> m_Texture;
+	std::shared_ptr<Eu::BaseTexture> m_TextureArray;
+
 
 };

@@ -37,6 +37,7 @@ private:
 	uint8_t GetBlock(int x, int y, int z);
 	bool CompareMask(BlockMask mask1, BlockMask mask2);
 	void CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 v1, glm::ivec3 v2, glm::ivec3 v3, glm::ivec3 v4, int widht, int height);
+	int GetTextureIndex(uint8_t block, glm::vec3 normal);
 private:
 	std::shared_ptr<ChunkMeshComponent> m_pChunkMesh;
 	std::atomic<bool> m_NeedUpdate{ false };
@@ -50,4 +51,3 @@ private:
 	uint8_t* m_ChunkArray{nullptr};
 };
 
-#pragma once

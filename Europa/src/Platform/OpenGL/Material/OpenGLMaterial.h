@@ -7,6 +7,7 @@
 #include "Europa/Material/InternalMaterial.h"
 
 namespace Eu {
+	class BaseTexture;
 	class OpenGLMaterial final : public InternalMaterial
 	{
 	public:
@@ -20,11 +21,13 @@ namespace Eu {
 		void Bind()  override;
 		void UnBind()  override;
 
-		void SetUniformMatrix4(const glm::mat4& mat4, const char* name) ;
-		void SetUniformInt(const int index, const char* name) const ;
+		void SetUniformMatrix4(const glm::mat4& mat4, const char* name) override;
+		void SetUniformInt(const int index, const char* name) const override;
 		void SetUniformVec2(const glm::vec2 index, const char* name) const ;
-		void SetUniformVec4(const glm::vec4& vec4Uniform, const char* name) const;
-		void SetUniform(const char* name) const;
+		void SetUniformVec4(const glm::vec4& vec4Uniform, const char* name) const override;
+		void SetUniform(const char* name) const override;
+		void SetUniformTexture(const Eu::BaseTexture* tex, const char* name, uint32_t unitIndex = 0) const override;
+
 
 
 

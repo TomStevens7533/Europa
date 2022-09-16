@@ -174,20 +174,26 @@ void ChunkMeshComponent::AddFace(glm::vec3 BlockPos, Faces dir, uint8_t blockTyp
 	m_ChunkMeshData.m_IndexBuffer.insert(m_ChunkMeshData.m_IndexBuffer.end(), m_Indices.begin(), m_Indices.end());
 }
 
-void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 normal, int normalll, int width, int height)
+void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 normal, int normalll, int width, int height, uint8_t texturedID)
 {
 	//TODO: scale uv coordinates with with and height
 
 	std::vector<int> indicesVec;
 	std::vector<Eu::Vertex_Input> vertices;
+	std::vector<glm::vec2> uvCoords;
+
+	if (normal.x == 1 || normal.x == -1)
+		uvCoords = std::vector<glm::vec2>{ glm::vec2{height,width},  glm::vec2{height,0},  glm::vec2{0,width},  glm::vec2{0,0} };
+	else
+		uvCoords = std::vector<glm::vec2>{ glm::vec2{width,height}, glm::vec2{0,height},  glm::vec2{width,0},  glm::vec2{0,0} };
+
 
 	auto uvInformation = BlockJsonParser::GetInstance()->GetUVOfType(1, Faces::FRONT);
 
 	for (size_t i = 0; i < vertex.size(); i++)
 	{
-		glm::vec2 uvCoords = (*uvInformation)[i];
 		vertices.push_back(Eu::Vertex_Input{ vertex[i],
-			glm::vec3{ 1,1,1 }, { uvCoords.x * width, uvCoords.y * height}, glm::vec3{0.6f,0.6f,0.6f} });
+			glm::vec3{ 1,1,texturedID }, uvCoords[i], glm::vec3{0.6f,0.6f,0.6f}});
 	}
 
 	indicesVec = { m_VertextIndexIndex, m_VertextIndexIndex + 2 + normalll, m_VertextIndexIndex + 2 - normalll, m_VertextIndexIndex + 3, m_VertextIndexIndex + 1 - normalll, m_VertextIndexIndex + 1 + normalll };
