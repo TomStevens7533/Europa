@@ -136,6 +136,7 @@
   <ItemGroup>
     <ClInclude Include="src\BlockJsonParser.h" />
     <ClInclude Include="src\Components\ChunkComponent.h" />
+    <ClInclude Include="src\Components\ChunkManager.h" />
     <ClInclude Include="src\Components\ChunkMaterial.h" />
     <ClInclude Include="src\Components\ChunkMeshComponent.h" />
     <ClInclude Include="src\EditorLayer.h" />
@@ -145,6 +146,7 @@
   <ItemGroup>
     <ClCompile Include="src\BlockJsonParser.cpp" />
     <ClCompile Include="src\Components\ChunkComponent.cpp" />
+    <ClCompile Include="src\Components\ChunkManager.cpp" />
     <ClCompile Include="src\Components\ChunkMaterial.cpp" />
     <ClCompile Include="src\Components\ChunkMeshComponent.cpp" />
     <ClCompile Include="src\EditorApp.cpp" />

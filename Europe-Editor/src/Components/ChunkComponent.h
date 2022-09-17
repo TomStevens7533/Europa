@@ -9,11 +9,12 @@
 
 class ChunkMeshComponent;
 class BlockInfromation;
+class ChunkManager;
 class ChunkComponent final : public Eu::BaseComponent
 {
 public:
 
-	ChunkComponent(int xSize, int ySize, int zSize, int scale = 1);
+	ChunkComponent(int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr, int scale = 1);
 	~ChunkComponent();
 
 	void Start() override;
@@ -24,6 +25,9 @@ public:
 	void SetDirty() { m_NeedUpdate = true; };
 	bool GetDirtyFlag() { return m_NeedUpdate; }
 	void CreateMesh();
+	uint8_t GetBlock(int x, int y, int z);
+	bool IsBlockSolid(int x, int y, int z) const;
+
 private:
 	struct BlockMask
 	{
@@ -34,13 +38,13 @@ private:
 private:
 	bool IsBlockSolid(uint8_t blockType) const;
 	void ReplaceBlock(int x, int y, int z, uint8_t id);
-	uint8_t GetBlock(int x, int y, int z);
 	bool CompareMask(BlockMask mask1, BlockMask mask2);
 	void CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 v1, glm::ivec3 v2, glm::ivec3 v3, glm::ivec3 v4, int widht, int height);
 	int GetTextureIndex(uint8_t block, glm::vec3 normal);
 private:
 	std::shared_ptr<ChunkMeshComponent> m_pChunkMesh;
 	std::atomic<bool> m_NeedUpdate{ false };
+	const std::shared_ptr<ChunkManager> m_pManager;
 private:
 	const int m_Scale{};
 	const int m_XSize{};

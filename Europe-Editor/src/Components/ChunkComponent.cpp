@@ -5,10 +5,11 @@
 #include "Europa/GameObject.h"
 #include "../BlockJsonParser.h"
 #include "Europa/ResourceManager.h"
+#include "ChunkManager.h"
 
 
-ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, int scale /*= 1*/) : m_Scale{scale} 
-, m_XSize{xSize}, m_YSize{ySize}, m_ZSize{zSize}, m_AxisSize{ xSize, ySize, xSize }
+ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr, int scale /*= 1*/) : m_Scale{scale}
+, m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, xSize }, m_pManager{ ptr }
 {
 	
 
@@ -17,7 +18,7 @@ ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, int scale /*= 1*
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{0};
 
 
-	//Generate Mesh
+	//Generate block types
 	for (int i = 0; i < m_AxisSize.x; i++) {
 		for (int j = 0; j < m_AxisSize.y; j++) {
 			for (int k = 0; k < m_AxisSize.z; k++) {
@@ -28,7 +29,7 @@ ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, int scale /*= 1*
 				if(rand() % 2 == 0)
 					*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 1;
 				else
-					*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 2;
+					*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 0;
 
 			}
 		}
@@ -39,6 +40,19 @@ ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, int scale /*= 1*
 ChunkComponent::~ChunkComponent()
 {
 	delete[] m_ChunkArray;
+}
+
+void ChunkComponent::Start()
+{
+	//Allocate();
+	auto comp = GetAttachedGameObject()->GetComponent<ChunkMeshComponent>();
+	if (comp == nullptr) {
+		m_pChunkMesh = std::make_shared<ChunkMeshComponent>();
+		GetAttachedGameObject()->AddComponent<ChunkMeshComponent>(m_pChunkMesh);
+	}
+	m_NeedUpdate = true;
+	CreateMesh();
+
 }
 
 void ChunkComponent::Render() const
@@ -175,7 +189,7 @@ void ChunkComponent::CreateMesh()
 
 		}
 
-
+		m_NeedUpdate = false;
 		m_pChunkMesh->BufferMesh();
 	}
 }
@@ -188,7 +202,6 @@ void ChunkComponent::CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 
 	maskVertices.push_back(v3);
 	maskVertices.push_back(v4);
 	m_pChunkMesh->AddVertices(maskVertices, normal, mask.normal, widht, height, GetTextureIndex(mask.id, normal));
-	EU_CORE_INFO("CREATE QUAD");
 
 }
 
@@ -213,21 +226,11 @@ int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
 	}
 }
 
-void ChunkComponent::Start()
-{
-	//Allocate();
-	auto comp = GetAttachedGameObject()->GetComponent<ChunkMeshComponent>();
-	if (comp == nullptr) {
-		m_pChunkMesh = std::make_shared<ChunkMeshComponent>();
-		GetAttachedGameObject()->AddComponent<ChunkMeshComponent>(m_pChunkMesh);
-	}
-	m_NeedUpdate = true;
-	CreateMesh();
-
-}
 
 void ChunkComponent::Update()
 {
+	if(m_NeedUpdate)
+		CreateMesh();
 }
 
 void ChunkComponent::FixedUpdate()
@@ -238,6 +241,15 @@ bool ChunkComponent::IsBlockSolid(uint8_t blockType) const
 	return BlockJsonParser::GetInstance()->IsSolid(blockType);
 }
 
+bool ChunkComponent::IsBlockSolid(int x, int y, int z) const
+{
+	if (x >= m_AxisSize.x || y >= m_AxisSize.y || z >= m_AxisSize.z || x < 0 || y < 0 || z < 0)
+		return true;
+
+	uint8_t resultBlock = *(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z);
+	return resultBlock != 0 ? true : false;
+}
+
 void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 {
 	*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z) = id;
@@ -245,8 +257,19 @@ void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 
 uint8_t ChunkComponent::GetBlock(int x, int y, int z)
 {
-	if (x >= m_AxisSize.x || y >= m_AxisSize.y || z >= m_AxisSize.z || x < 0 || y < 0 || z < 0)
+	//TODO CHECK OTHER CHUNKS
+	//if (x >= m_AxisSize.x || y >= m_AxisSize.y || z >= m_AxisSize.z || x < 0 || y < 0 || z < 0)
+	//	return 0;
+	if (y >= m_AxisSize.y || y < 0)
 		return 0;
+
+	if (x >= m_AxisSize.x || z >= m_AxisSize.z || x < 0 || z < 0) {
+		glm::ivec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
+			GetAttachedGameObject()->GetTransform().GetPosition().z };
+		return m_pManager->GetBlockIDNeighbour(pos, x, y, z);
+
+	}
+
 
 	uint8_t resultBlock = *(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z);
 	return resultBlock;

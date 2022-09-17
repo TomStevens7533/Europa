@@ -3,7 +3,7 @@
 #include "Europa/ResourceManager.h"
 #include "Europa/Utils.h"
 #include "EditorLayer.h"
-#include "Components/ChunkComponent.h"
+#include "Components/ChunkManager.h"
 
 
 
@@ -13,7 +13,7 @@ namespace Eu {
 		//player GO
 		m_pPlayer = std::make_shared<Eu::GameObject>();
 
-		m_pPlayer->SetPosition(glm::vec3{ 0,0,0 });
+		m_pPlayer->SetPosition(glm::vec3{ 0,-70,0 });
 		m_pCamera = std::make_shared<Eu::PerspectiveCameraControllerComponent>();
 		m_pPlayer->AddComponent<PerspectiveCameraControllerComponent>(m_pCamera);
 		m_LayerSceneGraph.AddItemToSceneGraph(m_pPlayer);
@@ -21,10 +21,11 @@ namespace Eu {
 		//m_ChunkManager = std::make_shared<ChunkManager>(*(m_pCamera.get()));
 		//m_ptexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/TextureAtlas.png", Eu::TextureTypes::TEXTURE2D);
 		//m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
-		m_ChunkComp = std::make_shared<ChunkComponent>(4,16,4);
+		//const int xSize, int ySize, int zSize, const int chunkWidthAmount, const int chunkDepthAmount, int scale = 1
+		m_ChunkComp = std::make_shared<ChunkManager>(16,64,16,6,6,1);
 		auto go = std::make_shared<Eu::GameObject>();
 		go->SetPosition(glm::vec3{ 0,0,0 });
-		go->AddComponent<ChunkComponent>(m_ChunkComp);
+		go->AddComponent<ChunkManager>(m_ChunkComp);
 		m_pChunk = go;
 		m_LayerSceneGraph.AddItemToSceneGraph(go);
 	}

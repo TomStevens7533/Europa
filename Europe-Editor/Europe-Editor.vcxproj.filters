@@ -26,6 +26,7 @@
     <ClInclude Include="src\Minecraft\Chunk.h">
       <Filter>Minecraft</Filter>
     </ClInclude>
+    <ClInclude Include="src\Components\ChunkManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BlockJsonParser.cpp" />
@@ -43,5 +44,6 @@
     <ClCompile Include="src\Minecraft\Chunk.cpp">
       <Filter>Minecraft</Filter>
     </ClCompile>
+    <ClCompile Include="src\Components\ChunkManager.cpp" />
   </ItemGroup>
 </Project>

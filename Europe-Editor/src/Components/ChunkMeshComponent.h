@@ -27,8 +27,7 @@ public:
 	void AddVertices(std::vector<glm::vec3> vertex, glm::vec3 normal, int normalll, int width, int height, uint8_t texturedID);
 
 	void BufferMesh();
-	void ResetMesh() { m_IsBuffered = false; }
-
+	void ResetMesh() { m_IsBuffered = false; };
 private:
 	std::atomic<bool> m_IsBuffered{ false };
 	int m_VertextIndexIndex = 0;

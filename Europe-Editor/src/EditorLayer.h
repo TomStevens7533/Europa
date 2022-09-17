@@ -2,7 +2,7 @@
 #include "Europa/Profiling/TimerManager.h"
 #include "Europa/Scenegraph.h"
 
-class ChunkComponent;
+class ChunkManager;
 
 
 namespace Eu {
@@ -31,7 +31,7 @@ namespace Eu {
 		std::shared_ptr<Eu::FrameBuffer> m_pFramebuffer;
 		Eu::ScenGraph m_LayerSceneGraph;
 		std::shared_ptr<Eu::PerspectiveCameraControllerComponent> m_pCamera;
-		std::shared_ptr<ChunkComponent> m_ChunkComp;
+		std::shared_ptr<ChunkManager> m_ChunkComp;
 		Eu::TimerManager m_TimerManager;
 
 
