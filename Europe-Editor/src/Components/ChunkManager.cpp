@@ -31,11 +31,6 @@ void ChunkManager::Start()
 		double chunkSizeY = (m_ChunkySize * m_Scale);
 		double chunkSizex = (m_ChunkxSize * m_Scale);
 
-		m_ChunkxSize = chunkSizex;
-		m_ChunkySize = chunkSizeY;
-		m_ChunkzSize = chunkSizeZ;
-	
-
 
 		for (double x = (originPos.x - ChunkTotalWidth); x < (originPos.x + ChunkTotalWidth); x += chunkSizex)
 		{
