@@ -69,32 +69,53 @@ void ChunkManager::Render() const
 
 uint8_t ChunkManager::GetBlockIDNeighbour(glm::ivec2 position, int x, int y, int z)
 {
+	return 1;
 	std::pair<int, int> id = GetChunkID(position);
 	if (x < 0) {
-		id.first += 1;
-		if (m_ChunkIDMap.count(id) > 0) {
-			return  m_ChunkIDMap[id]->GetBlock(m_ChunkxSize, y, z);
-		}
+		id.first -= 1;
+		return 1;
+
+		//if (m_ChunkIDMap.count(id) > 0) {
+		//	return  m_ChunkIDMap[id]->GetBlock(m_ChunkxSize -1, y, z);
+		//}
 	}
 	if (x >= (m_ChunkxSize)) {
-		id.first -= 1;
-		if (m_ChunkIDMap.count(id) > 0) {
-			return  m_ChunkIDMap[id]->GetBlock(0, y, z);
-		}
-	}
-	if (z >= m_ChunkzSize) {
-		id.second += 1;
-		if (m_ChunkIDMap.count(id) > 0) {
-			return  m_ChunkIDMap[id]->GetBlock(x, y, m_ChunkzSize);
-		}
-	}
-	if (z < 0) {
-		id.second -= 1;
-		if (m_ChunkIDMap.count(id) > 0) {
-			return  m_ChunkIDMap[id]->GetBlock(x, y, 0);
-		}
+		id.first += 1;
+		return 1;
+
+		//if (m_ChunkIDMap.count(id) > 0) {
+		//	return  m_ChunkIDMap[id]->GetBlock(0, y, z);
+		//}
 	}
 	return 0;
+	//
+	//
+	//
+	//
+	//
+	//
+	//return 0;
+	//if (z < 0) {
+	//	id.second -= 1;
+	//	if (m_ChunkIDMap.count(id) > 0) {
+	//		return  m_ChunkIDMap[id]->GetBlock(x, y, 0);
+	//		//return  1;
+	//
+	//	}
+	//}
+	//if (z >= m_ChunkzSize) {
+	//	id.second += 1;
+	//	if (m_ChunkIDMap.count(id) > 0) {
+	//		return  m_ChunkIDMap[id]->GetBlock(x, y, m_ChunkzSize - 1);
+	//		//return  1;
+	//
+	//	}
+	//}
+
+	
+	
+	
+	
 
 }
 

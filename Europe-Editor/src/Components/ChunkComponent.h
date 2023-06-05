@@ -26,6 +26,7 @@ public:
 	bool GetDirtyFlag() { return m_NeedUpdate; }
 	void CreateMesh();
 	uint8_t GetBlock(int x, int y, int z);
+	uint8_t GetBlockType(int x, int y, int z, std::array<int, 16 * 16 >* heightmap);
 	bool IsBlockSolid(int x, int y, int z) const;
 
 private:

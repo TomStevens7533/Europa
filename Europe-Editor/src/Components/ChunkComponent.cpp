@@ -12,28 +12,10 @@ ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, const std::share
 , m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, xSize }, m_pManager{ ptr }
 {
 	
-
-
+	
 
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{0};
 
-
-	//Generate block types
-	for (int i = 0; i < m_AxisSize.x; i++) {
-		for (int j = 0; j < m_AxisSize.y; j++) {
-			for (int k = 0; k < m_AxisSize.z; k++) {
-
-				// Assign values to the
-				// memory blocks created
-				//* (m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = ((i % 2 == 0) ? 0 : 1);
-				if(rand() % 2 == 0)
-					*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 1;
-				else
-					*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = 0;
-
-			}
-		}
-	}
 
 }
 
@@ -51,9 +33,59 @@ void ChunkComponent::Start()
 		GetAttachedGameObject()->AddComponent<ChunkMeshComponent>(m_pChunkMesh);
 	}
 	m_NeedUpdate = true;
-	CreateMesh();
+
+	//Create noise map
+	glm::ivec2 chunkPos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
+			GetAttachedGameObject()->GetTransform().GetPosition().z };
+	std::array<int, 16 * 16 > heightMap;
+
+	for (int z = 0; z < m_ZSize; z++)
+	{
+		for (int x = 0; x < m_XSize; x++) {
+			int voxelxPos = x + chunkPos.x;
+			int voxedzPos = z + chunkPos.y;
+
+			float value = glm::simplex(glm::vec2{ voxelxPos / 64.f, voxedzPos / 64.f });
+			float value2 = glm::simplex(glm::vec2{ voxelxPos / 128.f, voxedzPos / 128.f });
+			float value3 = glm::simplex(glm::vec2{ voxelxPos / 250.f, voxedzPos / 400.f });
+
+
+			//make between 0 and 1.0
+			float totalValue = (value * value2 * value3) / (1.f - 0.f);
+			totalValue = (totalValue + 1) / 2;
+
+			float mappedValue = glm::mix(0, m_YSize, totalValue);
+
+			heightMap[z * 16 + x] = static_cast<int>(mappedValue);
+		}
+
+	}
+
+	//Generate block types
+	for (int i = 0; i < m_AxisSize.x; i++) {
+		for (int j = 0; j < m_AxisSize.y; j++) {
+
+			for (int k = 0; k < m_AxisSize.z; k++) {
+
+				// Assign values to the
+				// memory blocks created
+				//* (m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = ((i % 2 == 0) ? 0 : 1);
+
+				*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = GetBlockType(i, j, k, &heightMap);
+			}
+		}
+	}
 
 }
+uint8_t ChunkComponent::GetBlockType(int x, int y, int z, std::array<int, 16 * 16 >* heightmap)
+{
+	int maxHeight = (*heightmap)[z * 16 + x];
+	if (y < maxHeight)
+		return 1;
+	else
+		return 0;
+}
+
 
 void ChunkComponent::Render() const
 {
@@ -229,12 +261,13 @@ int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
 
 void ChunkComponent::Update()
 {
-	if(m_NeedUpdate)
+	if (m_NeedUpdate)
 		CreateMesh();
 }
 
 void ChunkComponent::FixedUpdate()
 {
+
 }
 bool ChunkComponent::IsBlockSolid(uint8_t blockType) const
 {
@@ -258,18 +291,23 @@ void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 uint8_t ChunkComponent::GetBlock(int x, int y, int z)
 {
 	//TODO CHECK OTHER CHUNKS
-	//if (x >= m_AxisSize.x || y >= m_AxisSize.y || z >= m_AxisSize.z || x < 0 || y < 0 || z < 0)
-	//	return 0;
-	if (y >= m_AxisSize.y || y < 0)
+	if (x >= m_AxisSize.x || y >= m_AxisSize.y || z >= m_AxisSize.z || x < 0 || y < 0 || z < 0)
 		return 0;
 
-	if (x >= m_AxisSize.x || z >= m_AxisSize.z || x < 0 || z < 0) {
-		glm::ivec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
-			GetAttachedGameObject()->GetTransform().GetPosition().z };
-		return m_pManager->GetBlockIDNeighbour(pos, x, y, z);
-
-	}
-
+	//return 0;
+	//if (y >= m_AxisSize.y || y < 0)
+	//	return 0;
+	//
+	//if (x < 0 || x >= (m_XSize))
+	//{
+	//	return 0;
+	//	glm::ivec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
+	//		GetAttachedGameObject()->GetTransform().GetPosition().z };
+	//
+	//	return m_pManager->GetBlockIDNeighbour(pos, x, y, z);
+	//
+	//}
+	//return 1;
 
 	uint8_t resultBlock = *(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z);
 	return resultBlock;
