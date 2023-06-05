@@ -6,7 +6,7 @@
 #include "../BlockJsonParser.h"
 #include "Europa/ResourceManager.h"
 #include "ChunkManager.h"
-#include <glm/gtc/noise.hpp>
+#include "PerlinNoise.hpp"
 
 
 ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr, int scale /*= 1*/) : m_Scale{scale}
@@ -41,16 +41,28 @@ void ChunkComponent::Start()
 			GetAttachedGameObject()->GetTransform().GetPosition().z };
 	glm::vec3 chunkScaling = GetAttachedGameObject()->GetTransform().GetScale();
 
+	const siv::PerlinNoise perlin{ 1 };
+
 	for (int z = 0; z < m_AxisSize.z; z++)
 	{
 		for (int x = 0;x < m_AxisSize.x; x++) {
 
+
+
 			float worldxpos = (chunkPos.x) + (x * chunkScaling.x);
 			float worldzpos = (chunkPos.y) + (z * chunkScaling.y);
 		
-			float value = glm::perlin(glm::vec2((float)worldxpos / 500.f, (float)worldzpos / 300.f));
-			float mappedValue = glm::mix(0, m_YSize, value);
-			heightMap[z * 16 + x] = static_cast<int>(mappedValue);
+
+			float value = static_cast<float>((perlin.octave2D_01((worldxpos) / 64.f, (worldzpos) / 64.f, 8)));
+			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos) / 128.f, (worldzpos) / 128.f, 8)));
+			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos) / 512.f, (worldzpos) / 512.f, 8)));
+
+			float totalValue = static_cast<float>((value * value2 * value3 * value3 - 0) / (1 - 0));
+			totalValue = (totalValue + 1) / 2;
+
+			float mappedValue = static_cast<int>(glm::mix(0, m_YSize, value));
+
+			heightMap[z * 16 + x] = mappedValue;
 		}
 	}
 
