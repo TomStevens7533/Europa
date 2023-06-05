@@ -96,7 +96,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <PreprocessorDefinitions>EU_PLATFORM_WINDOWS;EU_RELEASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\tom\Documents\GitHub\Europa\Europe-Editor\Content;..\Europa\Europe-Editor\Content;..\Europa\vendor\spdlog\include;..\Europa\src;..\Europa\vendor\glm;..\Europa\vendor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\Europa\Europe-Editor\Content;..\Europa\vendor\spdlog\include;..\Europa\src;..\Europa\vendor\glm;..\Europa\vendor;\Content\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -139,6 +139,7 @@
     <ClInclude Include="src\Components\ChunkManager.h" />
     <ClInclude Include="src\Components\ChunkMaterial.h" />
     <ClInclude Include="src\Components\ChunkMeshComponent.h" />
+    <ClInclude Include="src\Components\PerlinNosie.h" />
     <ClInclude Include="src\EditorLayer.h" />
     <ClInclude Include="src\Minecraft\BlockStruct.h" />
     <ClInclude Include="src\Minecraft\Chunk.h" />

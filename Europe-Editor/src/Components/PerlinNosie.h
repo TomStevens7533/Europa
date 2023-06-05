@@ -1,3 +1,4 @@
+#pragma once
 //----------------------------------------------------------------------------------------
 //
 //	siv::PerlinNoise
@@ -109,14 +110,14 @@ namespace siv
 		//
 
 		SIVPERLIN_NODISCARD_CXX20
-		constexpr BasicPerlinNoise() noexcept;
+			constexpr BasicPerlinNoise() noexcept;
 
 		SIVPERLIN_NODISCARD_CXX20
-		explicit BasicPerlinNoise(seed_type seed);
+			explicit BasicPerlinNoise(seed_type seed);
 
 		SIVPERLIN_CONCEPT_URBG
-		SIVPERLIN_NODISCARD_CXX20
-		explicit BasicPerlinNoise(URBG&& urbg);
+			SIVPERLIN_NODISCARD_CXX20
+			explicit BasicPerlinNoise(URBG&& urbg);
 
 		///////////////////////////////////////
 		//
@@ -126,7 +127,7 @@ namespace siv
 		void reseed(seed_type seed);
 
 		SIVPERLIN_CONCEPT_URBG
-		void reseed(URBG&& urbg);
+			void reseed(URBG&& urbg);
 
 		///////////////////////////////////////
 		//
@@ -251,7 +252,7 @@ namespace siv
 		//	You may get different results from std::shuffle() with different standard library implementations.
 		//
 		SIVPERLIN_CONCEPT_URBG
-		[[nodiscard]]
+			[[nodiscard]]
 		inline std::uint64_t Random(const std::uint64_t max, URBG&& urbg)
 		{
 			return (urbg() % (max + 1));
@@ -431,7 +432,7 @@ namespace siv
 
 	template <class Float>
 	SIVPERLIN_CONCEPT_URBG_
-	inline BasicPerlinNoise<Float>::BasicPerlinNoise(URBG&& urbg)
+		inline BasicPerlinNoise<Float>::BasicPerlinNoise(URBG&& urbg)
 	{
 		reseed(std::forward<URBG>(urbg));
 	}
@@ -446,7 +447,7 @@ namespace siv
 
 	template <class Float>
 	SIVPERLIN_CONCEPT_URBG_
-	inline void BasicPerlinNoise<Float>::reseed(URBG&& urbg)
+		inline void BasicPerlinNoise<Float>::reseed(URBG&& urbg)
 	{
 		std::iota(m_permutation.begin(), m_permutation.end(), uint8_t{ 0 });
 

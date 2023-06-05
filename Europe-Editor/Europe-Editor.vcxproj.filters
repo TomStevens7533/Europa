@@ -27,6 +27,7 @@
       <Filter>Minecraft</Filter>
     </ClInclude>
     <ClInclude Include="src\Components\ChunkManager.h" />
+    <ClInclude Include="src\Components\PerlinNosie.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\BlockJsonParser.cpp" />

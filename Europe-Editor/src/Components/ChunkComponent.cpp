@@ -6,8 +6,7 @@
 #include "../BlockJsonParser.h"
 #include "Europa/ResourceManager.h"
 #include "ChunkManager.h"
-#include "PerlinNoise.hpp"
-
+#include "PerlinNosie.h"
 
 ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr, int scale /*= 1*/) : m_Scale{scale}
 , m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, xSize }, m_pManager{ ptr }

@@ -56,7 +56,7 @@ void ChunkManager::CreateChunk(glm::dvec2 position)
 	m_ChunkIDMap.insert(std::make_pair(id, chunkComp));
 	auto go = std::make_shared<Eu::GameObject>();
 	go->SetPosition(glm::vec3{  position.x  , 0, position.y });
-	go->GetTransform().Scale(glm::vec3{ 1, 1, 1 });
+	go->GetTransform().Scale(glm::vec3{ m_Scale, m_Scale, m_Scale });
 	go->AddComponent<ChunkComponent>(chunkComp);
 	GetAttachedGameObject()->AddChild(go);
 }
