@@ -3,14 +3,14 @@
 #include "ChunkComponent.h"
 
 ChunkManager::ChunkManager(const int xSize, int ySize, int zSize, const int chunkWidthAmount, const int chunkDepthAmount, float scale)
-	: m_ChunkxSize{ xSize }, m_ChunkySize{ ySize }, m_ChunkzSize{ zSize }, m_ChunkWidthAmount{ chunkWidthAmount }, m_ChunkDepthAmount{chunkDepthAmount}
+	: m_ChunkxSize{ static_cast<double>(xSize) }, m_ChunkySize{ static_cast<double>(ySize) }, m_ChunkzSize{ static_cast<double>(zSize) }, m_ChunkWidthAmount{ chunkWidthAmount }, m_ChunkDepthAmount{chunkDepthAmount}
 	, m_IsUpdatingAroundCamera{false}, m_Scale{ scale }
 {
 
 }
 
 ChunkManager::ChunkManager(const int xSize, int ySize, int zSize, Eu::PerspectiveCameraControllerComponent* cam, float scale /*= 1*/)
-	: m_ChunkxSize{ xSize }, m_ChunkySize{ ySize }, m_ChunkzSize{ zSize }, m_Scale{scale}, m_Camera{cam}, m_IsUpdatingAroundCamera{true}
+	: m_ChunkxSize{ static_cast<double>(xSize) }, m_ChunkySize{ static_cast<double>(ySize) }, m_ChunkzSize{ static_cast<double>(zSize) }, m_Scale{scale}, m_Camera{cam}, m_IsUpdatingAroundCamera{true}
 {
 	
 }
@@ -24,33 +24,39 @@ void ChunkManager::Start()
 {
 	if (m_IsUpdatingAroundCamera == false) {
 		//Create chunks based on width and depth around origin gameobject
-		const glm::ivec2 originPos = glm::ivec2{ glm::round(GetAttachedGameObject()->GetTransform().GetPosition().x), glm::round(GetAttachedGameObject()->GetTransform().GetPosition().z) };
-		const int ChunkTotalWidth = m_ChunkWidthAmount  * glm::floor(m_ChunkxSize * m_Scale);
-		const int ChunkTotalDepth = m_ChunkDepthAmount  * glm::floor(m_ChunkzSize * m_Scale);
+		const glm::dvec2 originPos = glm::dvec2{ (GetAttachedGameObject()->GetTransform().GetPosition().x), glm::round(GetAttachedGameObject()->GetTransform().GetPosition().z) };
+		const double ChunkTotalWidth = m_ChunkWidthAmount * (m_ChunkxSize * m_Scale);
+		const double ChunkTotalDepth = m_ChunkDepthAmount * (m_ChunkzSize * m_Scale);
+		double chunkSizeZ = (m_ChunkzSize * m_Scale);
+		double chunkSizeY = (m_ChunkySize * m_Scale);
+		double chunkSizex = (m_ChunkxSize * m_Scale);
+
+		m_ChunkxSize = chunkSizex;
+		m_ChunkySize = chunkSizeY;
+		m_ChunkzSize = chunkSizeZ;
+	
 
 
-
-		for (int x = (originPos.x - ChunkTotalWidth); x < (originPos.x + ChunkTotalWidth); x += glm::floor(m_ChunkxSize * m_Scale))
+		for (double x = (originPos.x - ChunkTotalWidth); x < (originPos.x + ChunkTotalWidth); x += chunkSizex)
 		{
-			for (int z = (originPos.y - ChunkTotalDepth); z < (originPos.y + ChunkTotalDepth); z += glm::floor(m_ChunkzSize * m_Scale))
+			for (double z = (originPos.y - ChunkTotalDepth); z < (originPos.y + ChunkTotalDepth); z += chunkSizeZ)
 			{
 				//Create chunk
-				
-				CreateChunk(glm::ivec2{ x,z });
-			}
+				EU_CORE_INFO("Creating Chunk at POS: {0},{1}", x, z);
+				CreateChunk(glm::dvec2{ x,z });
+			} 
 		}
 		
 	}
 }
-void ChunkManager::CreateChunk(glm::ivec2 position)
+void ChunkManager::CreateChunk(glm::dvec2 position)
 {
-	EU_CORE_INFO("Creating Chunk at ID: {0},{1}", position.x , position.y );
-	std::pair<int, int> id = GetChunkID(position);
+	ChunkID id = GetChunkID(position);
 	auto chunkComp = std::make_shared<ChunkComponent>(m_ChunkxSize, m_ChunkySize, m_ChunkzSize, shared_from_this(), m_Scale);
 	m_ChunkIDMap.insert(std::make_pair(id, chunkComp));
 	auto go = std::make_shared<Eu::GameObject>();
-	go->SetPosition(glm::vec3{ position.x  , 0, position.y });
-	go->GetTransform().Scale(glm::vec3{ m_Scale, m_Scale, m_Scale });
+	go->SetPosition(glm::vec3{  position.x  , 0, position.y });
+	go->GetTransform().Scale(glm::vec3{ 1, 1, 1 });
 	go->AddComponent<ChunkComponent>(chunkComp);
 	GetAttachedGameObject()->AddChild(go);
 }
@@ -69,26 +75,26 @@ void ChunkManager::Render() const
 
 uint8_t ChunkManager::GetBlockIDNeighbour(glm::ivec2 position, int x, int y, int z)
 {
+	
+	
+	
+	
 	return 1;
-	std::pair<int, int> id = GetChunkID(position);
-	if (x < 0) {
-		id.first -= 1;
-		return 1;
 
-		//if (m_ChunkIDMap.count(id) > 0) {
-		//	return  m_ChunkIDMap[id]->GetBlock(m_ChunkxSize -1, y, z);
-		//}
-	}
-	if (x >= (m_ChunkxSize)) {
-		id.first += 1;
-		return 1;
+	
 
-		//if (m_ChunkIDMap.count(id) > 0) {
-		//	return  m_ChunkIDMap[id]->GetBlock(0, y, z);
-		//}
-	}
-	return 0;
-	//
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
 	//
 	//
 	//
@@ -121,22 +127,22 @@ uint8_t ChunkManager::GetBlockIDNeighbour(glm::ivec2 position, int x, int y, int
 
 void ChunkManager::UpdateNeightbours(glm::ivec2 posiotn)
 {
-	std::pair<int, int> id = GetChunkID(posiotn);
-	if (m_ChunkIDMap.count({ id.first - 1 , id.second }) > 0)
-		m_ChunkIDMap[{id.first - 1, id.second}]->SetDirty();
-	if (m_ChunkIDMap.count({ id.first + 1 , id.second }) > 0)
-		m_ChunkIDMap[{id.first + 1, id.second }]->SetDirty();
-	if (m_ChunkIDMap.count({ id.first , id.second - 1 }) > 0)
-		m_ChunkIDMap[{id.first , id.second - 1}]->SetDirty();
-	if (m_ChunkIDMap.count({ id.first  , id.second  + 1}) > 0)
-		m_ChunkIDMap[{id.first , id.second + 1}]->SetDirty();
-}
+	//std::pair<int, int> id = GetChunkID(posiotn);
+	//if (m_ChunkIDMap.count({ id.first - 1 , id.second }) > 0)
+	//	m_ChunkIDMap[{id.first - 1, id.second}]->SetDirty();
+	//if (m_ChunkIDMap.count({ id.first + 1 , id.second }) > 0)
+	//	m_ChunkIDMap[{id.first + 1, id.second }]->SetDirty();
+	//if (m_ChunkIDMap.count({ id.first , id.second - 1 }) > 0)
+	//	m_ChunkIDMap[{id.first , id.second - 1}]->SetDirty();
+	//if (m_ChunkIDMap.count({ id.first  , id.second  + 1}) > 0)
+	//	m_ChunkIDMap[{id.first , id.second + 1}]->SetDirty();
+}  //
 
-std::pair<int,int> ChunkManager::GetChunkID(glm::ivec2 position)
+ChunkID ChunkManager::GetChunkID(glm::dvec2 position)
 {
-	std::pair<int, int> id;
-	id.first = glm::floor((position.x) / m_ChunkxSize);
-	id.second = glm::floor((position.y ) / m_ChunkzSize);
+	ChunkID id;
+	id.x = (position.x) / m_ChunkxSize;
+	id.y = (position.y) / m_ChunkzSize;
 	return id;
 
 }

@@ -6,6 +6,7 @@
 #include "../BlockJsonParser.h"
 #include "Europa/ResourceManager.h"
 #include "ChunkManager.h"
+#include <glm/gtc/noise.hpp>
 
 
 ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr, int scale /*= 1*/) : m_Scale{scale}
@@ -34,56 +35,59 @@ void ChunkComponent::Start()
 	}
 	m_NeedUpdate = true;
 
-	//Create noise map
-	glm::ivec2 chunkPos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
-			GetAttachedGameObject()->GetTransform().GetPosition().z };
 	std::array<int, 16 * 16 > heightMap;
+	//Create noise map
+	glm::vec2 chunkPos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
+			GetAttachedGameObject()->GetTransform().GetPosition().z };
+	glm::vec3 chunkScaling = GetAttachedGameObject()->GetTransform().GetScale();
 
-	for (int z = 0; z < m_ZSize; z++)
+	for (int z = 0; z < m_AxisSize.z; z++)
 	{
-		for (int x = 0; x < m_XSize; x++) {
-			int voxelxPos = x + chunkPos.x;
-			int voxedzPos = z + chunkPos.y;
+		for (int x = 0;x < m_AxisSize.x; x++) {
 
-			float value = glm::simplex(glm::vec2{ voxelxPos / 64.f, voxedzPos / 64.f });
-			float value2 = glm::simplex(glm::vec2{ voxelxPos / 128.f, voxedzPos / 128.f });
-			float value3 = glm::simplex(glm::vec2{ voxelxPos / 250.f, voxedzPos / 400.f });
-
-
-			//make between 0 and 1.0
-			float totalValue = (value * value2 * value3) / (1.f - 0.f);
-			totalValue = (totalValue + 1) / 2;
-
-			float mappedValue = glm::mix(0, m_YSize, totalValue);
-
+			float worldxpos = (chunkPos.x) + (x * chunkScaling.x);
+			float worldzpos = (chunkPos.y) + (z * chunkScaling.y);
+		
+			float value = glm::perlin(glm::vec2((float)worldxpos / 500.f, (float)worldzpos / 300.f));
+			float mappedValue = glm::mix(0, m_YSize, value);
 			heightMap[z * 16 + x] = static_cast<int>(mappedValue);
 		}
-
 	}
 
-	//Generate block types
-	for (int i = 0; i < m_AxisSize.x; i++) {
-		for (int j = 0; j < m_AxisSize.y; j++) {
+	for (int z = 0; z < m_AxisSize.z; z++)
+	{
+		for (int x = 0;x < m_AxisSize.x; x++)
+		 {
+			
+			for (int y = 0; y < m_AxisSize.y; y++) {
+			
 
-			for (int k = 0; k < m_AxisSize.z; k++) {
+				uint8_t blockID = GetBlockType(x, y, z, (heightMap)[z * 16 + x]);
 
-				// Assign values to the
-				// memory blocks created
-				//* (m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = ((i % 2 == 0) ? 0 : 1);
-
-				*(m_ChunkArray + i * m_AxisSize.y * m_AxisSize.z + j * m_AxisSize.z + k) = GetBlockType(i, j, k, &heightMap);
+				//Flip x to correct space
+				x = (m_AxisSize.x - 1) - x;
+				*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.x + y * m_AxisSize.z + z) = blockID;
 			}
+
 		}
+
 	}
 
 }
-uint8_t ChunkComponent::GetBlockType(int x, int y, int z, std::array<int, 16 * 16 >* heightmap)
+uint8_t ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
 {
-	int maxHeight = (*heightmap)[z * 16 + x];
-	if (y < maxHeight)
-		return 1;
-	else
+	int dirtAmount = rand() % 2;
+	if (y > maxHeight)
 		return 0;
+	else //in height mapped scope
+	{
+		if (y >= (maxHeight - dirtAmount))
+			return 1;
+		else
+			return 2;
+	}
+	return 0;
+
 }
 
 
