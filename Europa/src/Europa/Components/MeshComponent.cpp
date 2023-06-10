@@ -96,7 +96,12 @@ void Eu::MeshComponent::OBJParser(const std::string& path)
 					std::getline(input, strY, '/');
 					std::getline(input, strZ, ' ');
 
-					Vertex_Input vertex{ vertexVector[std::stoi(strX) - 1], glm::vec3{1,1,1}, UVvector[std::stoi(strY) - 1], normalVector[std::stoi(strZ) - 1] };
+					Vertex_Input vertex;
+					vertex.Position = vertexVector[std::stoi(strX) - 1];
+					vertex.Color = glm::vec3{ 1,1,1 };
+					vertex.uv = UVvector[std::stoi(strY) - 1];
+					vertex.Normal = normalVector[std::stoi(strZ) - 1];
+
 
 					auto vetexIt = std::find(m_OBJ.m_VertexBuffer.begin(), m_OBJ.m_VertexBuffer.end(), vertex);
 
@@ -177,7 +182,7 @@ void Eu::MeshComponent::BufferMesh()
 		};
 
 		std::shared_ptr<Eu::VertexBuffer> pVertexBuffer;
-		pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), static_cast<uint32_t>(Vertices.size())));
+		pVertexBuffer.reset(Eu::VertexBuffer::Create(Vertices.data(), static_cast<uint32_t>(Vertices.size()) * sizeof(Eu::Vertex_Input)));
 		pVertexBuffer->SetLayout(layout);
 		m_ChunkVertexArray->AddVertexBuffer(pVertexBuffer);
 

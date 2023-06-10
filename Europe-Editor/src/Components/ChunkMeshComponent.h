@@ -33,8 +33,9 @@ private:
 	int m_VertextIndexIndex = 0;
 private:
 	std::shared_ptr<ChunkMaterial> m_CurrMat;
-	Eu::OBJ m_ChunkMeshData;
 	std::shared_ptr<Eu::VertexArray> m_ChunkVertexArray;
+	std::vector<Eu::Vertex_Input> m_VertexBuffer;
+	std::vector<uint32_t> m_IndexBuffer;
 
 
 

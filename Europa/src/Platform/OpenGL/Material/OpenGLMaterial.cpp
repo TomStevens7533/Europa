@@ -94,6 +94,7 @@ void OpenGLMaterial::LinkProgram()
 	// Note the different functions here: glGetProgram* instead of glGetShader*.
 	GLint isLinked = 0;
 	glGetProgramiv(m_RenderID, GL_LINK_STATUS, (int*)&isLinked);
+	glGetError();
 	Bind();
 	if (isLinked == GL_FALSE)
 	{
@@ -111,7 +112,7 @@ void OpenGLMaterial::LinkProgram()
 			glDeleteShader(key->GetShaderID());
 
 		// Use the infoLog as you see fit.
-		EU_CORE_ASSERT(false, "shader link compilation failed!!: {0}", infoLog.data());
+		EU_CORE_ASSERT(false, infoLog.data());
 		// In this simple program, we'll just leave
 		return;
 	}

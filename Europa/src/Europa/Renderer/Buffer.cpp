@@ -5,7 +5,7 @@
 #include "Platform/OpenGL/OpenGLBuffer.h"
 namespace Eu
 {
-	VertexBuffer* VertexBuffer::Create(Vertex_Input* vertices, uint32_t size)
+	VertexBuffer* VertexBuffer::Create(void* vertices, uint32_t size)
 	{	//MULTIPLE VERTICES INFORMATION
 		switch (Renderer::GetAPI())
 		{
@@ -14,7 +14,7 @@ namespace Eu
 			return nullptr;
 
 		case RendererAPI::API::OpenGL:
-			return new OpenGLVertexBuffer(vertices, size * sizeof(Vertex_Input));
+			return new OpenGLVertexBuffer(vertices, size);
 
 		}
 		EU_CORE_ASSERT(false, "Unknown RendererAPI");

@@ -36,7 +36,9 @@ namespace Eu
 		EU_CORE_ASSERT(VertexBuffer->GetLayout().GetElements().size(), "Vertex Buffer has no layout!");
 
 		glBindVertexArray(m_RendererID);
-
+#ifdef _DEBUG
+		glCheckError();
+#endif // 
 		uint32_t index = 0;
 		for (const auto& element : VertexBuffer->GetLayout())
 		{
@@ -53,6 +55,9 @@ namespace Eu
 
 		m_VertexBuffers.push_back(VertexBuffer);
 		m_VertexBuffers.back()->Bind();
+#ifdef _DEBUG
+		glCheckError();
+#endif // 
 	}
 	void OpenGLVertexArray::AddIndexBuffer(const std::shared_ptr<IndexBuffer>& IndexBuffer) 
 	{

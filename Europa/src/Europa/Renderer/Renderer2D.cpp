@@ -24,7 +24,7 @@ namespace Eu {
 			squareVertices.push_back(Vertex_Input{ {-0.5f, 0.5f, 0.0f},{-0.f, -0.f, 0.0f}, {0.f, 1.f}, {0.f, 0.f, 0.f} });
 
 			std::shared_ptr<VertexBuffer> quadVertexBuffer;
-			quadVertexBuffer.reset(VertexBuffer::Create(squareVertices.data(), squareVertices.size()));
+			quadVertexBuffer.reset(VertexBuffer::Create(squareVertices.data(), squareVertices.size() * sizeof(Eu::Vertex_Input)));
 
 			quadVertexBuffer->SetLayout({
 			{Eu::ShaderDataType::Float3, "a_Position"},

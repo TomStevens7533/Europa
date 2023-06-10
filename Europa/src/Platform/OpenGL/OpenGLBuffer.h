@@ -12,7 +12,7 @@ namespace Eu
 	class OpenGLVertexBuffer : public VertexBuffer
 	{
 	public:
-		OpenGLVertexBuffer(Vertex_Input* vertices, uint32_t size);
+		OpenGLVertexBuffer(void* vertices, uint32_t size);
 	
 		virtual ~OpenGLVertexBuffer();
 

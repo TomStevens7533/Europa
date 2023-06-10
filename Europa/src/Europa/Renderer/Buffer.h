@@ -118,7 +118,7 @@ namespace Eu
 		virtual const BufferLayout& GetLayout() const = 0;
 		virtual void SetLayout(const BufferLayout& layout) = 0;
 
-		static VertexBuffer* Create(Vertex_Input* vertices, uint32_t size);
+		static VertexBuffer* Create(void* vertices, uint32_t size);
 
 	};
 

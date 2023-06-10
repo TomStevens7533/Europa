@@ -33,7 +33,7 @@ namespace Eu {
 private:
 		void CalculateInverseONB();
 private:
-		float m_FarPlane = 1000.f;
+		float m_FarPlane = 2000.f;
 		float m_NearPlane = 0.1f;
 
 		glm::vec3 m_Position{};
