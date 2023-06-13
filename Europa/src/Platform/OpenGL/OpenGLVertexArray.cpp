@@ -42,14 +42,26 @@ namespace Eu
 		uint32_t index = 0;
 		for (const auto& element : VertexBuffer->GetLayout())
 		{
-
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index,
-				element.GetComponentCount(),
-				ShaderDataTypeToOpenGLBaseType(element.Type),
-				element.Normalized ? GL_TRUE : GL_FALSE,
-				VertexBuffer->GetLayout().GetStride(),
-				(const void*)element.Offset);
+			if (!element.m_IsInt)
+			{
+				//(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, const void *pointer)
+				glEnableVertexAttribArray(index);
+				glVertexAttribPointer(index,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
+					element.Normalized ? GL_TRUE : GL_FALSE,
+					VertexBuffer->GetLayout().GetStride(),
+					(const void*)element.Offset);
+			}
+			else {
+				//(GLuint index, GLint size, GLenum type, GLsizei stride, const void *pointer);
+				glEnableVertexAttribArray(index);
+				glVertexAttribIPointer(index,
+					element.GetComponentCount(),
+					ShaderDataTypeToOpenGLBaseType(element.Type),
+					VertexBuffer->GetLayout().GetStride(),
+					(const void*)element.Offset);
+			}
 			index++;
 		}
 

@@ -154,6 +154,7 @@
     <ClInclude Include="src\Europa\Events\KeyEvent.h" />
     <ClInclude Include="src\Europa\Events\MouseEvent.h" />
     <ClInclude Include="src\Europa\GameObject.h" />
+    <ClInclude Include="src\Europa\half.hpp" />
     <ClInclude Include="src\Europa\Input.h" />
     <ClInclude Include="src\Europa\InputManager.h" />
     <ClInclude Include="src\Europa\KeyMouseCodes.h" />

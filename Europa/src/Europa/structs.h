@@ -7,7 +7,10 @@ namespace Eu {
 	{};
 	struct ChunkVertexInput : VertexInput
 	{
-		glm::vec3 Position;
+		glm::vec3 Position{};
+		int tex{};
+		int UV{};
+
 	};
 	struct Vertex_Input
 	{

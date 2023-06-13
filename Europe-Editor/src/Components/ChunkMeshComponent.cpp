@@ -37,10 +37,17 @@ const std::array<float, 12> topFace{
 };
 const std::array<float, 12> bottomFace{ 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1 };
 
+
+
+std::shared_ptr<ChunkMaterial> ChunkMeshComponent::m_CurrMat{nullptr};
+
+
 ChunkMeshComponent::ChunkMeshComponent()
 {
-	m_CurrMat = Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
+	if(m_CurrMat == nullptr)
+		m_CurrMat = Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
 
+	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
 }
 
 ChunkMeshComponent::~ChunkMeshComponent()
@@ -179,17 +186,60 @@ void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 no
 	//TODO: scale uv coordinates with with and height
 
 	std::vector<int> indicesVec;
-	std::vector<Eu::Vertex_Input> vertices;
+	std::vector<Eu::ChunkVertexInput> vertices;
 	std::vector<glm::vec2> uvCoords;
 	if (normal.x == 1 || normal.x == -1)
 		uvCoords = std::vector<glm::vec2>{ glm::vec2{height,width},  glm::vec2{height,0},  glm::vec2{0,width},  glm::vec2{0,0} };
 	else
 		uvCoords = std::vector<glm::vec2>{ glm::vec2{width,height}, glm::vec2{0,height},  glm::vec2{width,0},  glm::vec2{0,0} };
+
+	//Get light level
+	int lightLevel{};
+	lightLevel = 90;
+	if (normal.y < 0)
+		lightLevel = 40;
+	else if (normal.x != 0)
+		lightLevel = 60;
+	else if (normal.z != 0)
+		lightLevel = 80;
+
+
 	auto uvInformation = BlockJsonParser::GetInstance()->GetUVOfType(1, Faces::FRONT);
 	for (size_t i = 0; i < vertex.size(); i++)
 	{
-		vertices.push_back(Eu::Vertex_Input{ vertex[i],
-			glm::vec3{ 1,1,texturedID }, uvCoords[i], glm::vec3{0.6f,0.6f,0.6f} });
+		Eu::ChunkVertexInput input;
+		input.Position = vertex[i];
+		//input.TextureIdxAnNormal = texturedID;
+		input.tex = static_cast<int>(texturedID);
+
+		//Pack Normal
+		uint8_t packedNormalValue{0};
+		if (normal.x != 0) {
+			packedNormalValue |= 0x80;  // Set the 8th bit to 1
+			if (normal.x < 0)
+				packedNormalValue |= 0x10;
+		}
+		if (normal.y != 0) {
+			packedNormalValue |= 0x40;  // Set the 7th bit to 1
+			if (normal.y < 0)
+				packedNormalValue |= 0x08;
+		}
+		if (normal.z != 0) {
+			packedNormalValue |= 0x20;  // Set the 6th bit to 1
+			if (normal.z < 0)
+				packedNormalValue |= 0x04;
+		}
+		input.tex = (input.tex << 8) | packedNormalValue;
+		input.tex = (input.tex << 8) | lightLevel;
+
+
+		//Pack UV
+		unsigned int packedUV;
+		short packedWidth = static_cast<short>(uvCoords[i].x);
+		short packedHeight = static_cast<short>(uvCoords[i].y);
+		packedUV = (packedWidth << 16 | packedHeight);
+		input.UV = packedUV;
+		vertices.push_back(input);
 	}
 	indicesVec = { m_VertextIndexIndex, m_VertextIndexIndex + 2 + normalll, m_VertextIndexIndex + 2 - normalll, m_VertextIndexIndex + 3, m_VertextIndexIndex + 1 - normalll, m_VertextIndexIndex + 1 + normalll };
 	m_VertextIndexIndex += 4;
@@ -201,17 +251,16 @@ void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 no
 
 void ChunkMeshComponent::BufferMesh()
 {
-	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
 
 	Eu::BufferLayout layout = {
 		{Eu::ShaderDataType::Float3, "a_Position"},
-		{Eu::ShaderDataType::Float3, "a_Color"},
-		{Eu::ShaderDataType::Float2, "a_Uv"},
-		{Eu::ShaderDataType::Float3, "a_Normal"},
+		{Eu::ShaderDataType::Int, "a_NormalTextureIDX", true},
+		{Eu::ShaderDataType::Int, "a_UV", true},
+
 	};
 
 	std::shared_ptr<Eu::VertexBuffer> pVertexBuffer;
-	pVertexBuffer.reset(Eu::VertexBuffer::Create(m_VertexBuffer.data(), static_cast<uint32_t>(m_VertexBuffer.size()) * sizeof(Eu::Vertex_Input)));
+	pVertexBuffer.reset(Eu::VertexBuffer::Create(m_VertexBuffer.data(), static_cast<uint32_t>(m_VertexBuffer.size()) * sizeof(Eu::ChunkVertexInput)));
 	pVertexBuffer->SetLayout(layout);
 	m_ChunkVertexArray->AddVertexBuffer(pVertexBuffer);
 
@@ -221,7 +270,10 @@ void ChunkMeshComponent::BufferMesh()
 	m_ChunkVertexArray->AddIndexBuffer(pIndexBuffer);
 	m_IsBuffered = true;
 	m_IndexBuffer.clear();
+	m_IndexBuffer.shrink_to_fit();
 	m_VertexBuffer.clear();
+	m_VertexBuffer.shrink_to_fit();
+
 	m_VertextIndexIndex = 0;
 	//EU_CORE_INFO("BUFFF");
 
