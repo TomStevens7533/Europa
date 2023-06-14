@@ -116,8 +116,8 @@ void ChunkManager::UpdateNeightbours(glm::ivec2 posiotn)
 ChunkID ChunkManager::GetChunkID(glm::dvec2 position)
 {
 	ChunkID id;
-	id.x = (position.x) / m_ChunkxSize;
-	id.y = (position.y) / m_ChunkzSize;
+	id.x = (position.x) / (m_ChunkxSize * m_Scale);
+	id.y = (position.y) / (m_ChunkzSize * m_Scale);
 	return id;
 
 }
