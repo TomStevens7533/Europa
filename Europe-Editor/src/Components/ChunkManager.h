@@ -9,8 +9,8 @@ namespace Eu {
 }
 struct ChunkID
 {
-	float x;
-	float y;
+	double x;
+	double y;
 
 	// Overloading the < operator
 	bool operator<(const ChunkID& other) const {
@@ -69,7 +69,7 @@ public:
 	void Update() override;
 	void FixedUpdate() override;
 	void Render() const override;
-	uint8_t GetBlockIDNeighbour(glm::ivec2 position, int x, int y, int z);
+	uint8_t GetBlockIDNeighbour(glm::dvec2 position, int x, int y, int z);
 	void UpdateNeightbours(glm::ivec2 posiotn);
 private:
 	void CreateChunk(glm::dvec2 position);

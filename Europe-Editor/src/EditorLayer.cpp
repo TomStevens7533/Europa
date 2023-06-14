@@ -13,7 +13,7 @@ namespace Eu {
 		//player GO
 		m_pPlayer = std::make_shared<Eu::GameObject>();
 
-		m_pPlayer->SetPosition(glm::vec3{ 0,-70,0 });
+		m_pPlayer->SetPosition(glm::vec3{ 0,-50,0 });
 		m_pCamera = std::make_shared<Eu::PerspectiveCameraControllerComponent>();
 		m_pPlayer->AddComponent<PerspectiveCameraControllerComponent>(m_pCamera);
 		m_LayerSceneGraph.AddItemToSceneGraph(m_pPlayer);
@@ -23,7 +23,7 @@ namespace Eu {
 		//m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
 		//const int xSize, int ySize, int zSize, const int chunkWidthAmount, const int chunkDepthAmount, int scale = 1
 
-		m_ChunkComp = std::make_shared<ChunkManager>(16,128,16,140,140,0.1);
+		m_ChunkComp = std::make_shared<ChunkManager>(16,256,16,40,40,0.1);
 		auto go = std::make_shared<Eu::GameObject>();
 		go->SetPosition(glm::vec3{ 0,0,0 });
 		go->AddComponent<ChunkManager>(m_ChunkComp);

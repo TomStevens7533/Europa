@@ -54,7 +54,7 @@ void ChunkComponent::Start()
 
 			float value = static_cast<float>((perlin.octave2D_01((worldxpos) / 64.f, (worldzpos) / 64.f, 8)));
 			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos) / 128.f, (worldzpos) / 128.f, 8)));
-			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos) / 512.f, (worldzpos) / 512.f, 8)));
+			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos) / 256.f, (worldzpos) / 315.f, 8)));
 
 			float totalValue = static_cast<float>((value * value2 * value3 * value3 - 0) / (1 - 0));
 			totalValue = (totalValue + 1) / 2;
@@ -72,12 +72,14 @@ void ChunkComponent::Start()
 			
 			for (int y = 0; y < m_AxisSize.y; y++) {
 			
+				if (y < (m_AxisSize.y - 10)) {
+					uint8_t blockID = GetBlockType(x, y, z, (heightMap)[z * 16 + x]);
 
-				uint8_t blockID = GetBlockType(x, y, z, (heightMap)[z * 16 + x]);
-
-				//Flip x to correct space
-				x = (m_AxisSize.x - 1) - x;
-				*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.x + y * m_AxisSize.z + z) = blockID;
+					//Flip x to correct space
+					x = (m_AxisSize.x - 1) - x;
+					*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.x + y * m_AxisSize.z + z) = blockID;
+				}
+				
 			}
 
 		}
@@ -305,24 +307,17 @@ void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 
 uint8_t ChunkComponent::GetBlock(int x, int y, int z)
 {
-	//TODO CHECK OTHER CHUNKS
-	if (x >= m_AxisSize.x || y >= m_AxisSize.y || z >= m_AxisSize.z || x < 0 || y < 0 || z < 0)
+	if (y < 0 || y >= (m_YSize))
 		return 0;
 
-	//return 0;
-	//if (y >= m_AxisSize.y || y < 0)
-	//	return 0;
-	//
-	//if (x < 0 || x >= (m_XSize))
-	//{
-	//	return 0;
-	//	glm::ivec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
-	//		GetAttachedGameObject()->GetTransform().GetPosition().z };
-	//
-	//	return m_pManager->GetBlockIDNeighbour(pos, x, y, z);
-	//
-	//}
-	//return 1;
+	if (x < 0 || x >= (m_XSize) || z < 0 || z >= (m_ZSize))
+	{
+		glm::dvec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
+			GetAttachedGameObject()->GetTransform().GetPosition().z };
+	
+		return m_pManager->GetBlockIDNeighbour(pos, x, y, z);
+	
+	}
 
 	uint8_t resultBlock = *(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z);
 	return resultBlock;

@@ -37,7 +37,6 @@ void ChunkManager::Start()
 			for (double z = (originPos.y - ChunkTotalDepth); z < (originPos.y + ChunkTotalDepth); z += chunkSizeZ)
 			{
 				//Create chunk
-				EU_CORE_INFO("Creating Chunk at POS: {0},{1}", x, z);
 				CreateChunk(glm::dvec2{ x,z });
 			} 
 		}
@@ -47,6 +46,7 @@ void ChunkManager::Start()
 void ChunkManager::CreateChunk(glm::dvec2 position)
 {
 	ChunkID id = GetChunkID(position);
+	EU_CORE_INFO("Creating Chunk at POS: {0},{1}; Idx: {2}, {3}", position.x, position.y, id.x, id.y);
 	auto chunkComp = std::make_shared<ChunkComponent>(m_ChunkxSize, m_ChunkySize, m_ChunkzSize, shared_from_this(), m_Scale);
 	m_ChunkIDMap.insert(std::make_pair(id, chunkComp));
 	auto go = std::make_shared<Eu::GameObject>();
@@ -68,56 +68,36 @@ void ChunkManager::Render() const
 {
 }
 
-uint8_t ChunkManager::GetBlockIDNeighbour(glm::ivec2 position, int x, int y, int z)
+uint8_t ChunkManager::GetBlockIDNeighbour(glm::dvec2 position, int x, int y, int z)
 {
 	
+	ChunkID id = GetChunkID(position);
+	if (x < 0) {
+		id.x += 1;
+		if (m_ChunkIDMap.count(id) > 0) {
+			return  m_ChunkIDMap[id]->GetBlock(m_ChunkxSize, y, z);
+		}
+	}
+	if (x >= (m_ChunkxSize)) {
+		id.x -= 1;
+		if (m_ChunkIDMap.count(id) > 0) {
+			return  m_ChunkIDMap[id]->GetBlock(0, y, z);
+		}
+	}
+	if (z >= m_ChunkzSize) {
+		id.y += 1;
+		if (m_ChunkIDMap.count(id) > 0) {
+			return  m_ChunkIDMap[id]->GetBlock(x, y, 0);
+		}
+	}
+	if (z < 0) {
+		id.y -= 1;
+		if (m_ChunkIDMap.count(id) > 0) {
+			return  m_ChunkIDMap[id]->GetBlock(x, y, m_ChunkzSize);
+		}
+	}
+	return 0;
 	
-	
-	
-	return 1;
-
-	
-
-	
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	//
-	//
-	//
-	//
-	//
-	//return 0;
-	//if (z < 0) {
-	//	id.second -= 1;
-	//	if (m_ChunkIDMap.count(id) > 0) {
-	//		return  m_ChunkIDMap[id]->GetBlock(x, y, 0);
-	//		//return  1;
-	//
-	//	}
-	//}
-	//if (z >= m_ChunkzSize) {
-	//	id.second += 1;
-	//	if (m_ChunkIDMap.count(id) > 0) {
-	//		return  m_ChunkIDMap[id]->GetBlock(x, y, m_ChunkzSize - 1);
-	//		//return  1;
-	//
-	//	}
-	//}
-
-	
-	
-	
-	
-
 }
 
 void ChunkManager::UpdateNeightbours(glm::ivec2 posiotn)
