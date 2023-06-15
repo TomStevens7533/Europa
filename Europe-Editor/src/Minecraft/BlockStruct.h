@@ -5,3 +5,8 @@ enum class Faces
 	TOP, BOT, LEFT, RIGHT, FRONT, BACK
 
 };
+struct ChunkID
+{
+	int x;
+	int y;
+};

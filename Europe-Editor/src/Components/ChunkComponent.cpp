@@ -8,14 +8,10 @@
 #include "ChunkManager.h"
 #include "PerlinNosie.h"
 
-ChunkComponent::ChunkComponent(int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr, int scale /*= 1*/) : m_Scale{scale}
-, m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, xSize }, m_pManager{ ptr }
+
+ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, xSize }, m_pManager{ ptr }, m_ChunkID{ iD }
 {
-	
-	
-
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{0};
-
 
 }
 
@@ -49,7 +45,7 @@ void ChunkComponent::Start()
 
 
 			float worldxpos = (chunkPos.x) + (x * chunkScaling.x);
-			float worldzpos = (chunkPos.y) + (z * chunkScaling.y);
+			float worldzpos = (chunkPos.y) + (z * chunkScaling.z);
 		
 
 			float value = static_cast<float>((perlin.octave2D_01((worldxpos) / 64.f, (worldzpos) / 64.f, 8)));
@@ -244,6 +240,7 @@ void ChunkComponent::CreateMesh()
 }
 void ChunkComponent::CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 v1, glm::ivec3 v2, glm::ivec3 v3, glm::ivec3 v4, int widht, int height)
 {
+
 	const auto normal = glm::vec3(axisMask * mask.normal);
 	std::vector<glm::vec3> maskVertices;
 	maskVertices.push_back(v1);
@@ -315,7 +312,7 @@ uint8_t ChunkComponent::GetBlock(int x, int y, int z)
 		glm::dvec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
 			GetAttachedGameObject()->GetTransform().GetPosition().z };
 	
-		return m_pManager->GetBlockIDNeighbour(pos, x, y, z);
+		return m_pManager->GetBlockIDNeighbour(m_ChunkID, x, y, z);
 	
 	}
 

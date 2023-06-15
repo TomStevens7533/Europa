@@ -4,7 +4,7 @@
 #include "Europa/Components/BaseComponent.h"
 #include <atomic>
 #include <array>
-
+#include "../Minecraft/BlockStruct.h"
 
 
 class ChunkMeshComponent;
@@ -14,7 +14,7 @@ class ChunkComponent final : public Eu::BaseComponent
 {
 public:
 
-	ChunkComponent(int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr, int scale = 1);
+	ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr);
 	~ChunkComponent();
 
 	void Start() override;
@@ -48,10 +48,10 @@ private:
 	std::atomic<bool> m_NeedUpdate{ false };
 	const std::shared_ptr<ChunkManager> m_pManager;
 private:
-	const int m_Scale{};
 	const int m_XSize{};
 	const int m_YSize{};
 	const int m_ZSize{};
+	const ChunkID m_ChunkID{};
 	const glm::ivec3 m_AxisSize{};
 
 	uint8_t* m_ChunkArray{nullptr};
