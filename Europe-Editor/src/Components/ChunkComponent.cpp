@@ -48,9 +48,9 @@ void ChunkComponent::Start()
 			float worldzpos = (chunkPos.y) + (z * chunkScaling.z);
 		
 
-			float value = static_cast<float>((perlin.octave2D_01((worldxpos) / 64.f, (worldzpos) / 64.f, 8)));
-			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos) / 128.f, (worldzpos) / 128.f, 8)));
-			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos) / 256.f, (worldzpos) / 315.f, 8)));
+			float value = static_cast<float>((perlin.octave2D_01((worldxpos) / 550.f, (worldzpos) / 550.f, 8)));
+			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos) / 700.f, (worldzpos) / 700.f, 8)));
+			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos) / 1024.f, (worldzpos) / 650.f, 8)));
 
 			float totalValue = static_cast<float>((value * value2 * value3 * value3 - 0) / (1 - 0));
 			totalValue = (totalValue + 1) / 2;
