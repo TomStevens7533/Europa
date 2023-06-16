@@ -9,7 +9,7 @@
 #include "PerlinNosie.h"
 
 
-ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, zSize }, m_pManager{ ptr }, m_ChunkID{ iD }
+ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const ChunkManager* ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, zSize }, m_pManager{ ptr }, m_ChunkID{ iD }
 {
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{0};
 
@@ -30,7 +30,8 @@ void ChunkComponent::Start()
 	}
 	m_NeedUpdate = true;
 
-	std::array<int, 16 * 16 > heightMap;
+	std::vector<int> heightMap;
+	heightMap.resize(m_XSize * m_ZSize);
 	//Create noise map
 	glm::vec2 chunkPos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
 			GetAttachedGameObject()->GetTransform().GetPosition().z };
@@ -57,7 +58,7 @@ void ChunkComponent::Start()
 
 			float mappedValue = static_cast<int>(glm::mix(0, m_YSize, value));
 
-			heightMap[z * 16 + x] = mappedValue;
+			heightMap[z * m_XSize + x] = mappedValue;
 		}
 	}
 
@@ -69,7 +70,7 @@ void ChunkComponent::Start()
 			for (int y = 0; y < m_AxisSize.y; y++) {
 			
 				if (y < (m_AxisSize.y - 10)) {
-					uint8_t blockID = GetBlockType(x, y, z, (heightMap)[z * 16 + x]);
+					uint8_t blockID = GetBlockType(x, y, z, (heightMap)[z * m_XSize + x]);
 
 					//Flip x to correct space
 					x = (m_AxisSize.x - 1) - x;

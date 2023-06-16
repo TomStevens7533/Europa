@@ -26,7 +26,7 @@ void ChunkManager::Start()
 		//Create chunks based on width and depth around origin gameobject
 		const glm::dvec2 originPos = glm::dvec2{ (GetAttachedGameObject()->GetTransform().GetPosition().x), glm::round(GetAttachedGameObject()->GetTransform().GetPosition().z) };
 		const double ChunkTotalWidth = m_ChunkWidthAmount * (m_ChunkxSize * m_Scale.x);
-		const double ChunkTotalDepth = m_ChunkDepthAmount * (m_ChunkzSize * m_Scale.x);
+		const double ChunkTotalDepth = m_ChunkDepthAmount * (m_ChunkzSize * m_Scale.z);
 		double chunkSizeZ = (m_ChunkzSize * m_Scale.z);
 		double chunkSizeY = (m_ChunkySize * m_Scale.y);
 		double chunkSizex = (m_ChunkxSize * m_Scale.x);
@@ -47,7 +47,7 @@ void ChunkManager::CreateChunk(glm::dvec2 position)
 {
 	ChunkID id = GetChunkID(position);
 	EU_CORE_INFO("Creating Chunk at POS: {0},{1}; Idx: {2}, {3}", position.x, position.y, id.x, id.y);
-	auto chunkComp = std::make_shared<ChunkComponent>(id, m_ChunkxSize, m_ChunkySize, m_ChunkzSize, shared_from_this());
+	auto chunkComp = std::make_shared<ChunkComponent>(id, m_ChunkxSize, m_ChunkySize, m_ChunkzSize, this);
 	m_ChunkIDMap.insert(std::make_pair(id, chunkComp));
 	auto go = std::make_shared<Eu::GameObject>();
 	go->SetPosition(glm::vec3{  position.x  , 0, position.y });
@@ -68,32 +68,41 @@ void ChunkManager::Render() const
 {
 }
 
-uint8_t ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)
+uint8_t ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)  const
 {
-	if (x < 0) {
-		lookupID.x += 1;
-		if (m_ChunkIDMap.count(lookupID) > 0) {
-			return  m_ChunkIDMap[lookupID]->GetBlock(m_ChunkxSize, y, z);
+	try
+	{
+		if (x < 0) {
+			lookupID.x += 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				return  m_ChunkIDMap.at(lookupID)->GetBlock(m_ChunkxSize, y, z);
+			}
+		}
+		if (x >= (m_ChunkxSize)) {
+			lookupID.x -= 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				return  m_ChunkIDMap.at(lookupID)->GetBlock(0, y, z);
+			}
+		}
+		if (z >= m_ChunkzSize) {
+			lookupID.y += 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				return  m_ChunkIDMap.at(lookupID)->GetBlock(x, y, 0);
+			}
+		}
+		if (z < 0) {
+			lookupID.y -= 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				return  m_ChunkIDMap.at(lookupID)->GetBlock(x, y, m_ChunkzSize);
+			}
 		}
 	}
-	if (x >= (m_ChunkxSize)) {
-		lookupID.x -= 1;
-		if (m_ChunkIDMap.count(lookupID) > 0) {
-			return  m_ChunkIDMap[lookupID]->GetBlock(0, y, z);
-		}
+	catch (const std::exception&)
+	{
+		EU_CORE_INFO("dssd");
 	}
-	if (z >= m_ChunkzSize) {
-		lookupID.y += 1;
-		if (m_ChunkIDMap.count(lookupID) > 0) {
-			return  m_ChunkIDMap[lookupID]->GetBlock(x, y, 0);
-		}
-	}
-	if (z < 0) {
-		lookupID.y -= 1;
-		if (m_ChunkIDMap.count(lookupID) > 0) {
-			return  m_ChunkIDMap[lookupID]->GetBlock(x, y, m_ChunkzSize);
-		}
-	}
+
+	
 	return 0;
 	
 }

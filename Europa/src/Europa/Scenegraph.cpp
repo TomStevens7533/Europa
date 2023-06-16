@@ -10,7 +10,7 @@ namespace Eu {
 
 	ScenGraph::~ScenGraph()
 	{
-
+		
 	}
 
 	Eu::SceneGraphItem& ScenGraph::AddItemToSceneGraph(std::shared_ptr<GameObject> newSceneObject)

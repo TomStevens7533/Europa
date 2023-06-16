@@ -14,7 +14,7 @@ class ChunkComponent final : public Eu::BaseComponent
 {
 public:
 
-	ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr);
+	ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const ChunkManager* ptr);
 	~ChunkComponent();
 
 	void Start() override;
@@ -46,7 +46,7 @@ private:
 private:
 	std::shared_ptr<ChunkMeshComponent> m_pChunkMesh;
 	std::atomic<bool> m_NeedUpdate{ false };
-	const std::shared_ptr<ChunkManager> m_pManager;
+	const ChunkManager* m_pManager;
 private:
 	const int m_XSize{};
 	const int m_YSize{};

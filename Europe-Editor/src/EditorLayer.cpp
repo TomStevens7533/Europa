@@ -8,7 +8,7 @@
 
 
 namespace Eu {
-	static int xSize{16}, ySize{256}, zSize{16}, chunkAmountHeight{5}, chunkAmoundWidth{5};
+	static int xSize{16}, ySize{256}, zSize{16}, chunkAmountHeight{2}, chunkAmoundWidth{2};
 	static glm::vec3 scale{0.2, 1, 0.2};
 
 	EuropaEditorLayer::EuropaEditorLayer()
