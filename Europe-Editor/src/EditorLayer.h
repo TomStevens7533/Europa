@@ -33,7 +33,7 @@ namespace Eu {
 		std::shared_ptr<Eu::PerspectiveCameraControllerComponent> m_pCamera;
 		std::shared_ptr<ChunkManager> m_ChunkComp;
 		Eu::TimerManager m_TimerManager;
-
+		std::shared_ptr<Eu::GameObject> m_pChunkManager;
 
 		std::shared_ptr<Eu::BaseTexture>* m_ptexture;
 		std::shared_ptr<Eu::BaseTexture>* m_pCrosshairTexture;
@@ -42,6 +42,7 @@ namespace Eu {
 		std::shared_ptr<Eu::GameObject> m_pChunk;
 		float angle{ 0 };
 
+		SceneGraphItem* m_ChunkGameobject;
 
 		glm::vec2 m_ViewportSize;
 	};

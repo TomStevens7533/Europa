@@ -11,6 +11,7 @@ namespace Eu {
 		~ScenGraph();
 
 		SceneGraphItem& AddItemToSceneGraph(std::shared_ptr<GameObject> newSceneObject);
+		bool RemoveItemToSceneGraph(Eu::SceneGraphItem* pair);
 
 		void StartScene();
 		void UpdateScene();

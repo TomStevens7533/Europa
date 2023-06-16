@@ -9,7 +9,7 @@
 #include "PerlinNosie.h"
 
 
-ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, xSize }, m_pManager{ ptr }, m_ChunkID{ iD }
+ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const std::shared_ptr < ChunkManager> ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, zSize }, m_pManager{ ptr }, m_ChunkID{ iD }
 {
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{0};
 

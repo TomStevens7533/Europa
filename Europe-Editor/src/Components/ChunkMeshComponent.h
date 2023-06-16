@@ -32,7 +32,7 @@ private:
 	std::atomic<bool> m_IsBuffered{ false };
 	int m_VertextIndexIndex = 0;
 private:
-	static std::shared_ptr<ChunkMaterial> m_CurrMat;
+	std::shared_ptr<ChunkMaterial> m_CurrMat;
 	std::shared_ptr<Eu::VertexArray> m_ChunkVertexArray;
 	std::vector<Eu::ChunkVertexInput> m_VertexBuffer;
 	std::vector<uint32_t> m_IndexBuffer;

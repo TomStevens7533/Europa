@@ -20,6 +20,16 @@ namespace Eu {
 		return (*(newEntryPair.first));
 	}
 
+	bool ScenGraph::RemoveItemToSceneGraph(Eu::SceneGraphItem* pair)
+	{
+		if (m_SceneGraphMap.count(pair->first) > 0)
+		{
+			m_SceneGraphMap.erase(pair->first);
+			return true;
+		}
+		return false;
+	}
+
 	void ScenGraph::StartScene()
 	{
 		for (SceneGraphItem& sceneItem : m_SceneGraphMap)

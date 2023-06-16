@@ -100,9 +100,7 @@ namespace Eu
 	void ImGuiLayer::OnImGuiRender()
 	{
 
-		char* gay = "";
-		static bool show = true;
-		ImGui::ShowDemoWindow(&show);
+
 
 	}
 

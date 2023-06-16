@@ -8,6 +8,9 @@
 
 
 namespace Eu {
+	static int xSize{16}, ySize{256}, zSize{16}, chunkAmountHeight{5}, chunkAmoundWidth{5};
+	static glm::vec3 scale{0.2, 1, 0.2};
+
 	EuropaEditorLayer::EuropaEditorLayer()
 	{
 		//player GO
@@ -23,12 +26,12 @@ namespace Eu {
 		//m_pCrosshairTexture = &Eu::ResourceManager::GetInstance()->GetTexture("Resources/minecraft/Crosshair.png", Eu::TextureTypes::TEXTURE2D);
 		//const int xSize, int ySize, int zSize, const int chunkWidthAmount, const int chunkDepthAmount, int scale = 1
 
-		m_ChunkComp = std::make_shared<ChunkManager>(16, 256, 16, 10, 10, glm::vec3{1, 1, 1});
+		m_ChunkComp = std::make_shared<ChunkManager>(xSize, ySize, zSize, chunkAmoundWidth, chunkAmountHeight, scale);
 		auto go = std::make_shared<Eu::GameObject>();
 		go->SetPosition(glm::vec3{ 0,0,0 });
 		go->AddComponent<ChunkManager>(m_ChunkComp);
 		m_pChunk = go;
-		m_LayerSceneGraph.AddItemToSceneGraph(go);
+		m_ChunkGameobject = &m_LayerSceneGraph.AddItemToSceneGraph(go);
 	}
 
 	void EuropaEditorLayer::OnAttach()
@@ -120,7 +123,7 @@ namespace Eu {
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
 		}
 
 		// When using ImGuiDockNodeFlags_PassthruDockspace, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
@@ -128,7 +131,7 @@ namespace Eu {
 			window_flags |= ImGuiWindowFlags_NoBackground;
 
 		ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-		ImGui::Begin("DockSpace Demo", &dock_space_open, window_flags);
+		ImGui::Begin("DockSpace", &dock_space_open, window_flags);
 		ImGui::PopStyleVar();
 
 		if (opt_fullscreen)
@@ -155,8 +158,6 @@ namespace Eu {
 
 				ImGui::EndMenu();
 			}
-			ImGui::ShowDemoWindow();
-
 			ImGui::Begin("Profiling");
 
 			for (auto trResult : m_TimerManager.GetTimerResults())
@@ -191,8 +192,39 @@ namespace Eu {
 		//EU_CORE_WARN("Viewport Size: {0}, {1}", viewPortSize.x, viewPortSize.y);
 		uint32_t textureID = m_pFramebuffer->GetColorAttachment();
 		ImGui::Image((void*)textureID, ImVec2{ m_ViewportSize.x,m_ViewportSize.y }, ImVec2{ 0,1 }, ImVec2{ 1,0 });
+		ImGui::Begin("Component Details");
+
+		ImGui::Indent();
+		ImGui::InputInt("X:", &xSize);
+		ImGui::InputInt("Y:", &ySize);
+		ImGui::InputInt("Z:", &zSize);
+		ImGui::Unindent();
+
+		ImGui::Indent();
+		ImGui::InputInt("Width:", &chunkAmoundWidth);
+		ImGui::InputInt("Height:", &chunkAmountHeight);
+		ImGui::Unindent();
+
+		ImGui::Indent();
+		ImGui::InputFloat3("Scale:", &scale[0]);
+		ImGui::Unindent();
+
+		if (ImGui::Button("yallah habbibi"))
+		{
+			m_LayerSceneGraph.RemoveItemToSceneGraph(m_ChunkGameobject);
+
+			m_ChunkComp = std::make_shared<ChunkManager>(xSize, ySize, zSize, chunkAmoundWidth, chunkAmountHeight, glm::vec3{ scale.x,scale.y, scale.z });
+			auto go = std::make_shared<Eu::GameObject>();
+			go->SetPosition(glm::vec3{ 0,0,0 });
+			go->AddComponent<ChunkManager>(m_ChunkComp);
+			m_pChunk = go;
+			m_ChunkGameobject = &m_LayerSceneGraph.AddItemToSceneGraph(go);
+		}
+
+		ImGui::End();
 		ImGui::End();
 		ImGui::PopStyleVar();
+
 
 	}
 

@@ -39,13 +39,10 @@ const std::array<float, 12> bottomFace{ 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1 };
 
 
 
-std::shared_ptr<ChunkMaterial> ChunkMeshComponent::m_CurrMat{nullptr};
-
 
 ChunkMeshComponent::ChunkMeshComponent()
 {
-	if(m_CurrMat == nullptr)
-		m_CurrMat = Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
+	m_CurrMat = Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
 
 	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
 }
