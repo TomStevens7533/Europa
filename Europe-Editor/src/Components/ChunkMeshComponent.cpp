@@ -57,7 +57,7 @@ void ChunkMeshComponent::Start()
 
 void ChunkMeshComponent::Update()
 {
-	if (m_IsBuffered == false)
+	if (m_ResetMesh == true)
 		BufferMesh();
 }
 
@@ -230,7 +230,7 @@ void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 no
 
 		//Pack UV
 		unsigned int packedUV;
-		short packedWidth = static_cast<short>(uvCoords[i].x);
+		short packedWidth = static_cast<short>(uvCoords[i].x); 
 		short packedHeight = static_cast<short>(uvCoords[i].y);
 		packedUV = (packedWidth << 16 | packedHeight);
 		input.UV = packedUV;
@@ -271,6 +271,7 @@ void ChunkMeshComponent::BufferMesh()
 	m_VertexBuffer.shrink_to_fit();
 
 	m_VertextIndexIndex = 0;
+	m_ResetMesh = false;
 	//EU_CORE_INFO("BUFFF");
 
 }

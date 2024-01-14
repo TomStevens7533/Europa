@@ -45,10 +45,12 @@ public:
 private:
 	void CreateChunk(glm::dvec2 position);
 	ChunkID GetChunkID(glm::dvec2 position);
-	void UpdateChunks();
+	void UpdateChunks(std::vector<ChunkComponent*> localThreads);
 private:
 	bool m_IsUpdatingAroundCamera{ false };
 	std::atomic<bool> m_KillThread{ false };
+	std::mutex m_KillMutex;
+	std::condition_variable m_Cond;
 	double m_ChunkxSize{};
 	double m_ChunkySize{};
 	double m_ChunkzSize{};
@@ -57,8 +59,8 @@ private:
 	const glm::vec3 m_Scale{};
 	Eu::PerspectiveCameraControllerComponent* m_Camera{};
 	std::unordered_map < ChunkID, std::shared_ptr<ChunkComponent>, MyStructHash, MyStructEqual> m_ChunkIDMap;
-	mutable std::mutex m_LockMutex;
 	std::thread m_MeshingThread;
+	std::vector<std::thread> m_ThreadVector;
 
 
 };

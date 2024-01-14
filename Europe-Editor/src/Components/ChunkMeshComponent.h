@@ -28,10 +28,11 @@ public:
 	void AddVertices(std::vector<glm::vec3> vertex, glm::vec3 normal, int normalll, int width, int height, uint8_t texturedID);
 
 	void BufferMesh();
-	void ResetMesh() { m_IsBuffered = false; };
+	void ResetMesh() { m_ResetMesh = true; };
 private:
 	std::atomic<bool> m_IsBuffered{ false };
-	mutable std::mutex m_LockMutex;
+	std::atomic<bool> m_ResetMesh{ false };
+
 	int m_VertextIndexIndex = 0;
 private:
 	std::shared_ptr<ChunkMaterial> m_CurrMat;

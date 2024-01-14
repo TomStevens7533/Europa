@@ -1,6 +1,7 @@
 #include "ChunkManager.h"
 #include "Europa/GameObject.h"
 #include "ChunkComponent.h"
+#include <mutex>
 
 ChunkManager::ChunkManager(const int xSize, int ySize, int zSize, const int chunkWidthAmount, const int chunkDepthAmount, glm::vec3 scale)
 	: m_ChunkxSize{ static_cast<double>(xSize) }, m_ChunkySize{ static_cast<double>(ySize) }, m_ChunkzSize{ static_cast<double>(zSize) }, m_ChunkWidthAmount{ chunkWidthAmount }, m_ChunkDepthAmount{chunkDepthAmount}
@@ -17,7 +18,11 @@ ChunkManager::ChunkManager(const int xSize, int ySize, int zSize, Eu::Perspectiv
 ChunkManager::~ChunkManager()
 {
 	m_KillThread = true;
-	m_MeshingThread.join();
+
+	for (size_t i = 0; i < m_ThreadVector.size(); i++)
+	{
+		m_ThreadVector[i].join();
+	}
 }
 
 void ChunkManager::Start()
@@ -42,12 +47,32 @@ void ChunkManager::Start()
 		}
 		
 	}
-	m_MeshingThread = std::thread(&ChunkManager::UpdateChunks, this);
+
+	std::vector<ChunkComponent*> chunkThreadVector;
+	int index{0};
+	//Create threads
+	for (auto& it : m_ChunkIDMap) {
+		// Do stuff
+		chunkThreadVector.push_back(it.second.get());
+		++index;
+		if (index >= 4)
+		{
+			m_ThreadVector.emplace_back(std::thread(&ChunkManager::UpdateChunks, this, chunkThreadVector));
+			index = 0;
+			chunkThreadVector.clear();
+
+		}
+	}
+	if (index > 0)
+	{
+		m_ThreadVector.emplace_back(std::thread(&ChunkManager::UpdateChunks, this, chunkThreadVector));
+		index = 0;
+		chunkThreadVector.clear();
+	}
 }
 void ChunkManager::CreateChunk(glm::dvec2 position)
 {
 	ChunkID id = GetChunkID(position);
-	std::lock_guard<std::mutex> guard(m_LockMutex);
 	EU_CORE_INFO("Creating Chunk at POS: {0},{1}; Idx: {2}, {3}", position.x, position.y, id.x, id.y);
 	auto chunkComp = std::make_shared<ChunkComponent>(id, m_ChunkxSize, m_ChunkySize, m_ChunkzSize, this);
 	m_ChunkIDMap.insert(std::make_pair(id, chunkComp));
@@ -132,17 +157,18 @@ ChunkID ChunkManager::GetChunkID(glm::dvec2 position)
 
 }
 
-void ChunkManager::UpdateChunks()
+void ChunkManager::UpdateChunks(std::vector<ChunkComponent*> localThreads)
 {
 	while (true)
 	{
-		for (auto& it : m_ChunkIDMap) {
-			// Do stuff
-			if (m_KillThread == true)
-				return;
+		if (m_KillThread == true)
+			return;
 
-			it.second->CreateMesh();
+		for (auto& it : localThreads) {
+			// Mesh chunks
+			it->CreateMesh();
 		}
+		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
 
