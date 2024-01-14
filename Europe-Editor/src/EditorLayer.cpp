@@ -8,7 +8,7 @@
 
 
 namespace Eu {
-	static int xSize{16}, ySize{256}, zSize{16}, chunkAmountHeight{2}, chunkAmoundWidth{2};
+	static int xSize{16}, ySize{128}, zSize{16}, chunkAmountHeight{4}, chunkAmoundWidth{4};
 	static glm::vec3 scale{0.2, 1, 0.2};
 
 	EuropaEditorLayer::EuropaEditorLayer()
@@ -16,7 +16,7 @@ namespace Eu {
 		//player GO
 		m_pPlayer = std::make_shared<Eu::GameObject>();
 
-		m_pPlayer->SetPosition(glm::vec3{ 0,-50,0 });
+		m_pPlayer->SetPosition(glm::vec3{ 0,-200,0 });
 		m_pCamera = std::make_shared<Eu::PerspectiveCameraControllerComponent>();
 		m_pPlayer->AddComponent<PerspectiveCameraControllerComponent>(m_pCamera);
 		m_LayerSceneGraph.AddItemToSceneGraph(m_pPlayer);
@@ -123,7 +123,7 @@ namespace Eu {
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 			ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 			window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
+			window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
 		}
 
 		// When using ImGuiDockNodeFlags_PassthruDockspace, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.

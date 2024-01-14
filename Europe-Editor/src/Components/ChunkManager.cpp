@@ -6,18 +6,18 @@ ChunkManager::ChunkManager(const int xSize, int ySize, int zSize, const int chun
 	: m_ChunkxSize{ static_cast<double>(xSize) }, m_ChunkySize{ static_cast<double>(ySize) }, m_ChunkzSize{ static_cast<double>(zSize) }, m_ChunkWidthAmount{ chunkWidthAmount }, m_ChunkDepthAmount{chunkDepthAmount}
 	, m_IsUpdatingAroundCamera{false}, m_Scale{ scale }
 {
-
 }
 
 ChunkManager::ChunkManager(const int xSize, int ySize, int zSize, Eu::PerspectiveCameraControllerComponent* cam, glm::vec3 scale)
-	: m_ChunkxSize{ static_cast<double>(xSize) }, m_ChunkySize{ static_cast<double>(ySize) }, m_ChunkzSize{ static_cast<double>(zSize) }, m_Scale{scale}, m_Camera{cam}, m_IsUpdatingAroundCamera{true}
+	: m_ChunkxSize{ static_cast<double>(xSize) }, m_ChunkySize{ static_cast<double>(ySize) }, m_ChunkzSize{ static_cast<double>(zSize) }, m_Scale{ scale }, m_Camera{ cam }, m_IsUpdatingAroundCamera{ true }
 {
 	
 }
 
 ChunkManager::~ChunkManager()
 {
-
+	m_KillThread = true;
+	m_MeshingThread.join();
 }
 
 void ChunkManager::Start()
@@ -42,10 +42,12 @@ void ChunkManager::Start()
 		}
 		
 	}
+	m_MeshingThread = std::thread(&ChunkManager::UpdateChunks, this);
 }
 void ChunkManager::CreateChunk(glm::dvec2 position)
 {
 	ChunkID id = GetChunkID(position);
+	std::lock_guard<std::mutex> guard(m_LockMutex);
 	EU_CORE_INFO("Creating Chunk at POS: {0},{1}; Idx: {2}, {3}", position.x, position.y, id.x, id.y);
 	auto chunkComp = std::make_shared<ChunkComponent>(id, m_ChunkxSize, m_ChunkySize, m_ChunkzSize, this);
 	m_ChunkIDMap.insert(std::make_pair(id, chunkComp));
@@ -68,6 +70,7 @@ void ChunkManager::Render() const
 {
 }
 
+//Can only be exectutes if chunkID map is up to date
 uint8_t ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)  const
 {
 	try
@@ -99,9 +102,8 @@ uint8_t ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)
 	}
 	catch (const std::exception&)
 	{
-		EU_CORE_INFO("dssd");
+		EU_CORE_INFO("Chunk idx not found: {0}, {1}", lookupID.x, lookupID.y);
 	}
-
 	
 	return 0;
 	
@@ -128,5 +130,19 @@ ChunkID ChunkManager::GetChunkID(glm::dvec2 position)
 
 	return id;
 
+}
+
+void ChunkManager::UpdateChunks()
+{
+	while (true)
+	{
+		for (auto& it : m_ChunkIDMap) {
+			// Do stuff
+			if (m_KillThread == true)
+				return;
+
+			it.second->CreateMesh();
+		}
+	}
 }
 

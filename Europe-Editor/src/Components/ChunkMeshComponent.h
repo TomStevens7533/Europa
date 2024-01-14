@@ -5,6 +5,7 @@
 #include "../Minecraft/BlockStruct.h"
 #include <Europa/structs.h>
 #include <atomic>
+#include <mutex>
 namespace Eu {
 	class MeshComponent;
 	class MeshRenderComponent;
@@ -30,6 +31,7 @@ public:
 	void ResetMesh() { m_IsBuffered = false; };
 private:
 	std::atomic<bool> m_IsBuffered{ false };
+	mutable std::mutex m_LockMutex;
 	int m_VertextIndexIndex = 0;
 private:
 	std::shared_ptr<ChunkMaterial> m_CurrMat;

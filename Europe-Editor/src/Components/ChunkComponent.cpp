@@ -110,9 +110,6 @@ void ChunkComponent::CreateMesh()
 {
 	if (m_NeedUpdate) {
 
-		m_pChunkMesh->ResetMesh();
-
-
 		for (size_t axis = 0; axis < 3; ++axis) //Go over all axises
 		{
 			//Go over slice in certain direction: ie slice towards x are all planes in YZ
@@ -236,7 +233,7 @@ void ChunkComponent::CreateMesh()
 		}
 
 		m_NeedUpdate = false;
-		m_pChunkMesh->BufferMesh();
+		m_pChunkMesh->ResetMesh();
 	}
 }
 void ChunkComponent::CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 v1, glm::ivec3 v2, glm::ivec3 v3, glm::ivec3 v4, int widht, int height)
@@ -276,8 +273,8 @@ int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
 
 void ChunkComponent::Update()
 {
-	if (m_NeedUpdate)
-		CreateMesh();
+	/*if (m_NeedUpdate)
+		CreateMesh();*/
 }
 
 void ChunkComponent::FixedUpdate()

@@ -3,6 +3,8 @@
 #include <unordered_map>
 #include "glm/glm.hpp"
 #include "../Minecraft/BlockStruct.h"
+#include <thread>
+#include <mutex>
 
 class ChunkComponent;
 namespace Eu {
@@ -43,9 +45,10 @@ public:
 private:
 	void CreateChunk(glm::dvec2 position);
 	ChunkID GetChunkID(glm::dvec2 position);
+	void UpdateChunks();
 private:
 	bool m_IsUpdatingAroundCamera{ false };
-
+	std::atomic<bool> m_KillThread{ false };
 	double m_ChunkxSize{};
 	double m_ChunkySize{};
 	double m_ChunkzSize{};
@@ -54,7 +57,8 @@ private:
 	const glm::vec3 m_Scale{};
 	Eu::PerspectiveCameraControllerComponent* m_Camera{};
 	std::unordered_map < ChunkID, std::shared_ptr<ChunkComponent>, MyStructHash, MyStructEqual> m_ChunkIDMap;
-
+	mutable std::mutex m_LockMutex;
+	std::thread m_MeshingThread;
 
 
 };

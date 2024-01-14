@@ -43,8 +43,6 @@ const std::array<float, 12> bottomFace{ 0, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1 };
 ChunkMeshComponent::ChunkMeshComponent()
 {
 	m_CurrMat = Eu::MaterialManager::GetInstance()->CreateMaterial<ChunkMaterial>();
-
-	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
 }
 
 ChunkMeshComponent::~ChunkMeshComponent()
@@ -59,7 +57,8 @@ void ChunkMeshComponent::Start()
 
 void ChunkMeshComponent::Update()
 {
-
+	if (m_IsBuffered == false)
+		BufferMesh();
 }
 
 void ChunkMeshComponent::FixedUpdate()
@@ -69,7 +68,6 @@ void ChunkMeshComponent::FixedUpdate()
 
 void ChunkMeshComponent::Render() const
 {
-	
 	if (m_IsBuffered) {
 		//EU_CORE_INFO("RENDER POS: {0}, {1}", GetAttachedGameObject()->GetTransform().GetWorldPosition().x, GetAttachedGameObject()->GetTransform().GetWorldPosition().z);
 		Eu::Renderer::Submit(m_ChunkVertexArray, m_CurrMat, GetAttachedGameObject()->GetTransform().GetWorld());
@@ -248,6 +246,7 @@ void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 no
 
 void ChunkMeshComponent::BufferMesh()
 {
+	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
 
 	Eu::BufferLayout layout = {
 		{Eu::ShaderDataType::Float3, "a_Position"},
