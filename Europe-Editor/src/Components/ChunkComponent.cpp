@@ -11,24 +11,20 @@
 
 ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const ChunkManager* ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, zSize }, m_pManager{ ptr }, m_ChunkID{ iD }
 {
-	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{0};
 
 }
 
 ChunkComponent::~ChunkComponent()
 {
+}
+void ChunkComponent::DestroyChunk()
+{
 	delete[] m_ChunkArray;
 }
-
-void ChunkComponent::Start()
+void ChunkComponent::InitializeChunk()
 {
-	//Allocate();
-	auto comp = GetAttachedGameObject()->GetComponent<ChunkMeshComponent>();
-	if (comp == nullptr) {
-		m_pChunkMesh = std::make_shared<ChunkMeshComponent>();
-		GetAttachedGameObject()->AddComponent<ChunkMeshComponent>(m_pChunkMesh);
-	}
-	m_NeedUpdate = true;
+	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{ 0 };
+
 
 	std::vector<int> heightMap;
 	heightMap.resize(m_XSize * m_ZSize);
@@ -41,13 +37,13 @@ void ChunkComponent::Start()
 
 	for (int z = 0; z < m_AxisSize.z; z++)
 	{
-		for (int x = 0;x < m_AxisSize.x; x++) {
+		for (int x = 0; x < m_AxisSize.x; x++) {
 
 
 
 			float worldxpos = (chunkPos.x) + (x * chunkScaling.x);
 			float worldzpos = (chunkPos.y) + (z * chunkScaling.z);
-		
+
 
 			float value = static_cast<float>((perlin.octave2D_01((worldxpos) / 550.f, (worldzpos) / 550.f, 8)));
 			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos) / 700.f, (worldzpos) / 700.f, 8)));
@@ -64,11 +60,11 @@ void ChunkComponent::Start()
 
 	for (int z = 0; z < m_AxisSize.z; z++)
 	{
-		for (int x = 0;x < m_AxisSize.x; x++)
-		 {
-			
+		for (int x = 0; x < m_AxisSize.x; x++)
+		{
+
 			for (int y = 0; y < m_AxisSize.y; y++) {
-			
+
 				if (y < (m_AxisSize.y - 10)) {
 					uint8_t blockID = GetBlockType(x, y, z, (heightMap)[z * m_XSize + x]);
 
@@ -76,12 +72,24 @@ void ChunkComponent::Start()
 					x = (m_AxisSize.x - 1) - x;
 					*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.x + y * m_AxisSize.z + z) = blockID;
 				}
-				
+
 			}
 
 		}
 
 	}
+	m_Initialized = true;
+}
+
+void ChunkComponent::Start()
+{
+	//Allocate();
+	auto comp = GetAttachedGameObject()->GetComponent<ChunkMeshComponent>();
+	if (comp == nullptr) {
+		m_pChunkMesh = std::make_shared<ChunkMeshComponent>();
+		GetAttachedGameObject()->AddComponent<ChunkMeshComponent>(m_pChunkMesh);
+	}
+
 
 }
 uint8_t ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
@@ -108,7 +116,13 @@ void ChunkComponent::Render() const
 
 void ChunkComponent::CreateMesh()
 {
-	if (m_NeedUpdate) {
+	if (!m_Initialized)
+	{
+		InitializeChunk();
+	}
+
+	
+	if (m_NeedMeshing) {
 
 		for (size_t axis = 0; axis < 3; ++axis) //Go over all axises
 		{
@@ -232,7 +246,7 @@ void ChunkComponent::CreateMesh()
 
 		}
 
-		m_NeedUpdate = false;
+		m_NeedMeshing = false;
 		m_pChunkMesh->ResetMesh();
 	}
 }
