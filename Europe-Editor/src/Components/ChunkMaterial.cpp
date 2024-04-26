@@ -10,6 +10,7 @@ ChunkMaterial::ChunkMaterial() :
 	paths.push_back("Resources/Blocks/dirt_grass.png");
 	paths.push_back("Resources/Blocks/grass_top.png");
 	paths.push_back("Resources/Blocks/greystone.png");
+	paths.push_back("Resources/Blocks/steen.png");
 
 	m_TextureArray = Eu::ResourceManager::GetInstance()->GetTexture(paths, Eu::TextureTypes::TEXTUREARRAY);
 

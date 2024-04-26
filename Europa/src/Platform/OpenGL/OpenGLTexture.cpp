@@ -199,7 +199,11 @@ namespace Eu {
 		for (size_t i = 0; i < pathVec.size(); i++)
 		{
 			stbi_uc* data; //Pixel data
-			data = stbi_load(pathVec[i].c_str(), &width, &height, &nrChannels, 0);
+			const char* texturePath = pathVec[i].c_str();
+			//data is null bij leaves! wordt niet ingeladen.
+			data = stbi_load(texturePath, &width, &height, &nrChannels, 0);
+			EU_CORE_ASSERT(data != NULL, "CANNOT LOAD IN TEXTURE");
+
 			for (int channel = 0; channel < nrChannels; ++channel) {
 				for (int y = 0; y < height; ++y) {
 					for (int x = 0; x < width; ++x) {

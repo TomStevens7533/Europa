@@ -8,8 +8,8 @@
 
 
 namespace Eu {
-	static int xSize{16}, ySize{128}, zSize{16}, chunkAmountHeight{4}, chunkAmoundWidth{4};
-	static glm::vec3 scale{0.2, 1, 0.2};
+	static int xSize{16}, ySize{128}, zSize{16}, chunkAmountHeight{10}, chunkAmoundWidth{10};
+	static glm::vec3 scale{1, 1, 1};
 
 	EuropaEditorLayer::EuropaEditorLayer()
 	{
@@ -32,6 +32,7 @@ namespace Eu {
 		go->AddComponent<ChunkManager>(m_ChunkComp);
 		m_pChunk = go;
 		m_ChunkGameobject = &m_LayerSceneGraph.AddItemToSceneGraph(go);
+
 	}
 
 	void EuropaEditorLayer::OnAttach()
@@ -91,6 +92,8 @@ namespace Eu {
 				{/*
 					if (m_ChunkManager->DeleteBlockAtPos(lookRay.GetCurrentPos()))
 						break;*/
+
+
 				}
 			}
 			else if (mouseEvent->GetMouseButton() == EU_MOUSE_BUTTON_2) {

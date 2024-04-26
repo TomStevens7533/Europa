@@ -21,7 +21,7 @@ void ChunkComponent::DestroyChunk()
 {
 	delete[] m_ChunkArray;
 }
-void ChunkComponent::InitializeChunk()
+bool ChunkComponent::InitializeChunk()
 {
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{ 0 };
 
@@ -79,6 +79,8 @@ void ChunkComponent::InitializeChunk()
 
 	}
 	m_Initialized = true;
+	return m_Initialized;
+
 }
 
 void ChunkComponent::Start()
@@ -95,8 +97,13 @@ void ChunkComponent::Start()
 uint8_t ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
 {
 	int dirtAmount = rand() % 2;
-	if (y > maxHeight)
+	int leafchance = rand() % 20;
+	if (y > maxHeight + dirtAmount)
 		return 0;
+
+	if(leafchance == 10 && y == (maxHeight + 1))
+		return 3; //Leafs
+
 	else //in height mapped scope
 	{
 		if (y >= (maxHeight - dirtAmount))
@@ -116,12 +123,6 @@ void ChunkComponent::Render() const
 
 void ChunkComponent::CreateMesh()
 {
-	if (!m_Initialized)
-	{
-		InitializeChunk();
-	}
-
-	
 	if (m_NeedMeshing) {
 
 		for (size_t axis = 0; axis < 3; ++axis) //Go over all axises
@@ -274,11 +275,11 @@ int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
 			return 0;
 		else
 			return 1;
-
 		break;
 	case 2:
 		return 3;
-		break;
+	case 3:
+		return 4;
 	default:
 		break;
 	}

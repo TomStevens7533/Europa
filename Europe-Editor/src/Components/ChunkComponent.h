@@ -18,7 +18,6 @@ public:
 	~ChunkComponent();
 
 	void DestroyChunk();
-	void InitializeChunk();
 	void Start() override;
 	void Update() override;
 	void FixedUpdate() override;
@@ -26,11 +25,15 @@ public:
 
 	void SetDirty() { m_Initialized = true; };
 	bool GetDirtyFlag() { return m_Initialized; }
-	void CreateMesh();
 	uint8_t GetBlock(int x, int y, int z);
 
 	uint8_t GetBlockType(int x, int y, int z, int max);
 	bool IsBlockSolid(int x, int y, int z) const;
+
+	//Threaded
+	bool InitializeChunk();
+	void CreateMesh();
+	bool GetInitstate() const { return m_Initialized; }
 
 private:
 	struct BlockMask

@@ -5,6 +5,7 @@
 #include "../Minecraft/BlockStruct.h"
 #include <thread>
 #include <mutex>
+#include <future>
 
 class ChunkComponent;
 namespace Eu {
@@ -45,7 +46,10 @@ public:
 private:
 	void CreateChunk(glm::dvec2 position);
 	ChunkID GetChunkID(glm::dvec2 position);
+	
+	//Thread function
 	void UpdateChunks(std::vector<ChunkComponent*> localThreads);
+	std::future<bool> InitizalizeChunks(std::vector<ChunkComponent*> localThreads);
 private:
 	bool m_IsUpdatingAroundCamera{ false };
 	std::atomic<bool> m_KillThread{ false };
@@ -60,7 +64,14 @@ private:
 	Eu::PerspectiveCameraControllerComponent* m_Camera{};
 	std::unordered_map < ChunkID, std::shared_ptr<ChunkComponent>, MyStructHash, MyStructEqual> m_ChunkIDMap;
 	std::thread m_MeshingThread;
+
+	//Threads
+	bool m_IsValid = true;
 	std::vector<std::thread> m_ThreadVector;
+	std::vector<std::future<bool>> m_FutureVector;
+	std::vector<std::promise<bool>> m_PromiseVector;
+
+
 
 
 };

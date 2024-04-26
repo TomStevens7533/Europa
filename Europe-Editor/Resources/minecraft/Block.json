@@ -106,7 +106,7 @@
             "AtlasRow" : 0
         },
       {
-        "BlockID": 4,
+        "BlockID": 3,
         "name": "Leaves",
         "IsCube" : true,
         "IsSolid": false,

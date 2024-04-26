@@ -48,32 +48,31 @@ void ChunkManager::Start()
 		
 	}
 
-	std::vector<ChunkComponent*> chunkThreadVector;
+	std::vector<std::vector<ChunkComponent*>> chunkThreadVector;
 	int index{0};
+	auto it = m_ChunkIDMap.begin();
 	//Create threads
-	for (auto& it : m_ChunkIDMap) {
-		// Do stuff
-		chunkThreadVector.push_back(it.second.get());
-		++index;
-		if (index >= 4)
-		{
-			m_ThreadVector.emplace_back(std::thread(&ChunkManager::UpdateChunks, this, chunkThreadVector));
-			index = 0;
-			chunkThreadVector.clear();
-
+	while (it != m_ChunkIDMap.end()) {
+		std::vector<ChunkComponent*> ChunkToWorkOn;
+		for (int i = 0; i < 50 && it != m_ChunkIDMap.end(); ++i, ++it) {
+			ChunkToWorkOn.push_back(it->second.get());
 		}
+		chunkThreadVector.push_back(ChunkToWorkOn);
 	}
-	if (index > 0)
+	
+	for (size_t i = 0; i < chunkThreadVector.size(); i++)
 	{
-		m_ThreadVector.emplace_back(std::thread(&ChunkManager::UpdateChunks, this, chunkThreadVector));
-		index = 0;
-		chunkThreadVector.clear();
+		m_FutureVector.push_back(InitizalizeChunks(chunkThreadVector[i]));
+
 	}
+
+	
+
 }
 void ChunkManager::CreateChunk(glm::dvec2 position)
 {
 	ChunkID id = GetChunkID(position);
-	EU_CORE_INFO("Creating Chunk at POS: {0},{1}; Idx: {2}, {3}", position.x, position.y, id.x, id.y);
+	//EU_CORE_INFO("Creating Chunk at POS: {0},{1}; Idx: {2}, {3}", position.x, position.y, id.x, id.y);
 	auto chunkComp = std::make_shared<ChunkComponent>(id, m_ChunkxSize, m_ChunkySize, m_ChunkzSize, this);
 	m_ChunkIDMap.insert(std::make_pair(id, chunkComp));
 	auto go = std::make_shared<Eu::GameObject>();
@@ -85,10 +84,37 @@ void ChunkManager::CreateChunk(glm::dvec2 position)
 
 void ChunkManager::Update()
 {
+	
+	if (m_IsValid)
+	{	
+		bool valid = true;
+		for (size_t i = 0; i < m_FutureVector.size(); i++)
+		{
+			auto status = m_FutureVector[i].wait_for(std::chrono::milliseconds(0));
+			if (status == std::future_status::ready) {
+				valid &= true;
+			}
+			else
+				valid &= false;
+		}
+
+		if (valid)
+		{
+
+			//All Chunks have been initialized
+			for (std::promise<bool>& f : m_PromiseVector)
+			{
+				f.set_value(true);
+			}
+			m_IsValid = false;
+		}
+
+	}
 }
 
 void ChunkManager::FixedUpdate()
 {
+
 }
 
 void ChunkManager::Render() const
@@ -170,5 +196,62 @@ void ChunkManager::UpdateChunks(std::vector<ChunkComponent*> localThreads)
 		}
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
+}
+
+//because it goes out of scope the future is set
+std::future<bool> ChunkManager::InitizalizeChunks(std::vector<ChunkComponent*> localThreads)
+{
+	// Create a promise to store the result
+	std::promise<bool> promise;
+
+	//Create promise to main thread
+	std::promise<bool>& notificationPromise = m_PromiseVector.emplace_back();
+	std::future<bool> notificationFuture = notificationPromise.get_future();
+
+	// Get the future associated with the promise
+	std::future<bool> future = promise.get_future();
+
+	// Start a new thread to compute the square and fulfill the promise
+	 std::thread([localThreads, p = std::move(promise), f = std::move(notificationFuture)]() mutable {
+		bool isDone = true;
+		// Compute the square
+
+		for (size_t i = 0; i < localThreads.size(); i++)
+		{
+				isDone &= localThreads[i]->InitializeChunk();
+				std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+
+		}
+
+		// Fulfill the promise with the result
+		p.set_value(isDone);
+
+		//bool created = false;
+		while (true)
+		{
+			auto status = f.wait_for(std::chrono::milliseconds(0));
+			if (status == std::future_status::ready) {
+				// Worker future is ready, get the value
+				while (true)
+				{
+					for (size_t i = 0; i < localThreads.size(); i++)
+					{
+						localThreads[i]->CreateMesh();
+						std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+
+					}
+					EU_CORE_INFO("Done");
+					return;
+		
+				}
+			}
+			std::this_thread::sleep_for(std::chrono::seconds(5));
+		
+		}
+
+		}).detach(); // Detach the thread, as we are not joining it
+
+	// Return the future associated with the promise
+	return future;
 }
 

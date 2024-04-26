@@ -198,8 +198,6 @@ void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 no
 	else if (normal.z != 0)
 		lightLevel = 80;
 
-
-	auto uvInformation = BlockJsonParser::GetInstance()->GetUVOfType(1, Faces::FRONT);
 	for (size_t i = 0; i < vertex.size(); i++)
 	{
 		Eu::ChunkVertexInput input;
@@ -247,7 +245,6 @@ void ChunkMeshComponent::AddVertices(std::vector<glm::vec3> vertex, glm::vec3 no
 void ChunkMeshComponent::BufferMesh()
 {
 	m_ChunkVertexArray.reset(Eu::VertexArray::Create());
-
 	Eu::BufferLayout layout = {
 		{Eu::ShaderDataType::Float3, "a_Position"},
 		{Eu::ShaderDataType::Int, "a_NormalTextureIDX", true},
