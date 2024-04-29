@@ -91,8 +91,6 @@ void ChunkComponent::Start()
 		m_pChunkMesh = std::make_shared<ChunkMeshComponent>();
 		GetAttachedGameObject()->AddComponent<ChunkMeshComponent>(m_pChunkMesh);
 	}
-
-
 }
 uint8_t ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
 {
@@ -160,17 +158,28 @@ void ChunkComponent::CreateMesh()
 						//Get neigbourhing block
 						const uint8_t compareBlock = GetBlock(chunkIterator.x + axisMask.x, chunkIterator.y + axisMask.y, chunkIterator.z + axisMask.z);
 
-						const bool IsCurrOpqaue = currentBlock != 0;
-						const bool IsCompareOpqaue = compareBlock != 0;
+						const bool IsCurrOpqaue = IsBlockSolid(currentBlock);
+						const bool IsCompareOpqaue = IsBlockSolid(compareBlock);
 
 						if (IsCurrOpqaue == IsCompareOpqaue) { //if equals no face 
 							maskVector[n++] = BlockMask{ 0, 0 };
 						}
 						else if (IsCurrOpqaue) {
-							maskVector[n++] = BlockMask{ currentBlock, 1 }; //towards direction of compareblock
+							if(compareBlock == 0)
+								maskVector[n++] = BlockMask{ currentBlock, 1 }; //towards direction of compareblock
+							else
+							{
+								//render both faces
+							}
 						}
 						else {
-							maskVector[n++] = BlockMask{ compareBlock, -1 }; //towards direction of currentBlock
+							if (currentBlock == 0)
+								maskVector[n++] = BlockMask{ compareBlock, -1 }; //towards direction of currentBlock
+							else
+							{
+								//render both faces
+							}
+
 
 						}
 					}
