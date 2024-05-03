@@ -161,26 +161,24 @@ void ChunkComponent::CreateMesh()
 						const bool IsCurrOpqaue = IsBlockSolid(currentBlock);
 						const bool IsCompareOpqaue = IsBlockSolid(compareBlock);
 
-						if (IsCurrOpqaue == IsCompareOpqaue) { //if equals no face 
+						if (currentBlock == 3 && IsCompareOpqaue)
+						{
+							maskVector[n++] = BlockMask{ compareBlock, -1}; //towards direction of compareblock
+							//draw other block aswell
+						}
+						else if (compareBlock == 3 && IsCurrOpqaue)
+						{
+							maskVector[n++] = BlockMask{ currentBlock, 1 }; //towards direction of compareblock
+							//draw other block aswell
+						}
+						else if (IsCurrOpqaue == IsCompareOpqaue) { //if equals no face 
 							maskVector[n++] = BlockMask{ 0, 0 };
 						}
 						else if (IsCurrOpqaue) {
-							if(compareBlock == 0)
-								maskVector[n++] = BlockMask{ currentBlock, 1 }; //towards direction of compareblock
-							else
-							{
-								//render both faces
-							}
+							maskVector[n++] = BlockMask{ currentBlock, 1 }; //towards direction of compareblock
 						}
 						else {
-							if (currentBlock == 0)
-								maskVector[n++] = BlockMask{ compareBlock, -1 }; //towards direction of currentBlock
-							else
-							{
-								//render both faces
-							}
-
-
+							maskVector[n++] = BlockMask{ compareBlock, -1 }; //towards direction of currentBlock
 						}
 					}
 				}

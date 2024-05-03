@@ -16,6 +16,9 @@ void main()
 
 	tempColor = texture(my_sampler, vec3(v_UV.x, v_UV.y, v_TextureID)); 
 	
+	if(tempColor.a < 0.1f)
+		discard;
+
 	float lightColor = (v_LighLevel * 0.01f);
 	tempColor.xyz = vec3(tempColor.x * (lightColor), tempColor.y * (lightColor),tempColor.z * (lightColor));
 
