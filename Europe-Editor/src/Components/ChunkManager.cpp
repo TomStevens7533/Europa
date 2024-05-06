@@ -160,6 +160,45 @@ uint8_t ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)
 	
 }
 
+//Can only be exectutes if chunkID map is up to date
+uint8_t ChunkManager::ReplaceBlock(ChunkID lookupID, uint8_t id, int x, int y, int z)
+{
+	try
+	{
+		if (x < 0) {
+			lookupID.x += 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				m_ChunkIDMap.at(lookupID)->ReplaceBlock(m_ChunkxSize, y, z, id);
+			}
+		}
+		if (x >= (m_ChunkxSize)) {
+			lookupID.x -= 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				m_ChunkIDMap.at(lookupID)->ReplaceBlock(0, y, z, id);
+			}
+		}
+		if (z >= m_ChunkzSize) {
+			lookupID.y += 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				m_ChunkIDMap.at(lookupID)->ReplaceBlock(x, y, 0, id);
+			}
+		}
+		if (z < 0) {
+			lookupID.y -= 1;
+			if (m_ChunkIDMap.count(lookupID) > 0) {
+				m_ChunkIDMap.at(lookupID)->ReplaceBlock(x, y, m_ChunkzSize, id);
+			}
+		}
+	}
+	catch (const std::exception&)
+	{
+		EU_CORE_INFO("Chunk idx not found: {0}, {1}", lookupID.x, lookupID.y);
+	}
+
+	return 0;
+
+}
+
 void ChunkManager::UpdateNeightbours(glm::ivec2 posiotn)
 {
 	//std::pair<int, int> id = GetChunkID(posiotn);
@@ -236,6 +275,8 @@ std::future<bool> ChunkManager::InitizalizeChunks(std::vector<ChunkComponent*> l
 				{
 					for (size_t i = 0; i < localThreads.size(); i++)
 					{
+						//Neighbbour chunk face dependent | Add structures
+						localThreads[i]->BuildTrees();
 						localThreads[i]->CreateMesh();
 						std::this_thread::sleep_for(std::chrono::nanoseconds(5));
 

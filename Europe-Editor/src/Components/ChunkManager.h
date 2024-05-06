@@ -42,6 +42,7 @@ public:
 	void FixedUpdate() override;
 	void Render() const override;
 	uint8_t GetBlockIDNeighbour(ChunkID position, int x, int y, int z) const;
+	uint8_t ReplaceBlock(ChunkID lookupID, uint8_t id, int x, int y, int z);
 	void UpdateNeightbours(glm::ivec2 posiotn);
 private:
 	void CreateChunk(glm::dvec2 position);

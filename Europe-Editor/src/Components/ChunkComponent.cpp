@@ -9,7 +9,7 @@
 #include "PerlinNosie.h"
 
 
-ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, const ChunkManager* ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, zSize }, m_pManager{ ptr }, m_ChunkID{ iD }
+ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, ChunkManager* ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, zSize }, m_pManager{ ptr }, m_ChunkID{ iD }
 {
 
 }
@@ -26,7 +26,6 @@ bool ChunkComponent::InitializeChunk()
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{ 0 };
 
 
-	std::vector<int> heightMap;
 	heightMap.resize(m_XSize * m_ZSize);
 	//Create noise map
 	glm::vec2 chunkPos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
@@ -99,9 +98,6 @@ uint8_t ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
 	if (y > maxHeight + dirtAmount)
 		return 0;
 
-	if(leafchance == 10 && y == (maxHeight + 1))
-		return 3; //Leafs
-
 	else //in height mapped scope
 	{
 		if (y >= (maxHeight - dirtAmount))
@@ -118,7 +114,44 @@ void ChunkComponent::Render() const
 {
 	
 }
+void ChunkComponent::BuildTrees()
+{
+	int treeAmount = rand() % 2;
+	while (treeAmount != 0)
+	{
+		int x = rand() % m_XSize;
+		int z = rand() % m_ZSize;
+		int y = (heightMap)[z * m_XSize + x];
 
+		if (GetBlock(x, y, z) == 1)
+		{
+			//Create tree
+			// Trunbk heigh
+			int trunkHeight = 3 + (rand() % 7);
+			//Trunk
+			for (int i = 0; i < trunkHeight; i++)
+			{
+				ReplaceBlock(x, y + i, z, 4);
+			}
+			//Leaves
+			int leafheight = 3 + (rand() % 4);
+			int leafwidth = 3 + (rand() % 4);
+
+			for (int i = 0; i < leafheight; i++)
+			{
+				for (int j = -1; j < leafwidth; j++)
+				{
+					for (int k = -1; k < leafwidth; k++)
+					{
+						ReplaceBlock(x + j, y + trunkHeight + i, z + k, 3);
+					}
+				}
+				leafwidth = 3 + (rand() % 4);
+			}
+		}
+		treeAmount--;
+	}
+}
 void ChunkComponent::CreateMesh()
 {
 	if (m_NeedMeshing) {
@@ -158,17 +191,18 @@ void ChunkComponent::CreateMesh()
 						//Get neigbourhing block
 						const uint8_t compareBlock = GetBlock(chunkIterator.x + axisMask.x, chunkIterator.y + axisMask.y, chunkIterator.z + axisMask.z);
 
+						//verschil maken met air en transparant 3 opties
 						const bool IsCurrOpqaue = IsBlockSolid(currentBlock);
 						const bool IsCompareOpqaue = IsBlockSolid(compareBlock);
 
-						if (currentBlock == 3 && IsCompareOpqaue)
+						if (currentBlock == 3 && !IsCompareOpqaue)
 						{
-							maskVector[n++] = BlockMask{ compareBlock, -1}; //towards direction of compareblock
+							maskVector[n++] = BlockMask{ currentBlock, 1}; //towards direction of compareblock
 							//draw other block aswell
 						}
-						else if (compareBlock == 3 && IsCurrOpqaue)
+						else if (compareBlock == 3 && !IsCurrOpqaue)
 						{
-							maskVector[n++] = BlockMask{ currentBlock, 1 }; //towards direction of compareblock
+							maskVector[n++] = BlockMask{ compareBlock, -1 }; //towards direction of compareblock
 							//draw other block aswell
 						}
 						else if (IsCurrOpqaue == IsCompareOpqaue) { //if equals no face 
@@ -287,6 +321,8 @@ int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
 		return 3;
 	case 3:
 		return 4;
+	case 4:
+		return 5;
 	default:
 		break;
 	}
@@ -319,6 +355,18 @@ bool ChunkComponent::IsBlockSolid(int x, int y, int z) const
 
 void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 {
+	std::lock_guard<std::mutex> lock(m_ChunkIDMapMutex);
+
+	if (x < 0 || x >= (m_XSize) || z < 0 || z >= (m_ZSize))
+	{
+
+		glm::dvec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
+		GetAttachedGameObject()->GetTransform().GetPosition().z };
+
+		m_pManager->ReplaceBlock(m_ChunkID, id, x, y, z);
+
+	}
+
 	*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z) = id;
 }
 

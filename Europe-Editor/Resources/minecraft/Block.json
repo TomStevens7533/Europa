@@ -72,7 +72,7 @@
             "AtlasRow" : 0
         },
         {
-            "BlockID" :  3,
+            "BlockID" :  4,
             "name" : "Wood",
             "IsCube" : true,
             "IsSolid" : true,
