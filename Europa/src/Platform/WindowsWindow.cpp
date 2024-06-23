@@ -189,9 +189,6 @@ namespace Eu {
 	{
 		glfwPollEvents();
 		m_Context->SwapBuffer();
-
-
-		
 	}
 	void WindowsWindow::SetVSync(bool vsync)
 	{

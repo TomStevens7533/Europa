@@ -116,7 +116,7 @@ void ChunkComponent::Render() const
 }
 void ChunkComponent::BuildTrees()
 {
-	int treeAmount = rand() % 2;
+	int treeAmount = 1;
 	while (treeAmount != 0)
 	{
 		int x = rand() % m_XSize;
@@ -125,28 +125,29 @@ void ChunkComponent::BuildTrees()
 
 		if (GetBlock(x, y, z) == 1)
 		{
-			//Create tree
-			// Trunbk heigh
-			int trunkHeight = 3 + (rand() % 7);
-			//Trunk
+			// Create tree
+			// Trunk height
+			int trunkHeight = 5 + (rand() % 4);
+			// Trunk
 			for (int i = 0; i < trunkHeight; i++)
 			{
 				ReplaceBlock(x, y + i, z, 4);
 			}
-			//Leaves
-			int leafheight = 3 + (rand() % 4);
-			int leafwidth = 3 + (rand() % 4);
-
-			for (int i = 0; i < leafheight; i++)
+			// Leaves
+			for (int i = -2; i <= 2; i++)
 			{
-				for (int j = -1; j < leafwidth; j++)
+				for (int j = -2; j <= 2; j++)
 				{
-					for (int k = -1; k < leafwidth; k++)
+					for (int j = -2; j <= 2; j++)
 					{
-						ReplaceBlock(x + j, y + trunkHeight + i, z + k, 3);
+						for (int k = trunkHeight - 2; k <= trunkHeight + 2; k++)
+						{
+							// Only place leaves if block is within a certain distance from the trunk
+
+							ReplaceBlock(x + i, y + k, z + j, 3);
+						}
 					}
 				}
-				leafwidth = 3 + (rand() % 4);
 			}
 		}
 		treeAmount--;
@@ -355,7 +356,7 @@ bool ChunkComponent::IsBlockSolid(int x, int y, int z) const
 
 void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 {
-	std::lock_guard<std::mutex> lock(m_ChunkIDMapMutex);
+	//std::lock_guard<std::mutex> lock(m_ChunkIDMapMutex);
 
 	if (x < 0 || x >= (m_XSize) || z < 0 || z >= (m_ZSize))
 	{
@@ -364,6 +365,7 @@ void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 		GetAttachedGameObject()->GetTransform().GetPosition().z };
 
 		m_pManager->ReplaceBlock(m_ChunkID, id, x, y, z);
+		return;
 
 	}
 

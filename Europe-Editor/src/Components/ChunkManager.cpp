@@ -65,6 +65,26 @@ void ChunkManager::Start()
 		m_FutureVector.push_back(InitizalizeChunks(chunkThreadVector[i]));
 
 	}
+	bool allFuturesSet = true;
+	for (auto& future : m_FutureVector)
+	{
+		// wait() will block until the future is ready
+		future.wait();
+		// Alternatively, you can use future.wait_for() with a timeout if you don't want to block indefinitely
+		// auto status = future.wait_for(std::chrono::seconds(0));
+		// if (status != std::future_status::ready) {
+		//     allFuturesSet = false;
+		//     break;
+		// }
+	}
+	if (allFuturesSet)
+	{
+		for (size_t i = 0; i < chunkThreadVector.size(); i++)
+		{
+			BuidChunks(chunkThreadVector[i]);
+
+		}
+	}
 
 	
 
@@ -192,7 +212,8 @@ uint8_t ChunkManager::ReplaceBlock(ChunkID lookupID, uint8_t id, int x, int y, i
 	}
 	catch (const std::exception&)
 	{
-		EU_CORE_INFO("Chunk idx not found: {0}, {1}", lookupID.x, lookupID.y);
+		//EU_CORE_INFO("Chunk idx not found: {0}, {1}", lookupID.x, lookupID.y);
+		return 0;
 	}
 
 	return 0;
@@ -251,48 +272,79 @@ std::future<bool> ChunkManager::InitizalizeChunks(std::vector<ChunkComponent*> l
 	std::future<bool> future = promise.get_future();
 
 	// Start a new thread to compute the square and fulfill the promise
-	 std::thread([localThreads, p = std::move(promise), f = std::move(notificationFuture)]() mutable {
+	std::thread([localThreads, p = std::move(promise), f = std::move(notificationFuture)]() mutable {
 		bool isDone = true;
 		// Compute the square
 
 		for (size_t i = 0; i < localThreads.size(); i++)
 		{
-				isDone &= localThreads[i]->InitializeChunk();
-				std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+			isDone &= localThreads[i]->InitializeChunk();
+			std::this_thread::sleep_for(std::chrono::nanoseconds(1));
 
 		}
 
 		// Fulfill the promise with the result
 		p.set_value(isDone);
-
-		//bool created = false;
-		while (true)
-		{
-			auto status = f.wait_for(std::chrono::milliseconds(0));
-			if (status == std::future_status::ready) {
-				// Worker future is ready, get the value
-				while (true)
-				{
-					for (size_t i = 0; i < localThreads.size(); i++)
-					{
-						//Neighbbour chunk face dependent | Add structures
-						localThreads[i]->BuildTrees();
-						localThreads[i]->CreateMesh();
-						std::this_thread::sleep_for(std::chrono::nanoseconds(5));
-
-					}
-					EU_CORE_INFO("Done");
-					return;
-		
-				}
-			}
-			std::this_thread::sleep_for(std::chrono::seconds(5));
-		
-		}
-
 		}).detach(); // Detach the thread, as we are not joining it
+		//bool created = false;
+		//while (true)
+		//{
+		//	auto status = f.wait_for(std::chrono::milliseconds(0));
+		//	if (status == std::future_status::ready) {
+		//		// Worker future is ready, get the value
+		//		while (true)
+		//		{
+		//			for (size_t i = 0; i < localThreads.size(); i++)
+		//			{
+		//				//Neighbbour chunk face dependent | Add structures
+		//				localThreads[i]->BuildTrees();
+		//
+		//				std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+		//
+		//			}
+		//
+		//			for (size_t i = 0; i < localThreads.size(); i++)
+		//			{
+		//				//Neighbbour chunk face dependent | Add structures
+		//				localThreads[i]->CreateMesh();
+		//				std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+		//
+		//			}
+		//			EU_CORE_INFO("Done");
+		//			return;
+		//
+		//		}
+		//	}
+		//	std::this_thread::sleep_for(std::chrono::seconds(5));
+		//
+		//}
+
 
 	// Return the future associated with the promise
 	return future;
+}
+void ChunkManager::BuidChunks(std::vector<ChunkComponent*> localThreads)
+{
+	std::thread([localThreads]() mutable {
+		for (size_t i = 0; i < localThreads.size(); i++)
+		{
+			//Neighbbour chunk face dependent | Add structures
+			localThreads[i]->BuildTrees();
+
+			//std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+
+		}
+
+		for (size_t i = 0; i < localThreads.size(); i++)
+		{
+			//Neighbbour chunk face dependent | Add structures
+			localThreads[i]->CreateMesh();
+			//std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+
+		}
+		//std::this_thread::sleep_for(std::chrono::seconds(5));
+
+		}
+	).detach();
 }
 

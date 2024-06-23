@@ -37,7 +37,7 @@ bool BlockJsonParser::IsSolid(uint8_t id) const
 
 
 	if (m_BlockMap.count(id) > 0) {
-		return m_BlockMap.find(id)->second.IsSolid;
+		return m_BlockMap.at(id).IsSolid;
 	}
 	return false;
 }
@@ -46,7 +46,7 @@ bool BlockJsonParser::IsCube(uint8_t id) const
 {
 
 	if (m_BlockMap.count(id) > 0) {
-		return m_BlockMap.find(id)->second.IsCube;
+		return m_BlockMap.at(id).IsCube;
 	}
 	return false;
 }
@@ -54,7 +54,7 @@ bool BlockJsonParser::IsCube(uint8_t id) const
 std::string BlockJsonParser::GetName(uint8_t id)
 {
 	if (m_BlockMap.count(id) > 0) {
-		return m_BlockMap.find(id)->second.name;
+		return m_BlockMap.at(id).name;
 	}
 	return "None";
 }

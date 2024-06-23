@@ -94,11 +94,8 @@ namespace Eu
 				currentLayer->OnImGuiRender();
 			m_ImGuiLayer->End();
 
-			
 			m_Window->OnUpdate();
 		}
-
-		
 	}
 
 	void Application::Close()

@@ -51,10 +51,13 @@ private:
 	//Thread function
 	void UpdateChunks(std::vector<ChunkComponent*> localThreads);
 	std::future<bool> InitizalizeChunks(std::vector<ChunkComponent*> localThreads);
+	void BuidChunks(std::vector<ChunkComponent*> localThreads);
 private:
 	bool m_IsUpdatingAroundCamera{ false };
 	std::atomic<bool> m_KillThread{ false };
 	std::mutex m_KillMutex;
+	mutable std::mutex m_LookUplMutex;
+
 	std::condition_variable m_Cond;
 	double m_ChunkxSize{};
 	double m_ChunkySize{};
