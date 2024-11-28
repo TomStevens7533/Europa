@@ -24,7 +24,7 @@ void ChunkComponent::DestroyChunk()
 bool ChunkComponent::InitializeChunk()
 {
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{ 0 };
-
+	const int TERRAIN_GENERATION_MIN = 40;
 
 	heightMap.resize(m_XSize * m_ZSize);
 	//Create noise map
@@ -44,14 +44,14 @@ bool ChunkComponent::InitializeChunk()
 			float worldzpos = (chunkPos.y) + (z * chunkScaling.z);
 
 
-			float value = static_cast<float>((perlin.octave2D_01((worldxpos) / 550.f, (worldzpos) / 550.f, 8)));
-			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos) / 700.f, (worldzpos) / 700.f, 8)));
-			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos) / 1024.f, (worldzpos) / 650.f, 8)));
+			float value = static_cast<float>((perlin.octave3D_01((worldxpos / 400.f), (worldzpos / 400.f), 8,  2)));
+			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos / 600.f), (worldzpos / 600.f), 10, 1)));
+			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos / 500.f), (worldzpos / 500.f), 10, 0.5)));
 
-			float totalValue = static_cast<float>((value * value2 * value3 * value3 - 0) / (1 - 0));
+			float totalValue = static_cast<float>((value * value2 * value3) / (1));
 			totalValue = (totalValue + 1) / 2;
 
-			float mappedValue = static_cast<int>(glm::mix(0, m_YSize, value));
+			float mappedValue = static_cast<int>(glm::mix(0, m_YSize, glm::abs(value)));
 
 			heightMap[z * m_XSize + x] = mappedValue;
 		}
