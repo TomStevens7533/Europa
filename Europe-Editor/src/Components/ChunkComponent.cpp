@@ -21,8 +21,11 @@ void ChunkComponent::DestroyChunk()
 {
 	delete[] m_ChunkArray;
 }
+
+
 bool ChunkComponent::InitializeChunk()
 {
+	
 	m_ChunkArray = new uint8_t[m_XSize * m_YSize * m_ZSize]{ 0 };
 	const int TERRAIN_GENERATION_MIN = 40;
 
@@ -44,9 +47,9 @@ bool ChunkComponent::InitializeChunk()
 			float worldzpos = (chunkPos.y) + (z * chunkScaling.z);
 
 
-			float value = static_cast<float>((perlin.octave3D_01((worldxpos / 400.f), (worldzpos / 400.f), 8,  2)));
-			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos / 600.f), (worldzpos / 600.f), 10, 1)));
-			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos / 500.f), (worldzpos / 500.f), 10, 0.5)));
+			float value = static_cast<float>((perlin.octave2D_01((worldxpos / 400.f), (worldzpos / 400.f), 8,  0.3)));
+			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos / 600.f), (worldzpos / 600.f), 8, 0.1)));
+			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos / 500.f), (worldzpos / 500.f), 8, 0.5)));
 
 			float totalValue = static_cast<float>((value * value2 * value3) / (1));
 			totalValue = (totalValue + 1) / 2;
@@ -95,7 +98,7 @@ uint8_t ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
 {
 	int dirtAmount = rand() % 2;
 	int leafchance = rand() % 20;
-	if (y > maxHeight + dirtAmount)
+	if (y > maxHeight)
 		return 0;
 
 	else //in height mapped scope
