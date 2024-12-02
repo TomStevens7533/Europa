@@ -7,6 +7,7 @@
 #include "Europa/ResourceManager.h"
 #include "ChunkManager.h"
 #include "PerlinNosie.h"
+#include "../Minecraft/BlockStruct.h"
 
 
 ChunkComponent::ChunkComponent(ChunkID iD, int xSize, int ySize, int zSize, ChunkManager* ptr) : m_XSize{ xSize }, m_YSize{ ySize }, m_ZSize{ zSize }, m_AxisSize{ xSize, ySize, zSize }, m_pManager{ ptr }, m_ChunkID{ iD }
@@ -47,9 +48,9 @@ bool ChunkComponent::InitializeChunk()
 			float worldzpos = (chunkPos.y) + (z * chunkScaling.z);
 
 
-			float value = static_cast<float>((perlin.octave2D_01((worldxpos / 400.f), (worldzpos / 400.f), 8,  0.3)));
-			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos / 600.f), (worldzpos / 600.f), 8, 0.1)));
-			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos / 500.f), (worldzpos / 500.f), 8, 0.5)));
+			float value = static_cast<float>((perlin.octave2D_01((worldxpos / 200.f), (worldzpos / 300.f), 8,  0.5)));
+			float value2 = static_cast<float>((perlin.octave2D_01((worldxpos / 400.f), (worldzpos / 600.f), 8, 0.3)));
+			float value3 = static_cast<float>((perlin.octave2D_01((worldxpos / 400.f), (worldzpos / 500.f), 8, 0.5)));
 
 			float totalValue = static_cast<float>((value * value2 * value3) / (1));
 			totalValue = (totalValue + 1) / 2;
@@ -67,13 +68,12 @@ bool ChunkComponent::InitializeChunk()
 
 			for (int y = 0; y < m_AxisSize.y; y++) {
 
-				if (y < (m_AxisSize.y - 10)) {
-					uint8_t blockID = GetBlockType(x, y, z, (heightMap)[z * m_XSize + x]);
+				uint8_t blockID = static_cast<int>(GetBlockType(x, y, z, (heightMap)[z * m_XSize + x]));
 
-					//Flip x to correct space
-					x = (m_AxisSize.x - 1) - x;
-					*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.x + y * m_AxisSize.z + z) = blockID;
-				}
+				//Flip x to correct space
+				x = (m_AxisSize.x - 1) - x;
+				*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.x + y * m_AxisSize.z + z) = blockID;
+
 
 			}
 
@@ -94,21 +94,26 @@ void ChunkComponent::Start()
 		GetAttachedGameObject()->AddComponent<ChunkMeshComponent>(m_pChunkMesh);
 	}
 }
-uint8_t ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
+BlockType ChunkComponent::GetBlockType(int x, int y, int z, int maxHeight)
 {
-	int dirtAmount = rand() % 2;
+	int dirtAmount = 2;
 	int leafchance = rand() % 20;
+	BlockType FinalblockType = BlockType::AIR;
 	if (y > maxHeight)
-		return 0;
+		FinalblockType = BlockType::AIR;
 
 	else //in height mapped scope
 	{
-		if (y >= (maxHeight - dirtAmount))
-			return 1;
-		else
-			return 2;
+		FinalblockType = BlockType::STONE;
+
+		
+		
+		if (y >= (maxHeight - dirtAmount) && y < maxHeight)
+			FinalblockType = BlockType::DIRT;
+		else if (y = maxHeight)
+			FinalblockType = BlockType::GRASS;
 	}
-	return 0;
+	return FinalblockType;
 
 }
 
@@ -126,7 +131,7 @@ void ChunkComponent::BuildTrees()
 		int z = rand() % m_ZSize;
 		int y = (heightMap)[z * m_XSize + x];
 
-		if (GetBlock(x, y, z) == 1)
+		if (GetBlock(x, y, z) == BlockType::GRASS)
 		{
 			// Create tree
 			// Trunk height
@@ -134,7 +139,7 @@ void ChunkComponent::BuildTrees()
 			// Trunk
 			for (int i = 0; i < trunkHeight; i++)
 			{
-				ReplaceBlock(x, y + i, z, 4);
+				ReplaceBlock(x, y + i, z, BlockType::WOOD);
 			}
 			// Leaves
 			for (int i = -2; i <= 2; i++)
@@ -147,7 +152,7 @@ void ChunkComponent::BuildTrees()
 						{
 							// Only place leaves if block is within a certain distance from the trunk
 
-							ReplaceBlock(x + i, y + k, z + j, 3);
+							ReplaceBlock(x + i, y + k, z + j, BlockType::LEAVES);
 						}
 					}
 				}
@@ -191,32 +196,32 @@ void ChunkComponent::CreateMesh()
 					for (chunkIterator[Axis1] = 0; chunkIterator[Axis1] < axis1Limit; ++chunkIterator[Axis1])
 					{
 						//Get current block
-						const uint8_t currentBlock = GetBlock(chunkIterator.x, chunkIterator.y, chunkIterator.z);
+						const BlockType currentBlock = GetBlock(chunkIterator.x, chunkIterator.y, chunkIterator.z);
 						//Get neigbourhing block
-						const uint8_t compareBlock = GetBlock(chunkIterator.x + axisMask.x, chunkIterator.y + axisMask.y, chunkIterator.z + axisMask.z);
+						const BlockType compareBlock = GetBlock(chunkIterator.x + axisMask.x, chunkIterator.y + axisMask.y, chunkIterator.z + axisMask.z);
 
 						//verschil maken met air en transparant 3 opties
-						const bool IsCurrOpqaue = IsBlockSolid(currentBlock);
-						const bool IsCompareOpqaue = IsBlockSolid(compareBlock);
+						const bool IsCurrOpqaue = IsBlockSolid(static_cast<int>(currentBlock));
+						const bool IsCompareOpqaue = IsBlockSolid(static_cast<int>(compareBlock));
 
-						if (currentBlock == 3 && !IsCompareOpqaue)
+						if (currentBlock == BlockType::LEAVES && !IsCompareOpqaue)
 						{
-							maskVector[n++] = BlockMask{ currentBlock, 1}; //towards direction of compareblock
+							maskVector[n++] = BlockMask{ static_cast<int>(currentBlock), 1 }; //towards direction of compareblock
 							//draw other block aswell
 						}
-						else if (compareBlock == 3 && !IsCurrOpqaue)
+						else if (compareBlock == BlockType::LEAVES && !IsCurrOpqaue)
 						{
-							maskVector[n++] = BlockMask{ compareBlock, -1 }; //towards direction of compareblock
+							maskVector[n++] = BlockMask{ static_cast<int>(compareBlock), -1 }; //towards direction of compareblock
 							//draw other block aswell
 						}
 						else if (IsCurrOpqaue == IsCompareOpqaue) { //if equals no face 
 							maskVector[n++] = BlockMask{ 0, 0 };
 						}
 						else if (IsCurrOpqaue) {
-							maskVector[n++] = BlockMask{ currentBlock, 1 }; //towards direction of compareblock
+							maskVector[n++] = BlockMask{ static_cast<int>(currentBlock), 1 }; //towards direction of compareblock
 						}
 						else {
-							maskVector[n++] = BlockMask{ compareBlock, -1 }; //towards direction of currentBlock
+							maskVector[n++] = BlockMask{ static_cast<int>(compareBlock), -1 }; //towards direction of currentBlock
 						}
 					}
 				}
@@ -305,15 +310,15 @@ void ChunkComponent::CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 
 	maskVertices.push_back(v2);
 	maskVertices.push_back(v3);
 	maskVertices.push_back(v4);
-	m_pChunkMesh->AddVertices(maskVertices, normal, mask.normal, widht, height, GetTextureIndex(mask.id, normal));
+	m_pChunkMesh->AddVertices(maskVertices, normal, mask.normal, widht, height, GetTextureIndex(static_cast<BlockType>(mask.id), normal));
 
 }
 
-int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
+int ChunkComponent::GetTextureIndex(BlockType block, glm::vec3 normal)
 {
 	switch (block)
 	{
-	case 1: //grass
+	case BlockType::GRASS: //grass
 		if (normal == glm::vec3{ 0,1,0 })
 			return 2;
 		if (normal == glm::vec3{ 0,-1,0 })
@@ -321,12 +326,14 @@ int ChunkComponent::GetTextureIndex(uint8_t block, glm::vec3 normal)
 		else
 			return 1;
 		break;
-	case 2:
+	case BlockType::STONE:
 		return 3;
-	case 3:
-		return 4;
-	case 4:
+	case BlockType::DIRT:
+		return 0;
+	case BlockType::WOOD:
 		return 5;
+	case BlockType::LEAVES:
+		return 4;
 	default:
 		break;
 	}
@@ -357,7 +364,7 @@ bool ChunkComponent::IsBlockSolid(int x, int y, int z) const
 	return resultBlock != 0 ? true : false;
 }
 
-void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
+void ChunkComponent::ReplaceBlock(int x, int y, int z, BlockType id)
 {
 	//std::lock_guard<std::mutex> lock(m_ChunkIDMapMutex);
 
@@ -372,24 +379,24 @@ void ChunkComponent::ReplaceBlock(int x, int y, int z, uint8_t id)
 
 	}
 
-	*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z) = id;
+	*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z) = static_cast<int>(id);
 }
 
-uint8_t ChunkComponent::GetBlock(int x, int y, int z)
+BlockType ChunkComponent::GetBlock(int x, int y, int z)
 {
 	if (y < 0 || y >= (m_YSize))
-		return 0;
+		return BlockType::AIR;
 
 	if (x < 0 || x >= (m_XSize) || z < 0 || z >= (m_ZSize))
 	{
 		glm::dvec2 pos{ GetAttachedGameObject()->GetTransform().GetPosition().x,
 			GetAttachedGameObject()->GetTransform().GetPosition().z };
 	
-		return m_pManager->GetBlockIDNeighbour(m_ChunkID, x, y, z);
+		return static_cast<BlockType>(m_pManager->GetBlockIDNeighbour(m_ChunkID, x, y, z));
 	
 	}
 
-	uint8_t resultBlock = *(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z);
+	BlockType resultBlock = static_cast<BlockType>(*(m_ChunkArray + x * m_AxisSize.y * m_AxisSize.z + y * m_AxisSize.z + z));
 	return resultBlock;
 }
 

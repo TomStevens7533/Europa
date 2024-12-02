@@ -26,21 +26,21 @@ public:
 	void BuildTrees();
 	void SetDirty() { m_Initialized = true; };
 	bool GetDirtyFlag() { return m_Initialized; }
-	uint8_t GetBlock(int x, int y, int z);
+	BlockType GetBlock(int x, int y, int z);
 
-	uint8_t GetBlockType(int x, int y, int z, int max);
+	BlockType GetBlockType(int x, int y, int z, int max);
 	bool IsBlockSolid(int x, int y, int z) const;
 
 	//Threaded
 	bool InitializeChunk();
-	void ReplaceBlock(int x, int y, int z, uint8_t id);
+	void ReplaceBlock(int x, int y, int z, BlockType id);
 	void CreateMesh();
 	bool GetInitstate() const { return m_Initialized; }
 
 private:
 	struct BlockMask
 	{
-		uint8_t id;
+		int id;
 		int normal;
 	};
 
@@ -48,7 +48,7 @@ private:
 	bool IsBlockSolid(uint8_t blockType) const;
 	bool CompareMask(BlockMask mask1, BlockMask mask2);
 	void CreateQuad(BlockMask mask, glm::ivec3 axisMask, glm::ivec3 v1, glm::ivec3 v2, glm::ivec3 v3, glm::ivec3 v4, int widht, int height);
-	int GetTextureIndex(uint8_t block, glm::vec3 normal);
+	int GetTextureIndex(BlockType block, glm::vec3 normal);
 private:
 	std::shared_ptr<ChunkMeshComponent> m_pChunkMesh;
 	std::atomic<bool> m_Initialized{ false };

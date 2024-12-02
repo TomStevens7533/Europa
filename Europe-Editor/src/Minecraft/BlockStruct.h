@@ -17,3 +17,12 @@ enum class BiomeType
 	Grass,
 	Ice
 };
+
+enum class BlockType : uint8_t {
+	AIR,
+	GRASS,
+	DIRT,
+	STONE,
+	WOOD,
+	LEAVES
+};

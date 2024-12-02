@@ -142,7 +142,7 @@ void ChunkManager::Render() const
 }
 
 //Can only be exectutes if chunkID map is up to date
-uint8_t ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)  const
+BlockType ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)  const
 {
 	try
 	{
@@ -176,12 +176,12 @@ uint8_t ChunkManager::GetBlockIDNeighbour(ChunkID lookupID, int x, int y, int z)
 		EU_CORE_INFO("Chunk idx not found: {0}, {1}", lookupID.x, lookupID.y);
 	}
 	
-	return 0;
+	return BlockType::AIR;
 	
 }
 
 //Can only be exectutes if chunkID map is up to date
-uint8_t ChunkManager::ReplaceBlock(ChunkID lookupID, uint8_t id, int x, int y, int z)
+void ChunkManager::ReplaceBlock(ChunkID lookupID, BlockType id, int x, int y, int z)
 {
 	try
 	{
@@ -212,11 +212,8 @@ uint8_t ChunkManager::ReplaceBlock(ChunkID lookupID, uint8_t id, int x, int y, i
 	}
 	catch (const std::exception&)
 	{
-		//EU_CORE_INFO("Chunk idx not found: {0}, {1}", lookupID.x, lookupID.y);
-		return 0;
+		EU_CORE_INFO("Chunk idx not found: {0}, {1}", lookupID.x, lookupID.y);
 	}
-
-	return 0;
 
 }
 
@@ -331,7 +328,7 @@ void ChunkManager::BuidChunks(std::vector<ChunkComponent*> localThreads)
 			//Neighbbour chunk face dependent | Add structures
 			localThreads[i]->BuildTrees();
 
-			//std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+			std::this_thread::sleep_for(std::chrono::nanoseconds(5));
 
 		}
 
@@ -339,7 +336,7 @@ void ChunkManager::BuidChunks(std::vector<ChunkComponent*> localThreads)
 		{
 			//Neighbbour chunk face dependent | Add structures
 			localThreads[i]->CreateMesh();
-			//std::this_thread::sleep_for(std::chrono::nanoseconds(5));
+			std::this_thread::sleep_for(std::chrono::nanoseconds(5));
 
 		}
 		//std::this_thread::sleep_for(std::chrono::seconds(5));
